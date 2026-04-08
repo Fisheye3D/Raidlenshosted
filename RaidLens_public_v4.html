@@ -1732,20 +1732,30 @@ async function analyze(){
         dtaken:0,ddealt:0,healed:0,overheal:0,absorbs:0,deaths:[],rio:null};
     });});
     log(`👥 ${Object.keys(P).length} players`);
-    // fetch casts from 15s before fight start so prepots are included -- pot cast before pull is still a pot used
-    log("📡 Fetching casts...");const casts=await fetchEvts(token,reportCode,fight.id,fight.startTime-15000,fight.endTime,"Casts");log(`✅ ${casts.length}`);
+    log("📡 Fetching casts...");const casts=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Casts");log(`✅ ${casts.length}`);
+    // prepot fetch: separate query WITHOUT fightIDs so WCL doesn't clamp to fight boundaries
+    // fightIDs filter locks to the fight window -- this is the only way to see pre-pull casts
+    let prepotPlayerIDs=new Set();
+    try{
+      const prepotData=await gql(token,`{reportData{report(code:"${reportCode}"){events(dataType:Casts,startTime:${fight.startTime-15000},endTime:${fight.startTime},limit:300){data}}}}`);
+      const prepotEvts=(prepotData&&prepotData.reportData&&prepotData.reportData.report&&prepotData.reportData.report.events&&prepotData.reportData.report.events.data)||[];
+      prepotEvts.forEach(ev=>{if(potIDs.has(ev.abilityGameID)&&P[ev.sourceID]){prepotPlayerIDs.add(ev.sourceID);if(!P[ev.sourceID].potName)P[ev.sourceID].potName=aName[ev.abilityGameID];}});
+      log(`✅ Prepot scan: ${prepotPlayerIDs.size} prepot(s) found`);
+    }catch(e){console.warn("prepot fetch failed:",e);}
     // track lust separately so we know timing + who was actually alive for it
     const bloodlusts=[];
     casts.forEach(ev=>{
       const p=P[ev.sourceID];if(!p)return;
       const sid=ev.abilityGameID;
       if(DEFS[sid]){p.defs[DEFS[sid]]=(p.defs[DEFS[sid]]||0)+1;}
-      if(potIDs.has(sid)){p.pots++;if(!p.potName)p.potName=aName[sid];}  // counts prepots too -- casts fetched from 15s before startTime
+      if(potIDs.has(sid)){p.pots++;if(!p.potName)p.potName=aName[sid];}
       if(HS_IDS.has(sid)){p.hs=true;}
       if(OFFS[sid]){p.offs[OFFS[sid]]=(p.offs[OFFS[sid]]||0)+1;}
       if(CC_IDS[sid]){p.cc[CC_IDS[sid]]=(p.cc[CC_IDS[sid]]||0)+1;}
       if(BL_IDS[sid]){bloodlusts.push({caster:p.name,spell:BL_IDS[sid],t:ev.timestamp-fight.startTime});}
     });
+    // credit prepotters -- they used a pot even though it was before fight.startTime
+    prepotPlayerIDs.forEach(id=>{if(P[id]&&!P[id].pots)P[id].pots=1;});
     log("📡 Interrupts...");const ints=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Interrupts");log(`✅ ${ints.length}`);
     ints.forEach(ev=>{const p=P[ev.sourceID];if(!p)return;const n=aName[ev.extraAbilityGameID]||aName[ev.abilityGameID]||`Spell#${ev.extraAbilityGameID||ev.abilityGameID}`;p.ints[n]=(p.ints[n]||0)+1;});
     log("📡 Dispels...");const disps=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Dispels");log(`✅ ${disps.length}`);
@@ -2031,6 +2041,7 @@ async function analyze(){
     const perPlayerHtml=`<div style="font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.08em;margin:16px 0 8px">Per Player</div>
     <div class="tw"><table><thead><tr>
       <th onclick="srt('tSum',0)">Player</th><th onclick="srt('tSum',1)">Role</th>
+      <th style="width:24px"></th>
       <th onclick="srt('tSum',2)" class="num">Deaths</th>
       <th onclick="srt('tSum',3)" class="num">Ints</th>
       <th onclick="srt('tSum',4)" class="num">Disps</th>
@@ -2056,7 +2067,7 @@ async function analyze(){
       const _badge=getRepeatBadge(p.name);
       const tr=document.createElement("tr");tr.className="clickable-row";
       tr.dataset.role=p.role;tr.dataset.hasIssue=_sev.issues.length?"1":"0";
-      tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num">${p.pots?"✓":"✗"}</td><td style="text-align:center"><span class="sev-${_sev.sev}">${grade}</span></td>`;
+      tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td style="text-align:center;padding:0 4px"><a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" onclick="event.stopPropagation()" style="color:#79c0ff;font-size:10px;text-decoration:none;white-space:nowrap;opacity:.7" title="Analyze ${p.name} in WoWAnalyzer">🔬</a></td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num">${p.pots?"✓":"✗"}</td><td style="text-align:center"><span class="sev-${_sev.sev}">${grade}</span></td>`;
       tr.onclick=()=>openPlayerModal(p,fSec);
       tSumBody.appendChild(tr);
     });
