@@ -255,18 +255,18 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
   </div>
 
   <div class="hero-features">
-    <div class="hero-feat"><span class="hero-feat-icon">🔍</span>Raid verdict — why you wiped, what to fix</div>
-    <div class="hero-feat"><span class="hero-feat-icon">💀</span>Deaths + context (last defensive, pot, HS)</div>
-    <div class="hero-feat"><span class="hero-feat-icon">⚔️</span>Missed offensive CDs — flagged per player</div>
+    <div class="hero-feat"><span class="hero-feat-icon">📈</span>Per-player scorecard with grades</div>
+    <div class="hero-feat"><span class="hero-feat-icon">💀</span>Deaths + killing blow per pull</div>
+    <div class="hero-feat"><span class="hero-feat-icon">⚔️</span>Missed offensive CDs flagged</div>
     <div class="hero-feat"><span class="hero-feat-icon">🛡️</span>Defensive CD tracking</div>
-    <div class="hero-feat"><span class="hero-feat-icon">⚡</span>Bloodlust timing + who was alive</div>
+    <div class="hero-feat"><span class="hero-feat-icon">⚡</span>Bloodlust timing + who got it</div>
     <div class="hero-feat"><span class="hero-feat-icon">🧪</span>Potion &amp; healthstone usage</div>
     <div class="hero-feat"><span class="hero-feat-icon">🎯</span>Mechanic death breakdown</div>
     <div class="hero-feat"><span class="hero-feat-icon">⏱️</span>Downtime — who wasn't hitting</div>
     <div class="hero-feat"><span class="hero-feat-icon">🔁</span>Pull-over-pull comparison</div>
-    <div class="hero-feat"><span class="hero-feat-icon">📊</span>Discord summary — 4 copy formats</div>
-    <div class="hero-feat"><span class="hero-feat-icon">🤖</span>Auto-scan — analyzes new pulls automatically</div>
-    <div class="hero-feat"><span class="hero-feat-icon">🎮</span>Raidbots sim + Raider.io per player</div>
+    <div class="hero-feat"><span class="hero-feat-icon">⚠️</span>Discord wipe summary — one click</div>
+    <div class="hero-feat"><span class="hero-feat-icon">📊</span>DPS / HPS / Raid totals</div>
+    <div class="hero-feat"><span class="hero-feat-icon">🎮</span>Raidbots sim button per player</div>
   </div>
 
   <div id="heroCounter" style="font-size:11px;color:#6e7681;margin-top:8px"></div>
@@ -289,7 +289,7 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
   <span style="font-size:16px">🆕</span>
   <div style="flex:1;font-size:12px;color:#c9d1d9">
     <strong style="color:#3fb950">What's new in v5:</strong>
-    &nbsp;Raid verdict summary &nbsp;·&nbsp; Death context lines &nbsp;·&nbsp; 4 Discord copy formats &nbsp;·&nbsp; Timeline filters &nbsp;·&nbsp; Auto-scan new pulls &nbsp;·&nbsp; Focus mode &nbsp;·&nbsp; Repeat offender tracking &nbsp;·&nbsp; Role filter chips
+    &nbsp;Raid verdict summary &nbsp;·&nbsp; Death context &nbsp;·&nbsp; 4 Discord copy formats &nbsp;·&nbsp; Timeline filters &nbsp;·&nbsp; Auto-scan &nbsp;·&nbsp; Focus mode &nbsp;·&nbsp; WoWAnalyzer links
   </div>
   <button onclick="document.getElementById('whatsnewBar').style.display='none';localStorage.setItem('rl_wnew_v5','1')" style="background:none;border:none;color:#6e7681;font-size:16px;cursor:pointer;padding:0 4px;flex-shrink:0">×</button>
 </div>
@@ -458,15 +458,13 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
     <div style="flex:1;min-width:200px">
       <div style="font-size:18px;font-weight:700;color:#f97316;margin-bottom:6px">🔗 Connect with WarcraftLogs</div>
       <div style="font-size:13px;color:#c9d1d9;margin-bottom:8px;line-height:1.6">
-        Connect your WarcraftLogs account and instantly load your latest raid reports.<br>
-        <span style="font-size:12px;color:#8b949e">You'll be redirected to WarcraftLogs to authorize — then sent straight back.</span>
+        One click. No setup. WCL handles the login — you're sent straight to the app.
       </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:#8b949e;margin-bottom:6px">
-        <span>✓ No setup required</span>
-        <span>✓ We can't change anything (read-only)</span>
-        <span>✓ Stays connected automatically</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:#8b949e">
+        <span>✓ No API client to create</span>
+        <span>✓ Stays logged in automatically</span>
+        <span>✓ Read-only access only</span>
       </div>
-      <div style="font-size:11px;color:#6e7681">View: deaths, cooldowns, DPS, wipe summaries, and more.</div>
     </div>
     <div style="flex-shrink:0">
       <button onclick="handleConnectClick()" style="background:#f97316;border:none;color:#fff;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 0 20px #f9731640">
@@ -474,13 +472,9 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
       </button>
       <!-- fallback plain link in case button JS fails -->
       <div style="margin-top:8px;text-align:center">
-        <a id="pkceDirectLink" href="#" style="color:#6e7681;font-size:11px;text-decoration:underline" onclick="event.preventDefault();handleConnectClick();">
+        <a id="pkceDirectLink" href="#" style="color:#f97316;font-size:11px;text-decoration:underline" onclick="event.preventDefault();handleConnectClick();">
           Having trouble? Click here
         </a>
-      </div>
-      <div style="margin-top:12px;padding-top:12px;border-top:1px solid #21262d;font-size:11px;color:#6e7681">
-        Want per-spec ability analysis? RaidLens gives you the full raid picture.
-        For individual player breakdowns, check out <a href="https://wowanalyzer.com/" target="_blank" style="color:#79c0ff;text-decoration:none">WoWAnalyzer ↗</a>
       </div>
     </div>
   </div>
@@ -620,7 +614,7 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
 <div id="readyBar" style="display:none" class="readybar">
   <span id="readyLabel">✓ Ready</span>
   <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-    <button class="agent-btn" onclick="agentLatest()">🤖 Auto: Latest Pull</button>
+    <button class="agent-btn" id="agentBtn" onclick="agentLatest()">🤖 Auto: Latest Pull</button>
     <button class="agent-btn" id="watchBtn" onclick="toggleWatch()">⏱️ Auto-scan: Off</button>
     <button class="agent-btn" id="focusBtn" onclick="toggleFocus()">🎯 Focus Mode</button>
     <button class="btn-red" style="padding:4px 10px;font-size:11px" onclick="resetSetup()">Reset Setup</button>
@@ -791,6 +785,19 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
   <div class="rtab-panel" id="rtab-bloodlust">
     <div class="sn">When Bloodlust/Heroism/Time Warp was used and who was alive to benefit.</div>
     <div id="bloodlustContent"></div>
+  </div>
+  <!-- PARSES / RANKINGS -->
+  <div class="rtab-panel" id="rtab-parses">
+    <div class="sn">Parse percentages for each player this fight, pulled directly from WarcraftLogs rankings. Updated after kills are processed by WCL.</div>
+    <div id="parsesLoading" style="display:none;color:#8b949e;font-size:12px;margin-bottom:10px"><span class="spin"></span> Loading parse data...</div>
+    <div class="tw"><table id="tParses"><thead><tr>
+      <th onclick="srt('tParses',0)">Player ↕</th>
+      <th onclick="srt('tParses',1)">Class/Spec ↕</th>
+      <th onclick="srt('tParses',2)" class="num">Parse % ↕</th>
+      <th onclick="srt('tParses',3)" class="num">DPS/HPS ↕</th>
+      <th onclick="srt('tParses',4)" class="num">iLvl ↕</th>
+      <th onclick="srt('tParses',5)">Rank</th>
+    </tr></thead><tbody id="bParses"></tbody></table></div>
   </div>
   <!-- WIPE SUMMARY -->
   <div class="rtab-panel" id="rtab-wipe">
@@ -1164,8 +1171,7 @@ async function handlePKCECallback(){
   const params=new URLSearchParams(window.location.search);
   const code=params.get("code");
   const state=params.get("state");
-  console.log("[RaidLens] handlePKCECallback: code="+!!code+" state="+!!state);
-  if(!code){console.warn("[RaidLens] No code in URL");return false;}
+  if(!code) return false;
   // validate state to prevent CSRF -- if mismatch something went wrong
   const savedState=sessionStorage.getItem("rl_pkce_state");
   if(state&&savedState&&state!==savedState){ showErr("Auth state mismatch -- try again"); return false; }
@@ -1183,8 +1189,7 @@ async function handlePKCECallback(){
         code_verifier:verifier
       })
     });
-    console.log("[RaidLens] Token exchange response status:", res.status);
-    if(!res.ok){ const t=await res.text(); console.error("[RaidLens] Token exchange failed:",res.status,t);throw new Error("Token exchange failed: "+res.status+" "+t); }
+    if(!res.ok){ const t=await res.text(); throw new Error("Token exchange failed: "+res.status+" "+t); }
     const d=await res.json();
     if(!d.access_token) throw new Error("WCL didn't return a token");
     // save token + refresh token -- refresh token means they never have to reconnect
@@ -1405,10 +1410,7 @@ async function autoFetch(){
     try{
       const data=await gql(token,`{reportData{reports(userID:${uid},limit:20){data{code title startTime endTime zone{name}}}}}`);
       const reports=data?.reportData?.reports?.data||[];
-      if(reports.length){
-        [...reports].sort((a,b)=>(a.startTime||0)-(b.startTime||0)).forEach(r=>saveRpt(buildRptObj(r)));
-        log(`✅ ${reports.length} report(s) loaded`);
-      }
+      if(reports.length){[...reports].sort((a,b)=>(a.startTime||0)-(b.startTime||0)).forEach(r=>saveRpt(buildRptObj(r)));log(`✅ ${reports.length} report(s) loaded`);}
       else log("ℹ️ No public reports found for this user.");
       clrLog();renderMyLogs();
     }catch(e){clrLog();showErr("Could not fetch your reports: "+e.message);}
@@ -1419,10 +1421,7 @@ async function autoFetch(){
       log(`🔄 Fetching guild reports for ${g.name}...`);
       const data=await gql(token,`{reportData{reports(guildName:"${g.name}",guildServerSlug:"${slug}",guildServerRegion:"${g.region}",limit:20){data{code title startTime endTime zone{name}}}}}`);
       const reports=data?.reportData?.reports?.data||[];
-      if(reports.length){
-        [...reports].sort((a,b)=>(a.startTime||0)-(b.startTime||0)).forEach(r=>saveRpt(buildRptObj(r)));
-        log(`✅ ${reports.length} report(s) loaded`);
-      }
+      if(reports.length){[...reports].sort((a,b)=>(a.startTime||0)-(b.startTime||0)).forEach(r=>saveRpt(buildRptObj(r)));log(`✅ ${reports.length} report(s) loaded`);}
       else log("ℹ️ No reports found for this guild.");
       clrLog();renderMyLogs();
     }catch(e){clrLog();showErr("Could not fetch guild reports: "+e.message);}
@@ -1603,8 +1602,8 @@ function openPlayerModal(p,fSec){
       <div style="display:flex;gap:6px;flex-wrap:wrap">
         ${rioUrl?`<a href="${rioUrl}" target="_blank" class="rio-btn">Raider.io ↗</a>`:""}
         ${simUrl?`<a href="${simUrl}" target="_blank" class="sim-btn">🎮 Sim on Raidbots ↗</a>`:""}
-        ${p.server?'<a href="'+armoryUrl(p.name,p.server,p.region||'us')+'" target="_blank" class="armory-btn">⚔️ Armory ↗</a>':""}
-        <a href="${`https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}`}" target="_blank" style="background:#161b22;border:1px solid #30363d;color:#79c0ff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px" title="Analyze ${p.name} in WoWAnalyzer">🔬 WoWAnalyzer ↗</a>
+                ${p.server?'<a href="'+armoryUrl(p.name,p.server,p.region||'us')+'" target="_blank" class="armory-btn">⚔️ Armory ↗</a>':''}
+        <a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" style="background:#161b22;border:1px solid #30363d;color:#79c0ff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px" title="Analyze ${p.name} in WoWAnalyzer">🔬 WoWAnalyzer ↗</a>
       </div>
     </div>`;
   const defs=Object.entries(p.defs);
@@ -1740,7 +1739,7 @@ async function analyze(){
       const p=P[ev.sourceID];if(!p)return;
       const sid=ev.abilityGameID;
       if(DEFS[sid]){p.defs[DEFS[sid]]=(p.defs[DEFS[sid]]||0)+1;}
-      if(potIDs.has(sid)&&ev.timestamp>=fight.startTime){p.pots++;if(!p.potName)p.potName=aName[sid];}  // only count in-fight pots -- prepots fire before startTime
+      if(potIDs.has(sid)&&ev.timestamp>=fight.startTime){p.pots++;if(!p.potName)p.potName=aName[sid];}
       if(HS_IDS.has(sid)){p.hs=true;}
       if(OFFS[sid]){p.offs[OFFS[sid]]=(p.offs[OFFS[sid]]||0)+1;}
       if(CC_IDS[sid]){p.cc[CC_IDS[sid]]=(p.cc[CC_IDS[sid]]||0)+1;}
@@ -1757,7 +1756,6 @@ async function analyze(){
     log("📡 Healing...");const heals=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Healing");log(`✅ ${heals.length}`);
     heals.forEach(ev=>{const p=P[ev.sourceID];if(!p)return;p.healed+=(ev.amount||0);p.overheal+=(ev.overheal||0);p.absorbs+=(ev.absorbed||0);});
     log("📡 Deaths...");const deaths=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Deaths");log(`✅ ${deaths.length}`);
-    // v5: declare sorted early so buildDeathCtx can use p.id lookups
     const sorted=Object.values(P).sort((a,b)=>a.name.localeCompare(b.name));
     const shortPull=(fight.endTime-fight.startTime)<45000;
     // killing blow: WCL death events dont actually say what killed you
@@ -1974,7 +1972,6 @@ async function analyze(){
 
     // summary scorecard
     const summaryDiv=document.getElementById("summaryContent");summaryDiv.innerHTML="";
-    // v5: build band context using already-declared sorted + shortPull
     const _missedOffTotal=sorted.reduce((s,p)=>{const exp=SPEC_OFFS[(p.cls||"")+("|")+(p.spec||"")]||null;return s+(exp?exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]).length:0);},0);
     const _noPotDps=sorted.filter(p=>p.role==="dps"&&!p.pots).map(p=>p.name);
     const _v5BandCtx={fight,sorted,shortPull,drows,missedOffTotal:_missedOffTotal,noPotDps:_noPotDps};
@@ -2194,7 +2191,7 @@ async function analyze(){
       const dtSec=Math.round(dtMs/1000);
       const actSec=Math.max(0,Math.round(fightMs/1000)-dtSec);
       const dtPct=Math.round(dtMs/fightMs*100);
-      const dtClr=dtPct>20?"#f85149":dtPct>10?"#e3a008":dtPct>5?"#ffd700":"#3fb950";
+      const dtClr=dtPct>20?"#f85149":dtPct>10?"#e3a008":"#3fb950";
       const tr=document.createElement("tr");tr.className="clickable-row";
       tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td>
         <td><div style="background:#21262d;border-radius:3px;height:8px;width:160px;overflow:hidden;display:inline-flex;vertical-align:middle">
@@ -2261,14 +2258,12 @@ async function analyze(){
       "",
       "Generated by 🔭 RaidLens · raidlens.org",
     ];
-    // v5: multi-mode wipe summary
     const _topDps=Object.values(P).filter(p=>p.ddealt>0).sort((a,b)=>b.ddealt-a.ddealt).slice(0,3).map(p=>p.name+" "+fmtNum(Math.round(p.ddealt/fSec))).join(" · ");
     const _topHps=Object.values(P).filter(p=>p.healed>0).sort((a,b)=>b.healed-a.healed).slice(0,3).map(p=>p.name+" "+fmtNum(Math.round(p.healed/fSec))).join(" · ");
     _v5ctx={fight,sorted,fSec,drows,bloodlusts,
-      noPotDps:sorted.filter(p=>p.role==="dps"&&!p.pots).map(p=>p.name),
+      noPotDps:_noPotDps,
       missedOffAll:sorted.filter(p=>{const exp=SPEC_OFFS[(p.cls||"")+("|")+(p.spec||"")]||null;return exp&&exp.some(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]);}),
-      topDps:_topDps,topHps:_topHps,
-      missedOffTotal:_missedOffTotal};
+      topDps:_topDps,topHps:_topHps,missedOffTotal:_missedOffTotal};
     renderWipeSummaryV5();
     updateMemV5(fight.name,fight.kill,sorted);
 
@@ -2322,39 +2317,14 @@ updateHeroCounter();
 
 // page init -- handle both PKCE callback and returning authed users
 window.addEventListener("load", async function raidLensInit(){
-  // ── DEBUG: log everything WCL sent back ──────────────────────────────────
-  const _qs=window.location.search;
-  console.log("[RaidLens] Page loaded. URL search:", _qs||"(none)");
-  console.log("[RaidLens] isPKCEAuthed:", isPKCEAuthed());
-  console.log("[RaidLens] sessionStorage verifier:", !!sessionStorage.getItem("rl_pkce_verifier"));
-
-  if(_qs){
-    const _p=new URLSearchParams(_qs);
-    const _all={};_p.forEach((v,k)=>_all[k]=k==="code"?v.substring(0,10)+"...":v);
-    console.log("[RaidLens] URL params:", _all);
-
-    // WCL sent back an error -- show it
-    if(_p.get("error")){
-      const desc=_p.get("error_description")||_p.get("error");
-      console.error("[RaidLens] WCL auth error:", desc);
-      showErr("WCL auth error: "+desc);
-      window.history.replaceState({},"",window.location.pathname);
-      showPKCEConnect();
-      return;
-    }
-  }
-
   // check if we're back from WCL OAuth -- ?code= in URL means PKCE callback
   if(window.location.search.includes("code=")){
-    console.log("[RaidLens] Got ?code= -- calling handlePKCECallback");
     const ok=await handlePKCECallback();
-    console.log("[RaidLens] handlePKCECallback returned:", ok);
     if(ok){
       showMainUI(); // K_TYPE and K_USERID set in handlePKCECallback
       await autoFetch();
       return;
     }
-    console.warn("[RaidLens] handlePKCECallback failed -- falling through to normal init");
     // if exchange failed, fall through to normal init
   }
 
@@ -2398,15 +2368,11 @@ function showPKCEConnect(){
   if(pkceBtn) pkceBtn.style.display="flex";
 }
 
-// ═══════════════════════════════════════════════════════════
-// V5 ADDITIONS — all new functions below, nothing above touched
-// ═══════════════════════════════════════════════════════════
-
-// ── UI prefs ─────────────────────────────────────────────────────────────────
-const K_UI_V5='rl_ui_v5';
-const K_MEM_V5='rl_mem_v5';
-let _v5ctx=null;
-let _watchInterval=null;
+// ═══════════════════════════════════════════════════════
+// V5 — all additive, zero auth code touched
+// ═══════════════════════════════════════════════════════
+const K_UI_V5='rl_ui_v5';const K_MEM_V5='rl_mem_v5';
+let _v5ctx=null,_watchInterval=null;
 let _v5UI={focusMode:false,copyMode:'short'};
 let _tlKind={off:true,def:true,lust:true};
 
@@ -2422,24 +2388,18 @@ function toggleFocus(){
 
 function setCopyMode(m){
   _v5UI.copyMode=m;saveV5UI();
-  ['short','detailed','officer','pings'].forEach(x=>{
-    const b=document.getElementById('cmBtn-'+x);if(b)b.classList.toggle('active',x===m);
-  });
+  ['short','detailed','officer','pings'].forEach(x=>{const b=document.getElementById('cmBtn-'+x);if(b)b.classList.toggle('active',x===m);});
   if(_v5ctx)renderWipeSummaryV5();
 }
 
-// ── Timeline filters ──────────────────────────────────────────────────────────
 function toggleTL(k){
   _tlKind[k]=!_tlKind[k];
   const el=document.getElementById('tlChip-'+k);if(el)el.classList.toggle('on',_tlKind[k]);
   applyTLFilters();
 }
 function applyTLFilters(){
-  const sel=document.getElementById('tlPlayerSel');
-  const player=sel?sel.value:'all';
-  document.querySelectorAll('[data-tl-player]').forEach(row=>{
-    row.style.display=(player==='all'||row.dataset.tlPlayer===player)?'':'none';
-  });
+  const sel=document.getElementById('tlPlayerSel');const player=sel?sel.value:'all';
+  document.querySelectorAll('[data-tl-player]').forEach(row=>{row.style.display=(player==='all'||row.dataset.tlPlayer===player)?'':'none';});
   document.querySelectorAll('[data-kind]').forEach(m=>{
     const k=m.dataset.kind;
     const show=(k==='off'&&_tlKind.off)||(k==='def'&&_tlKind.def)||(k==='lust'&&_tlKind.lust)||!k;
@@ -2447,12 +2407,10 @@ function applyTLFilters(){
   });
 }
 
-// ── Repeat offender memory ────────────────────────────────────────────────────
 function getMem(){try{return JSON.parse(localStorage.getItem(K_MEM_V5)||'{}');}catch{return{};}}
 function saveMem(m){localStorage.setItem(K_MEM_V5,JSON.stringify(m));}
 function updateMemV5(boss,kill,sorted){
-  const m=getMem();
-  if(!m.players)m.players={};if(!m.fights)m.fights=[];
+  const m=getMem();if(!m.players)m.players={};if(!m.fights)m.fights=[];
   sorted.forEach(p=>{
     const k=p.name.toLowerCase();
     if(!m.players[k])m.players[k]={name:p.name,cls:p.cls,deaths:0,missedOff:0,noPot:0,fights:0};
@@ -2461,20 +2419,19 @@ function updateMemV5(boss,kill,sorted){
     const exp=SPEC_OFFS[(p.cls||'')+'|'+(p.spec||'')]||null;
     if(exp)pm.missedOff+=exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]).length;
   });
-  m.fights.unshift({boss,kill,date:Date.now()});
-  if(m.fights.length>60)m.fights=m.fights.slice(0,60);
+  m.fights.unshift({boss,kill,date:Date.now()});if(m.fights.length>60)m.fights=m.fights.slice(0,60);
   saveMem(m);
 }
 function getRepeatBadge(name){
   const m=getMem();const pm=m.players?.[name.toLowerCase()];
   if(!pm||pm.fights<3)return '';
-  if(pm.deaths/pm.fights>=1.5)return ' <span class="repeat-badge" title="Avg '+(pm.deaths/pm.fights).toFixed(1)+' deaths/fight over '+pm.fights+' pulls">💀 chronic</span>';
-  if(pm.noPot/pm.fights>=0.6)return ' <span class="repeat-badge" title="No potion in '+Math.round(pm.noPot/pm.fights*100)+'% of pulls">🧪 chronic</span>';
-  if(pm.missedOff/pm.fights>=1.5)return ' <span class="repeat-badge" title="Avg '+(pm.missedOff/pm.fights).toFixed(1)+' missed CDs/fight">⚔ chronic</span>';
+  // only show chronic badge if pattern is consistent across 3+ pulls
+  if(pm.deaths/pm.fights>=1.5)return ' <span class="repeat-badge" title="Avg '+(pm.deaths/pm.fights).toFixed(1)+' deaths/pull over '+pm.fights+' pulls">💀 repeat</span>';
+  if(pm.noPot/pm.fights>=0.6)return ' <span class="repeat-badge" title="No pot in '+Math.round(pm.noPot/pm.fights*100)+'% of pulls — not counting prepots">🧪 no pot</span>';
+  if(pm.missedOff/pm.fights>=1.5)return ' <span class="repeat-badge" title="Avg '+(pm.missedOff/pm.fights).toFixed(1)+' missed CDs/pull">⚔ misses CDs</span>';
   return '';
 }
 
-// ── Severity ──────────────────────────────────────────────────────────────────
 function getV5Sev(p,shortPull){
   const issues=[];
   if(p.deaths.length)issues.push('deaths');
@@ -2484,15 +2441,12 @@ function getV5Sev(p,shortPull){
   return{issues,sev:p.deaths.length>=2?'crit':issues.length?'warn':'ok'};
 }
 
-// ── Death context ─────────────────────────────────────────────────────────────
 function buildDeathCtx(p,deathTs,casts){
-  const rd=casts.filter(ev=>ev.sourceID===p.id&&DEFS[ev.abilityGameID]&&ev.timestamp<=deathTs)
-    .sort((a,b)=>b.timestamp-a.timestamp)[0];
-  const ds=rd?'Last def: '+DEFS[rd.abilityGameID]+' (-'+Math.round((deathTs-rd.timestamp)/1000)+'s)':'No defensive';
+  const rd=casts.filter(ev=>ev.sourceID===p.id&&DEFS[ev.abilityGameID]&&ev.timestamp<=deathTs).sort((a,b)=>b.timestamp-a.timestamp)[0];
+  const ds=rd?'Last def: '+DEFS[rd.abilityGameID]+' (-'+Math.round((deathTs-rd.timestamp)/1000)+'s)':'No defensive used';
   return ds+' · '+(p.pots?'Pot ✓':'No pot')+' · '+(p.hs?'HS ✓':'No HS');
 }
 
-// ── Wipe cause ────────────────────────────────────────────────────────────────
 function pickWipeCause(drows){
   const real=drows.filter(d=>d.dcount>0).sort((a,b)=>a.time-b.time);if(!real.length)return null;
   const counts={};real.forEach(d=>{if(d.killer&&d.killer!=='Unknown'&&d.killer!=='—')counts[d.killer]=(counts[d.killer]||0)+1;});
@@ -2500,37 +2454,28 @@ function pickWipeCause(drows){
   return{firstDeath:real[0],topKiller:top?{name:top[0],count:top[1]}:null};
 }
 
-// ── Summary band ──────────────────────────────────────────────────────────────
 function buildSummaryBand(ctx){
   const{fight,sorted,shortPull,drows,missedOffTotal,noPotDps}=ctx;
   const cause=pickWipeCause(drows);
   const callouts=[];
-  // ── Primary issue first (most impactful) ──
   if(!fight.kill&&cause&&cause.topKiller&&cause.topKiller.count>=2){
-    callouts.push({cls:'crit',text:'🔥 Primary wipe cause: '+cause.topKiller.name+' ('+cause.topKiller.count+' kills'+( cause.firstDeath?' · first death @ '+cause.firstDeath.timeStr:'')+')' });
-  } else if(!fight.kill&&cause&&cause.firstDeath){
-    callouts.push({cls:'crit',text:'💀 First death: '+cause.firstDeath.name+' @ '+cause.firstDeath.timeStr+' — '+cause.firstDeath.killer});
+    callouts.push({cls:'crit',text:'🔥 Primary wipe cause: '+cause.topKiller.name+' ('+cause.topKiller.count+' kills'+(cause.firstDeath?' · first @ '+cause.firstDeath.timeStr:'')+')' });
+  } else if(cause&&cause.firstDeath){
+    callouts.push({cls:fight.kill?'':'crit',text:'💀 First death: '+cause.firstDeath.name+' @ '+cause.firstDeath.timeStr+' — '+cause.firstDeath.killer});
   }
-  // ── Critical cooldown failures ──
   if(missedOffTotal>0&&!shortPull){
-    // find top offenders (most missed)
     const offenders=sorted.map(p=>{const exp=SPEC_OFFS[(p.cls||'')+'|'+(p.spec||'')]||null;const n=exp?exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]).length:0;return{name:p.name,n};}).filter(x=>x.n>0).sort((a,b)=>b.n-a.n).slice(0,3).map(x=>x.name);
-    callouts.push({cls:missedOffTotal>=5?'crit':'warn',text:'⚔️ Critical CD failures: '+missedOffTotal+' missed'+(offenders.length?' — '+offenders.join(', '):'')});
+    callouts.push({cls:missedOffTotal>=5?'crit':'warn',text:'⚔️ Critical CD failures: '+missedOffTotal+(offenders.length?' — '+offenders.join(', '):'')});
   }
-  // ── Supporting details ──
   if(noPotDps.length)callouts.push({cls:'warn',text:'🧪 No potion: '+noPotDps.join(', ')});
-  if(shortPull)callouts.push({cls:'',text:'ℹ️ Short pull ('+Math.round((fight.endTime-fight.startTime)/1000)+'s) — severity checks softened'});
-  if(!callouts.length)callouts.push({cls:'good',text:'✅ Clean pull — no major issues detected'});
+  if(shortPull)callouts.push({cls:'',text:'ℹ️ Short pull ('+Math.round((fight.endTime-fight.startTime)/1000)+'s)'});
+  if(!callouts.length)callouts.push({cls:'good',text:'✅ Clean pull — no major issues'});
   const jumps=[
     {l:'💀 Deaths',t:'deaths'},{l:'🎯 Mechanics',t:'mechdeaths'},
     {l:'⚔️ Off CDs',t:'offensive'},{l:'🔄 Timeline',t:'timeline'},
-    {l:'⏱️ Downtime',t:'downtime'},{l:'⚠️ Wipe Summary',t:'wipe'},
-  ].map(j=>'<button class="v5-chip jump" style="margin-right:4px;border:none;cursor:pointer" data-tab="'+j.t+'">'+j.l+'</button>').join('');;
-  const filterChips=[
-    {id:'all',label:'All'},{id:'tanks',label:'🛡 Tanks'},
-    {id:'healers',label:'💚 Healers'},{id:'dps',label:'⚔ DPS'},
-    {id:'issues',label:'⚠️ Issues Only'},
-  ].map(f=>'<span class="v5-chip'+(f.id==='all'?' on':'')+'" id="v5f-'+f.id+'" data-filter="'+f.id+'">'+f.label+'</span>').join('');
+    {l:'⏱️ Downtime',t:'downtime'},{l:'⚠️ Summary',t:'wipe'},
+  ].map(j=>'<button class="v5-chip jump" style="border:none;cursor:pointer;margin-right:4px" data-tab="'+j.t+'">'+j.l+'</button>').join('');
+  const filters=['all','tanks','healers','dps','issues'].map((f,i)=>'<span class="v5-chip'+(i===0?' on':'')+'" data-filter="'+f+'" id="v5f-'+f+'">'+(f==='all'?'All':f==='tanks'?'🛡 Tanks':f==='healers'?'💚 Healers':f==='dps'?'⚔ DPS':'⚠️ Issues')+'</span>').join('');
   return '<div class="v5-band">'
     +'<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">'
     +'<div style="flex:1;min-width:200px">'
@@ -2540,20 +2485,27 @@ function buildSummaryBand(ctx){
     +'</div>'
     +'<div style="display:flex;flex-direction:column;gap:6px">'
     +'<div style="font-size:10px;color:#79c0ff;font-weight:700;margin-bottom:2px">FILTER</div>'
-    +'<div style="display:flex;gap:4px;flex-wrap:wrap">'+filterChips+'</div>'
+    +'<div style="display:flex;gap:4px;flex-wrap:wrap">'+filters+'</div>'
+    +'<div style="font-size:10px;color:#79c0ff;font-weight:700;margin-top:4px;margin-bottom:2px">COPY FORMAT</div>'
+    +'<div style="display:flex;gap:4px;flex-wrap:wrap">'
+    +'<button class="copy-mode-btn" id="bCM-short"    data-mode="short"   >Short</button>'
+    +'<button class="copy-mode-btn" id="bCM-detailed" data-mode="detailed">Detailed</button>'
+    +'<button class="copy-mode-btn" id="bCM-officer"  data-mode="officer" >Officer</button>'
+    +'<button class="copy-mode-btn" id="bCM-pings"    data-mode="pings"   >Pings</button>'
+    +'</div>'
     +'</div>'
     +'</div>'
     +'</div>';
 }
+
 function v5RoleFilter(role){
-  ['all','tanks','healers','dps','issues'].forEach(r=>{const el=document.getElementById('v5f-'+r);if(el)el.classList.toggle('on',r===role);});
-  document.querySelectorAll('#tSumBody tr').forEach(tr=>{
+  document.querySelectorAll('[data-filter]').forEach(el=>el.classList.toggle('on',el.dataset.filter===role));
+  document.getElementById('v5f-all')&&document.querySelectorAll('#tSumBody tr').forEach(tr=>{
     const r=tr.dataset.role||'',hi=tr.dataset.hasIssue==='1';
     tr.style.display=(role==='all'||(role==='issues'&&hi)||r===role)?'':'none';
   });
 }
 
-// ── Wipe summary multi-mode ───────────────────────────────────────────────────
 function buildWipeSummaryText(ctx,mode){
   const{fight,sorted,fSec,drows,bloodlusts,noPotDps,missedOffAll,topDps,topHps,missedOffTotal}=ctx;
   const dur=fdur(fight.endTime-fight.startTime);
@@ -2579,8 +2531,7 @@ function buildWipeSummaryText(ctx,mode){
     }).filter(Boolean);
     return['=== '+fight.name+' · '+outcome+' · '+dur+' ===',
       cause&&cause.firstDeath?'First death: '+cause.firstDeath.name+' @ '+cause.firstDeath.timeStr+' — '+cause.firstDeath.killer:'No deaths',
-      'Issues ('+plines.length+' players):',
-      ...plines,
+      'Issues ('+plines.length+' players):',...plines,
       'Missed off CDs: '+missedOffTotal+' · No pots: '+noPotDps.length,
       'Top DPS: '+topDps+' · Top HPS: '+topHps,
     ].join('\n');
@@ -2595,22 +2546,16 @@ function buildWipeSummaryText(ctx,mode){
     }).filter(Boolean);
     return[outcome+' — '+fight.name+' · '+dur,...pings].join('\n');
   }
-  // detailed (original format)
-  return['📋 RaidLens Pull Summary — '+fight.name,
-    outcome+' | Duration: '+dur+' | '+sorted.length+' players','',
-    '💀 Deaths ('+deathList.length+'):',
-    ...(deathList.length?deathList.map(d=>'   '+d.name+' ['+d.cls+'] @ '+d.timeStr+' — '+d.killer):['   None — clean pull!']),
+  return['📋 RaidLens Pull Summary — '+fight.name,outcome+' | Duration: '+dur+' | '+sorted.length+' players','',
+    '💀 Deaths ('+deathList.length+'):',...(deathList.length?deathList.map(d=>'   '+d.name+' ['+d.cls+'] @ '+d.timeStr+' — '+d.killer):['   None — clean pull!']),
     '',blLine,'',
-    '⚔️ Missed Offensive CDs: '+(missedOffAll.length?missedOffAll.map(p=>{
-      const exp=SPEC_OFFS[(p.cls||'')+'|'+(p.spec||'')]||null;
-      const mc=exp?exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]):[];
-      return p.name+': '+mc.map(cd=>Array.isArray(cd)?cd[0]:cd).join(', ');
-    }).join(' | '):'None ✓'),'',
+    '⚔️ Missed Offensive CDs: '+(missedOffAll.length?missedOffAll.map(p=>{const exp=SPEC_OFFS[(p.cls||'')+'|'+(p.spec||'')]||null;const mc=exp?exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]):[];return p.name+': '+mc.map(cd=>Array.isArray(cd)?cd[0]:cd).join(', ');}).join(' | '):'None ✓'),'',
     noPotDps.length?'🧪 No Potion: '+noPotDps.join(', '):'🧪 All DPS used potions ✓','',
     '⚔️ DPS Top 3: '+topDps,'💚 HPS Top 3: '+topHps,'',
     'Generated by 🔭 RaidLens · raidlens.org',
   ].join('\n');
 }
+
 function renderWipeSummaryV5(){
   if(!_v5ctx)return;
   const text=buildWipeSummaryText(_v5ctx,_v5UI.copyMode);
@@ -2624,11 +2569,10 @@ function renderWipeSummaryV5(){
   });
 }
 
-// ── Agent ─────────────────────────────────────────────────────────────────────
 async function agentLatest(){
   const saved=getSaved();if(!saved.length){showErr('No saved reports — load a report first.');return;}
   let token;try{token=await getValidToken();}catch(e){showErr(e.message);return;}
-  const abtn=document.querySelector('[onclick="agentLatest()"]');
+  const abtn=document.getElementById('agentBtn');
   if(abtn){abtn.textContent='⏳ Loading...';abtn.disabled=true;}
   clrErr();clrLog();hideFights();hideResults();
   try{
@@ -2642,6 +2586,7 @@ async function agentLatest(){
   }catch(e){showErr('Auto error: '+e.message);}
   finally{if(abtn){abtn.textContent='🤖 Auto: Latest Pull';abtn.disabled=false;}}
 }
+
 function toggleWatch(){
   if(_watchInterval){clearInterval(_watchInterval);_watchInterval=null;updateWatchBtn();return;}
   let lastId=fightId;
@@ -2663,26 +2608,16 @@ function updateWatchBtn(){
   if(wb){wb.textContent=_watchInterval?'⏱️ Auto-scan: On':'⏱️ Auto-scan: Off';wb.classList.toggle('watch-on',!!_watchInterval);}
 }
 
-// ── Boot ──────────────────────────────────────────────────────────────────────
 function initV5(){
   loadV5UI();
   document.body.classList.toggle('focus-mode',!!_v5UI.focusMode);
-  // wire jump chips via event delegation -- runs once, works for dynamically built band
   document.addEventListener('click',function(e){
-    // jump chips
-    const btn=e.target.closest('[data-tab]');
-    if(btn){
-      const t=btn.dataset.tab;
-      const tabs=document.querySelectorAll('.rtab');
-      for(let i=0;i<tabs.length;i++){
-        if(tabs[i].getAttribute('onclick')&&tabs[i].getAttribute('onclick').indexOf("'"+t+"'")>-1){
-          switchRTab(t,tabs[i]);break;
-        }
-      }
-    }
-    // filter chips
-    const fc=e.target.closest('[data-filter]');
-    if(fc) v5RoleFilter(fc.dataset.filter);
+    const tb=e.target.closest('[data-tab]');
+    if(tb){const t=tb.dataset.tab;document.querySelectorAll('.rtab').forEach(el=>{if(el.getAttribute('onclick')&&el.getAttribute('onclick').indexOf("'"+t+"'")>-1)switchRTab(t,el);});}
+    const fb=e.target.closest('[data-filter]');
+    if(fb)v5RoleFilter(fb.dataset.filter);
+    const mb=e.target.closest('[data-mode]');
+    if(mb)setCopyMode(mb.dataset.mode);
   });
 }
 
