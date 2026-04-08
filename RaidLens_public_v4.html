@@ -1618,7 +1618,7 @@ function openPlayerModal(p,fSec){
   const tagList=(entries,color)=>entries.length?entries.map(([n,c])=>`<span class="spell-item" style="border-color:${color}">${n}<span style="color:${color}">×${c}</span></span>`).join(""):"<span style='color:#6e7681'>None</span>";
   const statRow=(label,val,color="#c9d1d9")=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #21262d;font-size:13px"><span style="color:#8b949e">${label}</span><span style="font-weight:600;color:${color}">${val}</span></div>`;
   let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-    <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("Potions used",p.pots||"None",p.pots?"#3fb950":"#f85149")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
+    <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("In-fight Pot",p.pots?"✓ Used ("+p.pots+")":"✗ None detected",p.pots?"#3fb950":"#6e7681")+statRow("Prepot","Cannot detect from logs","#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
     <div>${statRow("Damage Taken",fmtNum(p.dtaken))}${statRow("Interrupts",Object.values(p.ints).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Dispels",Object.values(p.disps).reduce((s,c)=>s+c,0),"#3fb950")}${statRow("CC Used",Object.values(p.cc).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Def CDs Used",Object.values(p.defs).reduce((s,c)=>s+c,0),"#ffd700")}${statRow("Off CDs Used",Object.values(p.offs).reduce((s,c)=>s+c,0),"#ffd700")}</div></div>`;
   if(p.deaths.length){html+=`<div class="modal-section"><h4>Deaths</h4><div class="spell-grid">${p.deaths.map(d=>`<span class="spell-item" style="border-color:#f85149;color:#f85149">${d.timeStr||"?"} — ${d.killer}</span>`).join("")}</div></div>`;}
   if(defs.length){html+=`<div class="modal-section"><h4>Defensive Cooldowns</h4><div class="spell-grid">${tagList(defs,"#30363d")}</div></div>`;}
@@ -2041,12 +2041,12 @@ async function analyze(){
     const perPlayerHtml=`<div style="font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.08em;margin:16px 0 8px">Per Player</div>
     <div class="tw"><table><thead><tr>
       <th onclick="srt('tSum',0)">Player</th><th onclick="srt('tSum',1)">Role</th>
-      <th style="width:24px"></th>
+      <th style="width:110px"></th>
       <th onclick="srt('tSum',2)" class="num">Deaths</th>
       <th onclick="srt('tSum',3)" class="num">Ints</th>
       <th onclick="srt('tSum',4)" class="num">Disps</th>
       <th onclick="srt('tSum',5)" class="num">Def CDs</th>
-      <th onclick="srt('tSum',6)" class="num">Pot</th>
+      <th onclick="srt('tSum',6)" class="num" title="In-fight potion only — prepots cannot be detected from logs">In-fight Pot ⓘ</th>
       <th onclick="srt('tSum',7)">Grade</th>
     </tr></thead><tbody id="tSumBody"></tbody></table></div>`;
     summaryDiv.innerHTML=scoreHTML+perPlayerHtml;
@@ -2059,7 +2059,7 @@ async function analyze(){
       const defTotal=Object.values(p.defs).reduce((s,c)=>s+c,0);
       let score=100;
       score-=deaths*15;
-      if(p.role==="dps"&&!p.pots)score-=10;
+      // removed pot penalty from score -- prepots undetectable, penalizing is inaccurate
       // letter grade -- S/A/B/C/F based on deaths, pots, missed CDs
       const grade=score>=90?"S":score>=75?"A":score>=60?"B":score>=45?"C":"D";
       const gc=grade==="S"?"#ffd700":grade==="A"?"#3fb950":grade==="B"?"#79c0ff":grade==="C"?"#e3a008":"#f85149";
@@ -2067,7 +2067,7 @@ async function analyze(){
       const _badge=getRepeatBadge(p.name);
       const tr=document.createElement("tr");tr.className="clickable-row";
       tr.dataset.role=p.role;tr.dataset.hasIssue=_sev.issues.length?"1":"0";
-      tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td style="text-align:center;padding:0 4px"><a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" onclick="event.stopPropagation()" style="color:#79c0ff;font-size:10px;text-decoration:none;white-space:nowrap;opacity:.7" title="Analyze ${p.name} in WoWAnalyzer">🔬</a></td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num">${p.pots?"✓":"✗"}</td><td style="text-align:center"><span class="sev-${_sev.sev}">${grade}</span></td>`;
+      tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td style="text-align:center;padding:0 4px"><a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" onclick="event.stopPropagation()" style="color:#79c0ff;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:#0d1a2e;border:1px solid #4a9eff30;padding:2px 7px;border-radius:4px;display:inline-flex;align-items:center;gap:3px" title="Open in WoWAnalyzer">🔬 WoWAnalyzer</a></td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num" title="${p.pots?'In-fight pot used':'No in-fight pot detected — prepots cannot be tracked'}"><span style="color:${p.pots?'#3fb950':'#6e7681'}">${p.pots?"✓ Yes":"— n/a"}</span></td><td style="text-align:center"><span class="sev-${_sev.sev}">${grade}</span></td>`;
       tr.onclick=()=>openPlayerModal(p,fSec);
       tSumBody.appendChild(tr);
     });
@@ -2439,7 +2439,7 @@ function getRepeatBadge(name){
   if(!pm||pm.fights<3)return '';
   // only show chronic badge if pattern is consistent across 3+ pulls
   if(pm.deaths/pm.fights>=1.5)return ' <span class="repeat-badge" title="Avg '+(pm.deaths/pm.fights).toFixed(1)+' deaths/pull over '+pm.fights+' pulls">💀 repeat</span>';
-  if(pm.noPot/pm.fights>=0.6)return ' <span class="repeat-badge" title="No pot in '+Math.round(pm.noPot/pm.fights*100)+'% of pulls — not counting prepots">🧪 no pot</span>';
+  // removed noPot chronic badge -- can't detect prepots so this was always wrong
   if(pm.missedOff/pm.fights>=1.5)return ' <span class="repeat-badge" title="Avg '+(pm.missedOff/pm.fights).toFixed(1)+' missed CDs/pull">⚔ misses CDs</span>';
   return '';
 }
@@ -2447,7 +2447,7 @@ function getRepeatBadge(name){
 function getV5Sev(p,shortPull){
   const issues=[];
   if(p.deaths.length)issues.push('deaths');
-  if(p.role==='dps'&&!p.pots&&!shortPull)issues.push('noPot');
+  // removed noPot from severity -- can't detect prepots so false positives everywhere
   const exp=SPEC_OFFS[(p.cls||'')+'|'+(p.spec||'')]||null;
   if(exp&&!shortPull){const mc=exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]);if(mc.length)issues.push('missedOff');}
   return{issues,sev:p.deaths.length>=2?'crit':issues.length?'warn':'ok'};
@@ -2456,7 +2456,7 @@ function getV5Sev(p,shortPull){
 function buildDeathCtx(p,deathTs,casts){
   const rd=casts.filter(ev=>ev.sourceID===p.id&&DEFS[ev.abilityGameID]&&ev.timestamp<=deathTs).sort((a,b)=>b.timestamp-a.timestamp)[0];
   const ds=rd?'Last def: '+DEFS[rd.abilityGameID]+' (-'+Math.round((deathTs-rd.timestamp)/1000)+'s)':'No defensive used';
-  return ds+' · '+(p.pots?'Pot ✓':'No pot')+' · '+(p.hs?'HS ✓':'No HS');
+  return ds+' · '+(p.pots?'Pot ✓':'No in-fight pot')+' · '+(p.hs?'HS ✓':'No HS');
 }
 
 function pickWipeCause(drows){
@@ -2479,7 +2479,7 @@ function buildSummaryBand(ctx){
     const offenders=sorted.map(p=>{const exp=SPEC_OFFS[(p.cls||'')+'|'+(p.spec||'')]||null;const n=exp?exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]).length:0;return{name:p.name,n};}).filter(x=>x.n>0).sort((a,b)=>b.n-a.n).slice(0,3).map(x=>x.name);
     callouts.push({cls:missedOffTotal>=5?'crit':'warn',text:'⚔️ Critical CD failures: '+missedOffTotal+(offenders.length?' — '+offenders.join(', '):'')});
   }
-  if(noPotDps.length)callouts.push({cls:'warn',text:'🧪 No potion: '+noPotDps.join(', ')});
+  if(noPotDps.length)callouts.push({cls:'warn',text:'🧪 No in-fight pot: '+noPotDps.join(', ')+' (prepots not trackable)'});
   if(shortPull)callouts.push({cls:'',text:'ℹ️ Short pull ('+Math.round((fight.endTime-fight.startTime)/1000)+'s)'});
   if(!callouts.length)callouts.push({cls:'good',text:'✅ Clean pull — no major issues'});
   const jumps=[
