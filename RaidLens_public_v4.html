@@ -1732,14 +1732,15 @@ async function analyze(){
         dtaken:0,ddealt:0,healed:0,overheal:0,absorbs:0,deaths:[],rio:null};
     });});
     log(`👥 ${Object.keys(P).length} players`);
-    log("📡 Fetching casts...");const casts=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Casts");log(`✅ ${casts.length}`);
+    // fetch casts from 15s before fight start so prepots are included -- pot cast before pull is still a pot used
+    log("📡 Fetching casts...");const casts=await fetchEvts(token,reportCode,fight.id,fight.startTime-15000,fight.endTime,"Casts");log(`✅ ${casts.length}`);
     // track lust separately so we know timing + who was actually alive for it
     const bloodlusts=[];
     casts.forEach(ev=>{
       const p=P[ev.sourceID];if(!p)return;
       const sid=ev.abilityGameID;
       if(DEFS[sid]){p.defs[DEFS[sid]]=(p.defs[DEFS[sid]]||0)+1;}
-      if(potIDs.has(sid)&&ev.timestamp>=fight.startTime){p.pots++;if(!p.potName)p.potName=aName[sid];}
+      if(potIDs.has(sid)){p.pots++;if(!p.potName)p.potName=aName[sid];}  // counts prepots too -- casts fetched from 15s before startTime
       if(HS_IDS.has(sid)){p.hs=true;}
       if(OFFS[sid]){p.offs[OFFS[sid]]=(p.offs[OFFS[sid]]||0)+1;}
       if(CC_IDS[sid]){p.cc[CC_IDS[sid]]=(p.cc[CC_IDS[sid]]||0)+1;}
