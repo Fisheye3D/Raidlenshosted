@@ -867,38 +867,83 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
 // if something breaks its probably because blizz changed a spell ID again
 // check wowhead and update the relevant map below, its usually obvious
 
-const DEFS={871:"Shield Wall",118038:"Die by the Sword",190456:"Ignore Pain",97462:"Rallying Cry",23920:"Spell Reflection",12975:"Last Stand",642:"Divine Shield",633:"Lay on Hands",31850:"Ardent Defender",184662:"Shield of Vengeance",498:"Divine Protection",86659:"Guardian of Ancient Kings",204018:"Blessing of Spellwarding",6940:"Blessing of Sacrifice",109304:"Exhilaration",186265:"Aspect of the Turtle",264735:"Survival of the Fittest",5277:"Evasion",31224:"Cloak of Shadows",185311:"Crimson Vial",1966:"Feint",47585:"Dispersion",19236:"Desperate Prayer",586:"Fade",33206:"Pain Suppression",47788:"Guardian Spirit",62618:"Power Word: Barrier",48792:"Icebound Fortitude",48707:"Anti-Magic Shell",49039:"Lichborne",55233:"Vampiric Blood",48743:"Death Pact",51052:"Anti-Magic Zone",108271:"Astral Shift",98008:"Spirit Link Totem",198838:"Earthen Wall Totem",45438:"Ice Block",342246:"Alter Time",235450:"Prismatic Barrier",11426:"Ice Barrier",235313:"Blazing Barrier",104773:"Unending Resolve",108416:"Dark Pact",6789:"Mortal Coil",115203:"Fortifying Brew",122783:"Diffuse Magic",122278:"Dampen Harm",131523:"Zen Meditation",116849:"Life Cocoon",122470:"Touch of Karma",22812:"Barkskin",61336:"Survival Instincts",22842:"Frenzied Regeneration",108238:"Renewal",102342:"Ironbark",198589:"Blur",196555:"Netherwalk",196718:"Darkness",187827:"Metamorphosis",363916:"Obsidian Scales",374348:"Renewing Blaze",374227:"Zephyr",370665:"Rescue",115310:"Revival",51052:"Anti-Magic Zone",198303:"Fortitude of the Bear",207399:"Ancestral Protection Totem",363534:"Rewind",6940:"Blessing of Sacrifice"};
+const DEFS={
+  // Warrior
+  871:"Shield Wall",118038:"Die by the Sword",190456:"Ignore Pain",97462:"Rallying Cry",23920:"Spell Reflection",
+  // Last Stand (12975) is PASSIVE in Midnight 12.0 -- auto-triggers with Shield Wall, cant track it
+  // Paladin
+  642:"Divine Shield",633:"Lay on Hands",31850:"Ardent Defender",184662:"Shield of Vengeance",
+  498:"Divine Protection",86659:"Guardian of Ancient Kings",204018:"Blessing of Spellwarding",6940:"Blessing of Sacrifice",
+  1022:"Blessing of Protection",
+  // Hunter
+  109304:"Exhilaration",186265:"Aspect of the Turtle",264735:"Survival of the Fittest",
+  // Rogue
+  5277:"Evasion",31224:"Cloak of Shadows",185311:"Crimson Vial",1966:"Feint",
+  // Priest
+  47585:"Dispersion",19236:"Desperate Prayer",586:"Fade",33206:"Pain Suppression",47788:"Guardian Spirit",62618:"Power Word: Barrier",
+  // Death Knight
+  48792:"Icebound Fortitude",48707:"Anti-Magic Shell",49039:"Lichborne",55233:"Vampiric Blood",48743:"Death Pact",51052:"Anti-Magic Zone",
+  // Shaman
+  108271:"Astral Shift",98008:"Spirit Link Totem",198838:"Earthen Wall Totem",207399:"Ancestral Protection Totem",
+  // Mage -- added Ice Cold (414659) as choice node option alongside Ice Block
+  45438:"Ice Block",414659:"Ice Cold",342246:"Alter Time",235450:"Prismatic Barrier",11426:"Ice Barrier",235313:"Blazing Barrier",
+  // Warlock
+  104773:"Unending Resolve",108416:"Dark Pact",6789:"Mortal Coil",
+  // Monk -- Diffuse Magic (122783) merged into Fortifying Brew in Midnight, Dampen Harm (122278) is passive for BrM now
+  // both removed from active tracking. stopped crying about it.
+  115203:"Fortifying Brew",243435:"Fortifying Brew",131523:"Zen Meditation",116849:"Life Cocoon",122470:"Touch of Karma",
+  // Druid
+  22812:"Barkskin",61336:"Survival Instincts",22842:"Frenzied Regeneration",108238:"Renewal",102342:"Ironbark",
+  // Demon Hunter -- Netherwalk (196555) REMOVED in Midnight 12.0, replaced by 2nd Blur charge
+  198589:"Blur",196718:"Darkness",187827:"Metamorphosis",204021:"Fiery Brand",203720:"Demon Spikes",
+  // Evoker
+  363916:"Obsidian Scales",374348:"Renewing Blaze",374227:"Zephyr",370665:"Rescue",357170:"Time Dilation",
+  // Healer CDs
+  115310:"Revival",198303:"Fortitude of the Bear",363534:"Rewind",31821:"Aura Mastery"
+};
 const OFFS={
   // warriors -- if they miss recklessness im going to lose my mind
-  1719:"Recklessness",107574:"Avatar",262161:"Warbreaker",
-  // Paladin
-  31884:"Avenging Wrath",216331:"Avenging Crusader",105809:"Holy Avenger",
-  // Hunter
-  193530:"Aspect of the Wild",19574:"Bestial Wrath",266779:"Coordinated Assault",288613:"Trueshot",
+  1719:"Recklessness",107574:"Avatar",262161:"Warbreaker",227847:"Bladestorm",228920:"Ravager",
+  // Paladin -- Crusade (231895) is passive now in Midnight, no longer a separate cast, dont bother tracking it
+  31884:"Avenging Wrath",216331:"Avenging Crusader",105809:"Holy Avenger",385438:"Sentinel",
+  // Hunter -- Coordinated Assault removed in Midnight 12.0 (merged into Takedown)
+  // Call of the Wild also removed, BM is all short-CDs now
+  193530:"Aspect of the Wild",19574:"Bestial Wrath",288613:"Trueshot",
+  1251592:"Flamefang Pitch",
   // rogues -- outlaw especially bad for forgetting blade flurry on cleave
   13750:"Adrenaline Rush",13877:"Blade Flurry",51690:"Killing Spree",
-  121471:"Shadow Blades",360194:"Deathmark",
-  // Priest
-  228260:"Void Eruption",391109:"Dark Ascension",
-  // Death Knight
+  121471:"Shadow Blades",360194:"Deathmark",385627:"Kingsbane",
+  // Priest -- Dark Ascension removed in 12.0, Void Eruption was reworked INTO Voidform
+  // Voidform (194249) is now the actual cast button for Shadow -- wasted an hour figuring that out
+  194249:"Voidform",
+  // Death Knight -- Empower Rune Weapon is Frost ONLY now (moved from class tree in 11.0)
+  // Unholy lost it, stop flagging Unholy for not pressing it
   47568:"Empower Rune Weapon",42650:"Army of the Dead",51271:"Pillar of Frost",
+  152279:"Breath of Sindragosa",49206:"Summon Gargoyle",63560:"Dark Transformation",
   // Shaman -- Enhancement rework: Feral Spirit is now passive (triggered by Doom Winds/Sundering)
   // Doom Winds = main 1min CD, Surging Totem = 1min CD paired with it
-  // Ascendance replaces Doom Winds as a choice node on some builds
-  114050:"Ascendance",384352:"Doom Winds",444995:"Surging Totem",191634:"Stormkeeper",
-  // Mage -- Icy Veins removed in Midnight, Ray of Frost (205021) is now the frost major CD
-  190319:"Combustion",205021:"Ray of Frost",365350:"Arcane Surge",
+  // Ascendance is a choice node with Deeply Rooted Elements -- either is fine
+  114050:"Ascendance",114051:"Ascendance",384352:"Doom Winds",444995:"Surging Totem",191634:"Stormkeeper",
+  198067:"Fire Elemental",192249:"Storm Elemental",
+  // Mage -- Icy Veins REMOVED in Midnight 12.0, Ray of Frost is the frost major CD now
+  // Combustion CD halved to 60s in 12.0 btw -- fun change, good for everyone except their healers
+  190319:"Combustion",205021:"Ray of Frost",365350:"Arcane Surge",84714:"Frozen Orb",
   // Warlock
   205180:"Summon Darkglare",265187:"Summon Demonic Tyrant",1122:"Summon Infernal",
-  // Monk
-  137639:"Storm, Earth, and Fire",152173:"Serenity",
-  // Druid
+  113860:"Dark Soul: Misery",113858:"Dark Soul: Instability",
+  // Monk -- Storm Earth and Fire REMOVED in 12.0, Serenity removed in 11.0, Zenith is the new one
+  // went to lose my mind when I saw SEF was gone. Zenith has 2 charges on a 60-90s recharge
+  1249625:"Zenith",123904:"Invoke Xuen, the White Tiger",
+  // Druid -- Convoke (391528) is the correct Dragonflight/Midnight spell ID
+  // 391786 and 323764 were old/wrong IDs that snuck in here somehow and cost me 45 minutes
   194223:"Celestial Alignment",102560:"Incarnation: Chosen of Elune",
-  106951:"Berserk",102543:"Incarnation: Avatar of Ashamane",391786:"Convoke the Spirits",323764:"Convoke the Spirits",
-  // demon hunter -- they have meta, thats it
-  162264:"Metamorphosis",
+  106951:"Berserk",102543:"Incarnation: Avatar of Ashamane",
+  102558:"Incarnation: Guardian of Ursoc",391528:"Convoke the Spirits",
+  // Demon Hunter -- Havoc Meta is 191427, Vengeance Meta is 187827
+  // 162264 was the wrong ID we had before, removed it
+  191427:"Metamorphosis",
   // Evoker
-  375087:"Dragonrage",403631:"Breath of Eons"
+  375087:"Dragonrage",403631:"Breath of Eons",395152:"Ebon Might",357210:"Deep Breath"
 };
 
 
@@ -939,71 +984,106 @@ const CC_IDS={
 // because blizz apparently cant decide. added both variants. stopped questioning it.
 const SPEC_OFFS={
   // warriors -- if they miss recklessness im going to lose my mind
-  // arms needs both Avatar AND Warbreaker on cooldown, no excuses
-  "Warrior|Arms":["Avatar","Warbreaker"],
+  // Arms: Avatar + Warbreaker (or Bladestorm if spec'd -- but Warbreaker is basically standard)
+  // Fury: Recklessness. just Recklessness. how do you forget Recklessness.
+  // Protection: Avatar baseline, Ravager on some builds as choice node
+  "Warrior|Arms":["Avatar",["Warbreaker","Bladestorm"]],
   "Warrior|Fury":["Recklessness"],
   "Warrior|Protection":["Avatar"],
-  // Paladin -- ret uses AW, holy uses AC, prot uses AW
-  // Ret Pali: Avenging Wrath is default, but Avenging Crusader is a talent choice that replaces it
-  "Paladin|Retribution":["Avenging Wrath","Avenging Crusader"],
-  // Holy Pali: Avenging Crusader replaces Avenging Wrath
-  "Paladin|Holy":["Avenging Crusader"],
-  "Paladin|Protection":["Avenging Wrath"],
-  // hunters -- BM needs both BW and AotW every fight, no reason to ever hold these
-  "Hunter|Beast Mastery":["Bestial Wrath","Aspect of the Wild"],
+
+  // Paladin
+  // Ret: AW is baseline, Crusade is now PASSIVE (not castable) in 12.0 -- no longer trackable
+  // Holy: AW and Avenging Crusader are a choice node (pick one), flag if neither used
+  // Prot: AW vs Sentinel are a choice node
+  "Paladin|Retribution":["Avenging Wrath"],
+  "Paladin|Holy":[["Avenging Wrath","Avenging Crusader"]],
+  "Paladin|Protection":[["Avenging Wrath","Sentinel"]],
+
+  // Hunter
+  // BM: Bestial Wrath is now a 30s CD, always expected. AotW if still in game. No more 2min CD.
+  // Survival: Coordinated Assault REMOVED in 12.0. Flamefang Pitch is the new trackable CD.
+  "Hunter|Beast Mastery":["Bestial Wrath"],
   "Hunter|Marksmanship":["Trueshot"],
-  "Hunter|Survival":["Coordinated Assault"],
+  "Hunter|Survival":["Flamefang Pitch"],
+
   // rogues -- outlaw especially bad for forgetting blade flurry on cleave
   "Rogue|Outlaw":["Adrenaline Rush","Blade Flurry"],
-  "Rogue|Assassination":["Deathmark"],
+  "Rogue|Assassination":["Deathmark","Kingsbane"],
   "Rogue|Subtlety":["Shadow Blades"],
-  // priest -- only shadow has trackable DPS CDs, holy/disc get a pass
-  "Priest|Shadow":["Void Eruption","Dark Ascension"],
+
+  // Priest -- Dark Ascension removed in 12.0, Void Eruption reworked into Voidform
+  // Shadow now just has Voidform. holy/disc have no DPS CDs to track
+  "Priest|Shadow":["Voidform"],
   "Priest|Holy":null,
   "Priest|Discipline":null,
-  // death knight -- "Frost" alone is ambiguous (thanks WCL), hence the class prefix
-  // tracking both "Death Knight" and "DeathKnight" because WCL cant make up its mind
-  "Death Knight|Unholy":["Army of the Dead","Empower Rune Weapon"],
+
+  // Death Knight
+  // IMPORTANT: Empower Rune Weapon is FROST ONLY in 12.0 -- removed from class tree
+  // been flagging Unholy players for not pressing it. thats on us. fixed now.
+  // Unholy: Dark Transformation (always), Army of the Dead (always), Gargoyle OR Raise Abomination (choice)
+  // Frost: Pillar of Frost (always), Empower Rune Weapon (always), Breath of Sindragosa OR Frostwyrm's Fury (choice)
+  // tracking both "Death Knight" and "DeathKnight" because WCL literally cant decide. both variants appear.
+  "Death Knight|Unholy":["Dark Transformation","Army of the Dead"],
   "Death Knight|Frost":["Pillar of Frost","Empower Rune Weapon"],
   "Death Knight|Blood":null,
-  "DeathKnight|Unholy":["Army of the Dead","Empower Rune Weapon"],
+  "DeathKnight|Unholy":["Dark Transformation","Army of the Dead"],
   "DeathKnight|Frost":["Pillar of Frost","Empower Rune Weapon"],
   "DeathKnight|Blood":null,
-  // shaman -- Enhancement rework in Midnight consolidated a bunch of CDs
-  // Feral Spirit is passive now, Surging Totem is the always-expected 1min CD
-  // Doom Winds vs Ascendance is a choice node -- either is fine, flag only if they pressed neither
+
+  // Shaman
+  // Enhancement: Feral Spirit is passive now (triggers from Doom Winds/Sundering), dont track it
+  // Surging Totem + Doom Winds are the burst pair. Ascendance is a choice node with DRE.
+  // Elemental: Stormkeeper every fight. Fire vs Storm Ele is a choice node. Ascendance is a choice node.
   "Shaman|Enhancement":["Surging Totem",["Doom Winds","Ascendance"]],
-  "Shaman|Elemental":["Stormkeeper","Ascendance"],
+  "Shaman|Elemental":["Stormkeeper",[["Fire Elemental","Storm Elemental"]],["Ascendance"]],
   "Shaman|Restoration":null,
-  // mage -- Frost is still ambiguous with DK so always use class prefix
-  // Icy Veins got removed in Midnight patch 12.0, Ray of Frost is the major CD now
+
+  // Mage
+  // Fire: Combustion is now 60s CD in Midnight (was 120s). still track it.
+  // Frost: Icy Veins REMOVED in 12.0. Ray of Frost is the new major CD. wasted so much time on this.
   "Mage|Fire":["Combustion"],
   "Mage|Frost":["Ray of Frost"],
   "Mage|Arcane":["Arcane Surge"],
+
   // Warlock
   "Warlock|Affliction":["Summon Darkglare"],
   "Warlock|Demonology":["Summon Demonic Tyrant"],
   "Warlock|Destruction":["Summon Infernal"],
-  // monk -- windwalker only. mistweaver and brewmaster dont have trackable DPS CDs, hence null
-  "Monk|Windwalker":["Storm, Earth, and Fire","Serenity"],
+
+  // Monk
+  // Windwalker: Storm Earth and Fire GONE, Serenity GONE, Zenith is the replacement in 12.0
+  // Xuen moved to hero talent tree (Conduit of the Celestials) -- only track if they have that hero spec
+  "Monk|Windwalker":["Zenith"],
   "Monk|Mistweaver":null,
   "Monk|Brewmaster":null,
-  // druid -- balance has CA/Incarnation as separate options so both are tracked
-  // feral: Berserk is always expected. Incarnation and Convoke are a choice node
-  // (renamed from King of the Jungle in Dragonflight btw -- was wrong for two expansions. sorry.)
-  "Druid|Balance":["Celestial Alignment","Incarnation: Chosen of Elune"],
+
+  // Druid
+  // Balance: CA and Incarnation: Chosen of Elune are CHOICE NODES -- expect exactly one
+  // also Convoke is a choice node with Incarnation -- if they have neither CA-line nor Convoke thats a problem
+  // Feral: Berserk always. Incarnation and Convoke are a choice node (pick one).
+  // Guardian: Berserk always. Incarnation and Convoke are a choice node.
+  "Druid|Balance":[["Celestial Alignment","Incarnation: Chosen of Elune"]],
   "Druid|Feral":["Berserk",["Incarnation: Avatar of Ashamane","Convoke the Spirits"]],
   "Druid|Restoration":null,
-  "Druid|Guardian":null,
-  // demon hunter -- havoc has Meta, thats it. vengeance is a tank so no DPS CD to track
+  "Druid|Guardian":["Berserk"],
+
+  // Demon Hunter
+  // Havoc: Metamorphosis is the primary CD, Essence Break is short enough it wont miss
+  // Devourer is the new 12.0 spec -- void meta is passive/resource based, hard to track meaningfully
+  // tracking both naming variants because WCL is inconsistent again, obviously
   "DemonHunter|Havoc":["Metamorphosis"],
   "Demon Hunter|Havoc":["Metamorphosis"],
   "DemonHunter|Vengeance":null,
   "Demon Hunter|Vengeance":null,
-  // evoker -- devastation uses Dragonrage, aug uses Breath of Eons (the whole raid wants it on CD)
-  // preservation heals so no DPS CD to track
+  "DemonHunter|Devourer":null,
+  "Demon Hunter|Devourer":null,
+
+  // Evoker
+  // Devastation: Dragonrage every fight
+  // Augmentation: Breath of Eons + Ebon Might (if either goes unused the whole raid feels it)
+  // Preservation: healer, no DPS CDs to track
   "Evoker|Devastation":["Dragonrage"],
-  "Evoker|Augmentation":["Breath of Eons"],
+  "Evoker|Augmentation":["Breath of Eons","Ebon Might"],
   "Evoker|Preservation":null
 };
 // warlock cookies. yes there are 7 IDs. dont ask.
