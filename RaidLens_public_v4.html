@@ -323,14 +323,9 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
 .connect-cta:hover{transform:translateY(-1px);filter:brightness(1.04)}
 .hero-aurora{position:absolute;inset:auto -120px -120px auto;width:420px;height:420px;background:radial-gradient(circle,#4a9eff22 0%,#a330c91a 35%,transparent 72%);filter:blur(12px);pointer-events:none}
 .hero-gridline{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(180deg,rgba(0,0,0,.45),transparent 82%);pointer-events:none;opacity:.18}
-.hero-crest{position:absolute;top:22px;right:17%;width:148px;height:168px;pointer-events:none;opacity:.95;filter:drop-shadow(0 16px 30px #00000040)}
-.hero-crest::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#233042,#101721);border:1px solid #55667a;clip-path:polygon(50% 0%,88% 12%,100% 38%,91% 78%,50% 100%,9% 78%,0% 38%,12% 12%);box-shadow:inset 0 1px 0 #ffffff18,inset 0 -18px 30px #00000045}
-.hero-crest::after{content:"";position:absolute;inset:10px;background:linear-gradient(180deg,#142131,#0c141d);border:1px solid #7e6540;clip-path:polygon(50% 0%,85% 12%,96% 38%,88% 76%,50% 96%,12% 76%,4% 38%,15% 12%)}
-.hero-crest-sigil{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:46px;color:#ffd700;text-shadow:0 0 18px #ffd70055;z-index:1}
-.hero-crest-runes{position:absolute;left:50%;top:50%;width:102px;height:102px;transform:translate(-50%,-50%);border:1px solid #ffffff12;border-radius:50%;z-index:1}
-.hero-crest-runes::before,.hero-crest-runes::after{content:"";position:absolute;background:#79c0ff;border-radius:999px;box-shadow:0 0 14px #79c0ff80}
-.hero-crest-runes::before{width:8px;height:8px;top:16px;left:16px}
-.hero-crest-runes::after{width:7px;height:7px;right:18px;bottom:18px}
+.hero-gnome{position:absolute;top:32px;right:18.8%;width:202px;height:264px;pointer-events:none;overflow:hidden;border-radius:20px;border:1px solid #55667a;box-shadow:0 16px 30px #00000040,inset 0 1px 0 #ffffff18}
+.hero-gnome::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,16,24,.06),rgba(9,16,24,.2))}
+.hero-gnome img{display:block;width:100%;height:100%;object-fit:cover;object-position:30% center;filter:saturate(1.02) brightness(.98)}
 .hero-title-wrap{display:flex;flex-direction:column;gap:8px}
 .hero-brand{display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap}
 .hero-brand-badge{display:inline-flex;align-items:center;justify-content:center;min-width:70px;padding:7px 12px;border-radius:999px;background:linear-gradient(180deg,#201a0b,#141006);border:1px solid #7f6123;color:#ffd700;font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;box-shadow:0 12px 24px #0000002a,inset 0 1px 0 #fff1}
@@ -378,7 +373,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
 .mplus-boss-summary-copy{font-size:12px;color:#a7b5c4;max-width:520px;line-height:1.7}
 @media(max-width:600px){
   .hero-preview{grid-template-columns:1fr}
-  .hero-crest{display:none}
+  .hero-gnome{display:none}
 }
 .type-btn,.copy-mode-btn,.agent-btn,.sim-btn,.armory-btn,.rio-btn,.v5-chip{box-shadow:inset 0 1px 0 #ffffff08}
 .copy-btn{box-shadow:0 10px 28px #00000025}
@@ -396,9 +391,8 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
 <div class="hero">
   <div class="hero-gridline"></div>
   <div class="hero-aurora"></div>
-  <div class="hero-crest">
-    <div class="hero-crest-runes"></div>
-    <div class="hero-crest-sigil">✦</div>
+  <div class="hero-gnome" aria-hidden="true">
+    <img src="hero-gnome-research.png" alt="">
   </div>
   <div class="hero-top">
     <div class="hero-copy">
