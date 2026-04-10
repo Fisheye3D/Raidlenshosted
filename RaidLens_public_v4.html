@@ -13,6 +13,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RaidLens v4</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
+<script>
+  window.whTooltips = { colorLinks: false, iconizeLinks: false, renameLinks: false };
+</script>
+<script async src="https://wow.zamimg.com/widgets/power.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;padding:24px}
@@ -148,7 +152,7 @@ tr:hover td{background:#161b22}
 .spell-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
 .spell-item{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:5px 10px;font-size:12px}
 .spell-item span{color:#ffd700;font-weight:700;margin-left:4px}
-.spell-chip{background:#121923;border:1px solid #2c3745;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:600;color:#c9d1d9;cursor:pointer;display:inline-flex;align-items:center;gap:4px;line-height:1.2}
+.spell-chip{background:#121923;border:1px solid #2c3745;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:600;color:#c9d1d9;cursor:pointer;display:inline-flex;align-items:center;gap:4px;line-height:1.2;text-decoration:none}
 .spell-chip:hover{border-color:#8b949e;background:#1b2230}
 .spell-chip span{font-weight:700}
 .spell-chip.danger{border-color:#5a2323;color:#f87171;background:#231416}
@@ -242,6 +246,8 @@ body>*{position:relative;z-index:1}
   .hero-top{gap:16px}
   .hero-side{width:100%}
   .hero-features{grid-template-columns:1fr 1fr}
+  .hero-preview{grid-template-columns:1fr}
+  .hero-orbit{display:none}
   .rtabs{gap:3px}
   .rtab{padding:5px 9px;font-size:11px}
   .roster-grid{grid-template-columns:1fr}
@@ -315,6 +321,54 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
 .connect-badge{background:#151f2b;border:1px solid #324355;border-radius:999px;padding:4px 9px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8ea2b8}
 .connect-cta{background:linear-gradient(135deg,#f97316,#ff9a3d);border:none;color:#fff;padding:13px 28px;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 16px 34px #f9731635}
 .connect-cta:hover{transform:translateY(-1px);filter:brightness(1.04)}
+.hero-aurora{position:absolute;inset:auto -120px -120px auto;width:420px;height:420px;background:radial-gradient(circle,#4a9eff22 0%,#a330c91a 35%,transparent 72%);filter:blur(12px);pointer-events:none}
+.hero-gridline{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(180deg,rgba(0,0,0,.45),transparent 82%);pointer-events:none;opacity:.18}
+.hero-orbit{position:absolute;top:22px;right:19%;width:140px;height:140px;border:1px solid #ffffff10;border-radius:50%;box-shadow:0 0 0 1px #ffffff05 inset;pointer-events:none;opacity:.82}
+.hero-orbit::before,.hero-orbit::after{content:"";position:absolute;border-radius:50%}
+.hero-orbit::before{width:10px;height:10px;background:#ffd700;top:16px;left:16px;box-shadow:0 0 18px #ffd70090;animation:glow 3.2s ease-in-out infinite}
+.hero-orbit::after{width:8px;height:8px;background:#79c0ff;right:22px;bottom:24px;box-shadow:0 0 16px #79c0ff80;animation:glow 2.6s ease-in-out infinite reverse}
+.hero-preview{display:grid;grid-template-columns:1.15fr .85fr;gap:12px;margin-top:18px}
+.hero-preview-card{background:linear-gradient(180deg,rgba(8,14,22,.72),rgba(12,19,28,.92));border:1px solid #293645;border-radius:16px;padding:14px;box-shadow:0 18px 44px #0000002a,inset 0 1px 0 #ffffff08}
+.hero-preview-card.primary{position:relative;overflow:hidden}
+.hero-preview-card.primary::after{content:"";position:absolute;inset:auto -20px -32px auto;width:180px;height:180px;background:radial-gradient(circle,#f851491a 0%,transparent 72%);pointer-events:none}
+.hero-preview-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.hero-preview-label{font-size:10px;color:#8ea2b8;text-transform:uppercase;letter-spacing:.12em}
+.hero-preview-title{font-size:14px;font-weight:800;color:#f4f7fb}
+.hero-preview-pill{background:#111923;border:1px solid #314152;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:700;color:#ffd700}
+.hero-preview-main{background:linear-gradient(180deg,#39151b,#271117);border:1px solid #7c2933;border-radius:12px;padding:14px;margin-bottom:10px}
+.hero-preview-main strong{display:block;font-size:26px;line-height:1;color:#ff7369;margin-bottom:6px}
+.hero-preview-main span{font-size:13px;color:#ffd2cd;font-weight:700}
+.hero-preview-note{font-size:11px;color:#94a7ba;line-height:1.65}
+.hero-mini-stack{display:grid;gap:10px}
+.hero-mini{background:#101924;border:1px solid #283847;border-radius:12px;padding:12px}
+.hero-mini.good{background:linear-gradient(180deg,#102218,#0d1a12);border-color:#2f6b46}
+.hero-mini.warn{background:linear-gradient(180deg,#211807,#151006);border-color:#715717}
+.hero-mini-k{font-size:10px;color:#8ea2b8;text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px}
+.hero-mini-v{font-size:20px;font-weight:800;color:#f4f7fb;margin-bottom:4px}
+.hero-mini-sub{font-size:11px;color:#8ea2b8;line-height:1.5}
+.mplus-boss-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:12px}
+.mplus-boss-card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid #283847;border-radius:12px;padding:12px 13px;box-shadow:inset 0 1px 0 #ffffff08}
+.mplus-boss-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.mplus-boss-icon{width:34px;height:34px;border-radius:8px;object-fit:cover;background:#111923;border:1px solid #314152}
+.mplus-boss-title{font-size:13px;font-weight:700;color:#f4f7fb}
+.mplus-boss-meta{font-size:11px;color:#8ea2b8}
+.mplus-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.mplus-mini-box{background:#111923;border:1px solid #233140;border-radius:8px;padding:7px 8px}
+.mplus-mini-k{font-size:9px;color:#76889b;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.mplus-mini-v{font-size:13px;font-weight:700;color:#f4f7fb}
+.mplus-actions{display:flex;gap:8px;flex-wrap:wrap}
+.mplus-action{background:#0d1f33;border:1px solid #355170;color:#8fd0ff;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;text-decoration:none}
+.mplus-action:hover{border-color:#79c0ff;background:#13263d}
+.mplus-action.gold{background:#201a0b;border-color:#6b5513;color:#ffd700}
+.mplus-boss-status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 9px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.mplus-boss-status.kill{background:#102218;border:1px solid #2f6b46;color:#5fdd8e}
+.mplus-boss-status.wipe{background:#231416;border:1px solid #6a2830;color:#ff8c83}
+.mplus-boss-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px}
+.mplus-boss-summary-copy{font-size:12px;color:#a7b5c4;max-width:520px;line-height:1.7}
+@media(max-width:600px){
+  .hero-preview{grid-template-columns:1fr}
+  .hero-orbit{display:none}
+}
 .type-btn,.copy-mode-btn,.agent-btn,.sim-btn,.armory-btn,.rio-btn,.v5-chip{box-shadow:inset 0 1px 0 #ffffff08}
 .copy-btn{box-shadow:0 10px 28px #00000025}
 .bw,.overheal-bar,.timeline-track{background:#182331}
@@ -329,6 +383,9 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
 <body>
 
 <div class="hero">
+  <div class="hero-gridline"></div>
+  <div class="hero-aurora"></div>
+  <div class="hero-orbit"></div>
   <div class="hero-top">
     <div class="hero-copy">
       <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
@@ -380,6 +437,34 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
     <a href="https://github.com/Fisheye3D/Raidlens/blob/main/README.md" target="_blank" style="background:#0d2a1a;border:1px solid #3fb950;color:#3fb950;font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:6px">📖 Full Guide &amp; FAQ — all info here ↗</a>
     <a href="https://github.com/Fisheye3D/Raidlens" target="_blank" style="color:#8b949e;font-size:11px;text-decoration:none">GitHub ↗</a>
     <span style="color:#6e7681;font-size:11px">v5</span>
+  </div>
+  <div class="hero-preview">
+    <div class="hero-preview-card primary">
+      <div class="hero-preview-head">
+        <div>
+          <div class="hero-preview-label">What You Get Fast</div>
+          <div class="hero-preview-title">Immediate wipe diagnosis</div>
+        </div>
+        <span class="hero-preview-pill">Raid Verdict</span>
+      </div>
+      <div class="hero-preview-main">
+        <strong>34.2%</strong>
+        <span>Primary wipe cause: Shadowclaw Slam</span>
+      </div>
+      <div class="hero-preview-note">Open one pull, see what killed the raid, who missed cooldowns, and which abilities deserve a click for deeper context.</div>
+    </div>
+    <div class="hero-mini-stack">
+      <div class="hero-mini good">
+        <div class="hero-mini-k">Mythic+ Ready</div>
+        <div class="hero-mini-v">Overall + Boss by Boss</div>
+        <div class="hero-mini-sub">Full key summary first, then jump straight into any boss attempt that needs a closer look.</div>
+      </div>
+      <div class="hero-mini warn">
+        <div class="hero-mini-k">Clickable Context</div>
+        <div class="hero-mini-v">Spell popups</div>
+        <div class="hero-mini-sub">Deaths, offensives, damage taken, DPS and HPS breakdowns all surface real spell context through Wowhead tooltips.</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1745,6 +1830,21 @@ function switchRTab(n,el){
   activateRTab(n,el,true);
 }
 
+function selectFightById(id,autoAnalyze){
+  const chosen=allFights.find(f=>f.id===id);
+  if(!chosen)return;
+  fightId=id;
+  document.getElementById("analyzeBtn").disabled=false;
+  document.querySelectorAll(".fi,.mplus-dung-hdr").forEach(x=>{x.classList.remove("selected");x.style.borderColor="";});
+  const selectedEl=document.querySelector(`[data-fight-id="${id}"]`);
+  if(selectedEl){
+    selectedEl.classList.add("selected");
+    if(selectedEl.classList.contains("mplus-dung-hdr"))selectedEl.style.borderColor="#ffd700";
+    selectedEl.scrollIntoView({block:"nearest",behavior:"smooth"});
+  }
+  if(autoAnalyze)analyze();
+}
+
 // my logs grid -- pulls from localStorage, shows last 20 reports
 function renderMyLogs(){
   const saved=getSaved(),grid=document.getElementById("myLogsGrid"),empty=document.getElementById("myLogsEmpty");
@@ -1880,8 +1980,9 @@ async function searchGuild(){
       const runDur=fdur(dFight.endTime-dFight.startTime);
       const hdr=document.createElement("div");
       hdr.style="background:#0d1f33;border:1px solid #1f6feb;border-radius:8px;padding:10px 14px;margin-bottom:6px;cursor:pointer";
+      hdr.dataset.fightId=dFight.id;
       hdr.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-size:14px;font-weight:700;color:#ffd700">+${dFight.keystoneLevel}</span><span style="font-size:13px;font-weight:600;color:#c9d1d9">${dFight.name}</span><span style="color:#8b949e;font-size:12px">${runDur}</span>${timerHtml}<span style="margin-left:auto;display:flex;gap:4px;flex-wrap:wrap">${affixes}</span></div><div style="font-size:10px;color:#6e7681;margin-top:4px">Click to analyze full run · ${bossFights.length} boss${bossFights.length!==1?"es":""} below</div>`;
-      hdr.onclick=()=>{document.querySelectorAll(".fi,.mplus-dung-hdr").forEach(x=>{x.classList.remove("selected");x.style.borderColor="";});hdr.style.borderColor="#ffd700";fightId=dFight.id;document.getElementById("analyzeBtn").disabled=false;};
+      hdr.onclick=()=>selectFightById(dFight.id,false);
       hdr.classList.add("mplus-dung-hdr");
       list.appendChild(hdr);
       const bossWrap=document.createElement("div");bossWrap.style="margin-left:16px;margin-bottom:12px;display:flex;flex-direction:column;gap:4px";
@@ -1890,9 +1991,10 @@ async function searchGuild(){
         bpc[f.name]=(bpc[f.name]||0)+1;
         const d=fdur(f.endTime-f.startTime),pct=(!f.kill&&f.bossPercentage!=null)?` · ${f.bossPercentage.toFixed(1)}%`:"";
         const div=document.createElement("div");div.className="fi";
+        div.dataset.fightId=f.id;
         const bossIcon=f.encounterID?`<img src="https://assets.rpglogs.com/img/warcraft/bosses/${f.encounterID}-icon.jpg" onerror="this.style.display='none'" style="width:28px;height:28px;border-radius:4px;object-fit:cover;flex-shrink:0;margin-right:6px" alt="">`:"";
         div.innerHTML=`${bossIcon}<span class="kb ${f.kill?"kill":"wipe"}">${f.kill?"Kill":"Wipe"}</span><span class="fi-name">${f.name}</span><span class="fi-pull">Pull ${bpc[f.name]}${pct}</span><span class="fi-dur">${d}</span><a href="https://www.warcraftlogs.com/reports/${reportCode}#fight=${f.id}" target="_blank" onclick="event.stopPropagation()" style="margin-left:8px;background:#0d1117;border:1px solid #30363d;color:#6e7681;padding:4px 10px;border-radius:4px;font-size:11px;text-decoration:none;flex-shrink:0" title="Open in WarcraftLogs">WCL ↗</a>`;
-        div.onclick=()=>{document.querySelectorAll(".fi,.mplus-dung-hdr").forEach(x=>{x.classList.remove("selected");x.style.borderColor="";});div.classList.add("selected");fightId=f.id;document.getElementById("analyzeBtn").disabled=false;};
+        div.onclick=()=>selectFightById(f.id,false);
         bossWrap.appendChild(div);
       });
       list.appendChild(bossWrap);
@@ -1901,9 +2003,10 @@ async function searchGuild(){
     const coveredIds=new Set(dungeonFights.flatMap(dFight=>allFights.filter(f=>(!f.keystoneLevel||f.keystoneLevel===0)&&f.startTime>=dFight.startTime&&f.endTime<=dFight.endTime+120000).map(f=>f.id)).concat(dungeonFights.map(f=>f.id)));
     allFights.filter(f=>!coveredIds.has(f.id)).forEach(f=>{
       const div=document.createElement("div");div.className="fi";
+      div.dataset.fightId=f.id;
       const d=fdur(f.endTime-f.startTime);
       div.innerHTML=`<span class="kb ${f.kill?"kill":"wipe"}">${f.kill?"Kill":"Wipe"}</span><span class="fi-name">${f.name}</span><span class="fi-dur">${d}</span>`;
-      div.onclick=()=>{document.querySelectorAll(".fi,.mplus-dung-hdr").forEach(x=>{x.classList.remove("selected");x.style.borderColor="";});div.classList.add("selected");fightId=f.id;document.getElementById("analyzeBtn").disabled=false;};
+      div.onclick=()=>selectFightById(f.id,false);
       list.appendChild(div);
     });
   }else{
@@ -1912,11 +2015,12 @@ async function searchGuild(){
     mapped.forEach(f=>{
       const d=fdur(f.endTime-f.startTime),pct=(!f.kill&&f.bossPercentage!=null)?` · ${f.bossPercentage.toFixed(1)}%`:"";
       const div=document.createElement("div");div.className="fi";
+      div.dataset.fightId=f.id;
       // boss icon from rpglogs CDN -- uses WCL encounter IDs, NOT JournalEncounterID
       // zamimg uses JournalEncounterID which is a completely different number -- wasted an hour on that
       const bossIcon=f.encounterID?`<img src="https://assets.rpglogs.com/img/warcraft/bosses/${f.encounterID}-icon.jpg" onerror="this.style.display='none'" style="width:32px;height:32px;border-radius:4px;object-fit:cover;flex-shrink:0;margin-right:6px" alt="">`:"";
       div.innerHTML=`${bossIcon}<span class="kb ${f.kill?"kill":"wipe"}">${f.kill?"Kill":"Wipe"}</span><span class="fi-name">${f.name}</span><span class="fi-pull">Pull ${f.pull}${pct}</span><span class="fi-dur">${d}</span><a href="https://www.warcraftlogs.com/reports/${reportCode}#fight=${f.id}" target="_blank" onclick="event.stopPropagation()" style="margin-left:8px;background:#0d1f33;border:1px solid #4a9eff;color:#4a9eff;padding:5px 12px;border-radius:5px;font-size:12px;font-weight:700;text-decoration:none;flex-shrink:0;white-space:nowrap;box-shadow:0 0 6px #4a9eff30" title="Open in WarcraftLogs">📊 WCL ↗</a>`;
-      div.onclick=()=>{document.querySelectorAll(".fi").forEach(d=>d.classList.remove("selected"));div.classList.add("selected");fightId=f.id;document.getElementById("analyzeBtn").disabled=false;};
+      div.onclick=()=>selectFightById(f.id,false);
       list.appendChild(div);
     });
   }
@@ -1955,6 +2059,18 @@ function findAbilityIdByName(name){
 }
 
 function wowheadSpellUrl(name,id){return id?`https://www.wowhead.com/spell=${id}`:`https://www.wowhead.com/search?q=${encodeURIComponent(name)}`;}
+function openWowheadTab(name,id){
+  window.open(wowheadSpellUrl(name,id||findAbilityIdByName(name)),"_blank","noopener,noreferrer");
+}
+function refreshWowheadTooltips(attempt){
+  if(window.$WowheadPower&&typeof window.$WowheadPower.refreshLinks==="function"){
+    window.$WowheadPower.refreshLinks();
+    return;
+  }
+  if((attempt||0)<6){
+    setTimeout(()=>refreshWowheadTooltips((attempt||0)+1),400);
+  }
+}
 
 function spellCategory(name,id){
   if(DEFS[id]||Object.values(DEFS).includes(name))return"Tracked by RaidLens as a defensive cooldown.";
@@ -1984,7 +2100,8 @@ function openSpellModal(name,id,context){
 }
 
 function spellChip(name,count,id,variant,context){
-  return `<button type="button" class="spell-chip ${variant||""}" onclick="event.stopPropagation();openSpellModal('${escJs(name)}',${id??"null"},'${escJs(context||"this pull")}')">${name}${count!=null?` <span>×${count}</span>`:""}</button>`;
+  const resolvedId=id??findAbilityIdByName(name);
+  return `<a href="${wowheadSpellUrl(name,resolvedId)}" class="spell-chip ${variant||""}" data-wh-rename-link="false" data-wh-icon-added="false" title="${name}" onclick="event.stopPropagation();return false;">${name}${count!=null?` <span>×${count}</span>`:""}</a>`;
 }
 
 function openPlayerModalByName(name){
@@ -2075,6 +2192,7 @@ function openPlayerModal(p,fSec){
   if(cc.length){html+=`<div class="modal-section"><h4>Crowd Control</h4><div class="spell-grid">${tagList(cc,"cool","crowd control")}</div></div>`;}
   document.getElementById("modalContent").innerHTML=html;
   document.getElementById("playerModal").style.display="flex";
+  refreshWowheadTooltips();
 }
 
 // copy wipe summary to clipboard. falls back to selection API if navigator.clipboard is blocked
@@ -2518,14 +2636,43 @@ async function analyze(){
           timerLine=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px"><span style="background:#2d1b1b;border:1px solid #f85149;color:#f85149;border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700">✗ Depleted — +${ds} over timer (${pctO}% slow)</span><span style="color:#6e7681;font-size:11px">Par: ${parStr}</span></div>`;
         }
       }
-      // per-boss breakdown table -- find boss fights within this dungeon's time range
       const bossRows=allFights.filter(f=>(!f.keystoneLevel||f.keystoneLevel===0)&&f.startTime>=fight.startTime&&f.endTime<=fight.endTime+120000);
-      const bossTableRows=bossRows.map(f=>{
+      const bossSeen={};
+      const bossKills=bossRows.filter(f=>f.kill).length;
+      const bossCards=bossRows.map(f=>{
+        bossSeen[f.name]=(bossSeen[f.name]||0)+1;
+        const attemptNo=bossSeen[f.name];
         const bDur=f.endTime-f.startTime;
-        const pct=allFights.filter(x=>x.name===f.name&&(!x.keystoneLevel||x.keystoneLevel===0)).length>1?` · Pull ${f.pull}`:"";
-        return `<tr><td style="padding:5px 8px;color:#c9d1d9;font-size:12px">${f.name}${pct}</td><td style="padding:5px 8px;font-size:12px;font-weight:600;color:${f.kill?"#3fb950":"#f85149"}">${f.kill?"Kill":"Wipe"}</td><td style="padding:5px 8px;font-size:12px;color:#79c0ff;text-align:right">${fdur(bDur)}</td><td style="padding:5px 8px;font-size:11px;color:#8b949e;text-align:right">${f.bossPercentage!=null&&!f.kill?f.bossPercentage.toFixed(1)+"%":""}</td></tr>`;
+        const statusClass=f.kill?"kill":"wipe";
+        const hpLabel=!f.kill&&f.bossPercentage!=null?`${f.bossPercentage.toFixed(1)}%`:"Killed";
+        const bossIcon=f.encounterID?`<img class="mplus-boss-icon" src="https://assets.rpglogs.com/img/warcraft/bosses/${f.encounterID}-icon.jpg" alt="" onerror="this.style.display='none'">`:`<div class="mplus-boss-icon" style="display:flex;align-items:center;justify-content:center;color:#ffd700;font-size:16px">⚔</div>`;
+        return `<div class="mplus-boss-card">
+          <div class="mplus-boss-head">
+            ${bossIcon}
+            <div style="flex:1;min-width:0">
+              <div class="mplus-boss-title">${f.name}</div>
+              <div class="mplus-boss-meta">Attempt ${attemptNo}${!f.kill&&f.bossPercentage!=null?` · Wipe at ${f.bossPercentage.toFixed(1)}%`:""}</div>
+            </div>
+            <span class="mplus-boss-status ${statusClass}">${f.kill?"Kill":"Wipe"}</span>
+          </div>
+          <div class="mplus-mini">
+            <div class="mplus-mini-box"><div class="mplus-mini-k">Duration</div><div class="mplus-mini-v">${fdur(bDur)}</div></div>
+            <div class="mplus-mini-box"><div class="mplus-mini-k">Result</div><div class="mplus-mini-v" style="color:${f.kill?"#5fdd8e":"#ff8c83"}">${f.kill?"Cleared":"Needs work"}</div></div>
+            <div class="mplus-mini-box"><div class="mplus-mini-k">HP Left</div><div class="mplus-mini-v">${hpLabel}</div></div>
+          </div>
+          <div class="mplus-actions">
+            <button class="mplus-action gold" onclick="event.stopPropagation();selectFightById(${f.id},true)">Analyze Boss</button>
+            <a class="mplus-action" href="https://www.warcraftlogs.com/reports/${reportCode}#fight=${f.id}" target="_blank" onclick="event.stopPropagation()">Open WCL ↗</a>
+          </div>
+        </div>`;
       }).join("");
-      const bossTable=bossRows.length?`<div style="margin-top:10px"><div style="font-size:10px;color:#6e7681;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Boss Breakdown</div><table style="width:100%;border-collapse:collapse;border:1px solid #21262d;border-radius:6px;overflow:hidden"><thead><tr style="background:#161b22"><th style="padding:5px 8px;font-size:10px;color:#6e7681;text-align:left;text-transform:uppercase">Boss</th><th style="padding:5px 8px;font-size:10px;color:#6e7681;text-align:left;text-transform:uppercase">Result</th><th style="padding:5px 8px;font-size:10px;color:#6e7681;text-align:right;text-transform:uppercase">Time</th><th style="padding:5px 8px;font-size:10px;color:#6e7681;text-align:right;text-transform:uppercase">HP%</th></tr></thead><tbody>${bossTableRows}</tbody></table></div>`:"";
+      const bossBreakdown=bossRows.length?`<div class="mplus-boss-summary">
+        <div class="mplus-boss-summary-copy">You’re looking at the full key overall here. Use the boss cards below when you want to snap from run-level context into a single boss attempt without leaving the app’s easier-to-read summary flow.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span class="affix-chip active">${bossRows.length} boss attempt${bossRows.length!==1?"s":""}</span>
+          <span class="affix-chip ${bossKills===bossRows.length&&bossRows.length?"active":""}">${bossKills}/${bossRows.length||0} kills</span>
+        </div>
+      </div><div class="mplus-boss-grid">${bossCards}</div>`:"";
       mplusBanner=`<div style="background:#0d1f33;border:1px solid #1f6feb;border-radius:8px;padding:14px 18px;margin-bottom:14px">
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <span style="font-size:22px;font-weight:700;color:#ffd700">+${fight.keystoneLevel}</span>
@@ -2533,7 +2680,7 @@ async function analyze(){
           <span style="color:#8b949e;font-size:12px">${fightDurStr}</span>
           <span style="margin-left:auto;display:flex;gap:4px;flex-wrap:wrap"></span>
         </div>
-        ${timerLine}${bossTable}
+        ${timerLine}${bossBreakdown}
         ${affixLine}
       </div>`;
     }
@@ -2792,6 +2939,7 @@ async function analyze(){
     document.getElementById("results").style.display="block";
     // always land on summary after analyze -- most useful tab
     activateRTab("summary");
+    refreshWowheadTooltips();
   }catch(e){showErr(e.message);}
   finally{btn.disabled=false;btn.innerHTML="Analyze Selected Fight";}
 }
