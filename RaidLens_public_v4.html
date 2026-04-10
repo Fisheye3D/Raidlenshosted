@@ -228,6 +228,7 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
 .v5-chip.jump:hover{border-color:#79c0ff}
 .v5-band{background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:14px 18px;margin-bottom:16px}
 .v5-band-title{font-size:11px;font-weight:700;color:#ffd700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.v5-callout-primary{font-size:15px;font-weight:700;padding:10px 14px;margin-bottom:6px;border-radius:6px;border-left:4px solid #f85149;background:#2d1118;color:#f85149;letter-spacing:.01em}
 .v5-callout{font-size:13px;color:#c9d1d9;padding:2px 0}
 .v5-callout.crit{color:#f85149}.v5-callout.warn{color:#e3a008}.v5-callout.good{color:#3fb950}
 .sev-crit{background:#3a1515;border:1px solid #f85149;color:#f85149;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700}
@@ -296,9 +297,27 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
 <script>if(localStorage.getItem('rl_wnew_v5'))document.getElementById('whatsnewBar').style.display='none';</script>
 
 
-<!-- feature showcase -- show dont tell for new visitors -->
-<div style="margin-bottom:20px">
-  <!-- collapsible header -->
+<!-- 3-step onboarding strip -->
+<div style="margin-bottom:20px;background:linear-gradient(135deg,#0d1117,#0d1f33);border:1px solid #1f6feb40;border-radius:10px;padding:20px 24px">
+  <div style="font-size:11px;color:#6e7681;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px">How it works</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">
+    <div style="display:flex;align-items:flex-start;gap:12px">
+      <div style="background:#f97316;color:#fff;font-weight:700;font-size:13px;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">1</div>
+      <div><div style="font-size:13px;font-weight:600;color:#c9d1d9;margin-bottom:2px">Connect WarcraftLogs</div><div style="font-size:11px;color:#6e7681">One click — WCL handles the login. No API keys, no config.</div></div>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:12px">
+      <div style="background:#f97316;color:#fff;font-weight:700;font-size:13px;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">2</div>
+      <div><div style="font-size:13px;font-weight:600;color:#c9d1d9;margin-bottom:2px">Pick a report & pull</div><div style="font-size:11px;color:#6e7681">Your recent raid logs load automatically. Pick any fight.</div></div>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:12px">
+      <div style="background:#f97316;color:#fff;font-weight:700;font-size:13px;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">3</div>
+      <div><div style="font-size:13px;font-weight:600;color:#c9d1d9;margin-bottom:2px">Get your raid verdict</div><div style="font-size:11px;color:#6e7681">Primary wipe cause, missed CDs, deaths, Discord summary — instant.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- feature showcase — show the actual features, not just a bullet list -->
+<div id="showcaseSection" style="margin-bottom:20px">
   <div onclick="var b=document.getElementById('showcaseBody');var a=document.getElementById('showcaseArrow');var open=b.style.display!=='none';b.style.display=open?'none':'block';a.textContent=open?'▶':'▼';localStorage.setItem('rl_showcase',open?'0':'1');"
     style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:6px 2px;margin-bottom:10px;user-select:none">
     <div style="font-size:11px;color:#6e7681;text-transform:uppercase;letter-spacing:.1em">What you get after every pull</div>
@@ -308,42 +327,87 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
   <div id="showcaseBody">
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
 
-    <!-- Summary -->
+    <!-- RAID VERDICT BAND — primary issue gets visual dominance -->
+    <div style="background:#161b22;border:1px solid #f8514960;border-radius:10px;overflow:hidden;grid-column:span 2">
+      <div style="background:#2d1118;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#f85149;font-weight:600">🔭 Raid Verdict — instantly know what killed your raid</div>
+      <div style="padding:14px">
+        <!-- Primary issue dominant -->
+        <div style="background:#2d1118;border:1px solid #f85149;border-left:4px solid #f85149;border-radius:6px;padding:12px 16px;margin-bottom:10px">
+          <div style="font-size:15px;font-weight:700;color:#f85149">🔥 Primary wipe cause: Shadowclaw Slam (×8 · first @ 0m 47s) · Boss at 34.2%</div>
+          <div style="font-size:11px;color:#8b949e;margin-top:4px">🛡️ TANK DIED — almost always the wipe cause</div>
+        </div>
+        <!-- Secondary callouts -->
+        <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px">
+          <div style="background:#2d1b1b;border-left:3px solid #f85149;border-radius:0 4px 4px 0;padding:6px 10px;font-size:12px;color:#c9d1d9">⚔️ Critical CD failures: 5 — Linkpain, Daemor, Navvia</div>
+          <div style="background:#1a1400;border-left:3px solid #e3a008;border-radius:0 4px 4px 0;padding:6px 10px;font-size:12px;color:#c9d1d9">🧪 No in-fight pot: Sumanis, Frostbolt (prepots not trackable)</div>
+          <div style="background:#0d1f33;border-left:3px solid #79c0ff;border-radius:0 4px 4px 0;padding:6px 10px;font-size:12px;color:#79c0ff"><strong>Next pull focus:</strong> assign tank defensive coverage · enforce offensive CDs — 5 missed</div>
+        </div>
+        <!-- Pull trend line -->
+        <div style="font-size:11px;color:#6e7681">Pull duration: <span style="color:#c9d1d9;font-weight:600">3:51</span> · Prev: 3:44 <span style="color:#e3a008;font-weight:600">(+7s)</span></div>
+      </div>
+      <div style="padding:0 14px 10px;font-size:11px;color:#6e7681;font-style:italic">Boss %, tank death flag, pull trend, and next-pull suggestion — all from one glance</div>
+    </div>
+
+    <!-- DEATHS — grouped + context -->
     <div style="background:#161b22;border:1px solid #30363d;border-radius:10px;overflow:hidden">
-      <div style="background:#0d1f33;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#79c0ff;font-weight:600">📈 Summary Scorecard</div>
+      <div style="background:#2d1118;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#f85149;font-weight:600">💀 Deaths + Context + Top Killers</div>
+      <div style="padding:12px">
+        <!-- Top killers mini block -->
+        <div style="background:#2d1118;border:1px solid #f8514940;border-radius:6px;padding:8px 10px;margin-bottom:8px">
+          <div style="font-size:10px;color:#f85149;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Top Killers</div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;padding:2px 0"><span style="color:#c9d1d9">Shadowclaw Slam</span><span style="color:#f85149;font-weight:700">8</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;padding:2px 0"><span style="color:#c9d1d9">Void Eruption</span><span style="color:#f85149;font-weight:700">3</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;padding:2px 0"><span style="color:#c9d1d9">Aftershock</span><span style="color:#e3a008;font-weight:700">1</span></div>
+        </div>
+        <!-- Death row with context -->
+        <div style="padding:4px 0;border-bottom:1px solid #21262d;font-size:12px">
+          <div style="display:flex;justify-content:space-between"><span style="color:#FF7C0A;font-weight:600">Sumanis</span><span style="color:#f85149">0m 47s</span><span style="color:#f85149">Shadowclaw Slam</span></div>
+          <div style="font-size:10px;color:#6e7681;margin-top:2px;font-style:italic">Last def: Barkskin (-12s) · No in-fight pot · HS ✓</div>
+        </div>
+        <div style="padding:4px 0;font-size:12px">
+          <div style="display:flex;justify-content:space-between"><span style="color:#AAD372;font-weight:600">Huntmaster</span><span style="color:#3fb950">Survived</span></div>
+        </div>
+      </div>
+      <div style="padding:0 12px 12px;font-size:11px;color:#6e7681;font-style:italic">Last defensive used, pot status, HS status — context for every death</div>
+    </div>
+
+    <!-- DISCORD COPY FORMATS -->
+    <div style="background:#161b22;border:1px solid #30363d;border-radius:10px;overflow:hidden">
+      <div style="background:#1a1200;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#ffd700;font-weight:600">⚠️ Discord Copy — 4 formats</div>
+      <div style="padding:12px">
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px">
+          <span style="background:#0d1f33;border:1px solid #79c0ff;color:#79c0ff;padding:3px 9px;border-radius:4px;font-size:10px;font-weight:600">Short</span>
+          <span style="background:#161b22;border:1px solid #30363d;color:#8b949e;padding:3px 9px;border-radius:4px;font-size:10px">Detailed</span>
+          <span style="background:#161b22;border:1px solid #30363d;color:#8b949e;padding:3px 9px;border-radius:4px;font-size:10px">Officer</span>
+          <span style="background:#161b22;border:1px solid #30363d;color:#8b949e;padding:3px 9px;border-radius:4px;font-size:10px">Pings</span>
+        </div>
+        <div style="font-family:monospace;font-size:11px;color:#c9d1d9;line-height:1.7;background:#0d1117;border-radius:4px;padding:8px">
+          <span style="color:#ffd700">Vorasius · ❌ Wipe · 3:51 · 4 deaths</span><br>
+          <span style="color:#f85149">💀 Main killer: Shadowclaw Slam ×8</span><br>
+          <span style="color:#e3a008">⚔️ Missed CDs: 5</span><br>
+          <span style="color:#8b949e">🔭 raidlens.org</span>
+        </div>
+      </div>
+      <div style="padding:0 12px 12px;font-size:11px;color:#6e7681;font-style:italic">Short, Detailed, Officer notes, or ping-by-name — paste into #raid-logs in one click</div>
+    </div>
+
+    <!-- SCORECARD + STATS -->
+    <div style="background:#161b22;border:1px solid #30363d;border-radius:10px;overflow:hidden">
+      <div style="background:#0d1f33;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#79c0ff;font-weight:600">📈 Scorecard — per player, every pull</div>
       <div style="padding:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
         <div style="background:#0d2318;border:1px solid #3fb950;border-radius:6px;padding:8px;text-align:center"><div style="font-size:18px;font-weight:700;color:#3fb950">✓ Kill</div><div style="font-size:10px;color:#8b949e">Outcome</div></div>
         <div style="background:#161b22;border:1px solid #30363d;border-radius:6px;padding:8px;text-align:center"><div style="font-size:18px;font-weight:700;color:#3fb950">0</div><div style="font-size:10px;color:#8b949e">Deaths</div></div>
         <div style="background:#2d1b1b;border:1px solid #f85149;border-radius:6px;padding:8px;text-align:center"><div style="font-size:18px;font-weight:700;color:#f85149">3</div><div style="font-size:10px;color:#8b949e">Missed CDs</div></div>
         <div style="background:#161b22;border:1px solid #30363d;border-radius:6px;padding:8px;text-align:center"><div style="font-size:18px;font-weight:700;color:#ffd700">4.2M</div><div style="font-size:10px;color:#8b949e">Raid DPS</div></div>
-        <div style="background:#1a1400;border:1px solid #e3a008;border-radius:6px;padding:8px;text-align:center"><div style="font-size:18px;font-weight:700;color:#e3a008">18/24</div><div style="font-size:10px;color:#8b949e">Potion Users</div></div>
+        <div style="background:#1a1400;border:1px solid #e3a008;border-radius:6px;padding:8px;text-align:center"><div style="font-size:18px;font-weight:700;color:#e3a008">18/24</div><div style="font-size:10px;color:#8b949e">Potions Used</div></div>
         <div style="background:#161b22;border:1px solid #30363d;border-radius:6px;padding:8px;text-align:center"><div style="font-size:18px;font-weight:700;color:#79c0ff">892K</div><div style="font-size:10px;color:#8b949e">Raid HPS</div></div>
       </div>
-      <div style="padding:0 12px 12px;font-size:11px;color:#6e7681;font-style:italic">Grades, totals and missed CDs at a glance</div>
+      <div style="padding:0 12px 12px;font-size:11px;color:#6e7681;font-style:italic">Grades, totals, downtime tiers (🟢🟡🟠🔴), missed CDs — all at a glance</div>
     </div>
 
-    <!-- Deaths -->
+    <!-- PULL COMPARE -->
     <div style="background:#161b22;border:1px solid #30363d;border-radius:10px;overflow:hidden">
-      <div style="background:#2d1118;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#f85149;font-weight:600">💀 Deaths + Killing Blow</div>
-      <div style="padding:12px">
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #21262d;font-size:12px">
-          <span style="color:#FF7C0A;font-weight:600">Sumanis</span><span style="color:#f85149">0m 47s</span><span style="color:#f85149;font-size:11px">Shadowclaw Slam</span>
-          <span style="border:1px solid #30363d;color:#8b949e;border-radius:3px;padding:1px 5px;font-size:10px">📋</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #21262d;font-size:12px">
-          <span style="color:#3FC7EB;font-weight:600">Frostbolt</span><span style="color:#f85149">1m 12s</span><span style="color:#f85149;font-size:11px">Void Eruption</span>
-          <span style="border:1px solid #30363d;color:#8b949e;border-radius:3px;padding:1px 5px;font-size:10px">📋</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:12px">
-          <span style="color:#AAD372;font-weight:600">Huntmaster</span><span style="color:#3fb950">Survived</span><span style="color:#6e7681;font-size:11px">—</span><span></span>
-        </div>
-      </div>
-      <div style="padding:0 12px 12px;font-size:11px;color:#6e7681;font-style:italic">One-click copy to ping people in Discord</div>
-    </div>
-
-    <!-- Pull Compare -->
-    <div style="background:#161b22;border:1px solid #30363d;border-radius:10px;overflow:hidden">
-      <div style="background:#1a0e2e;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#9580ff;font-weight:600">🔁 Pull Compare</div>
+      <div style="background:#1a0e2e;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#9580ff;font-weight:600">🔁 Pull-over-Pull Comparison</div>
       <div style="padding:12px">
         <div style="display:flex;gap:8px;margin-bottom:8px">
           <div style="flex:1;background:#0d2318;border:1px solid #3fb950;border-radius:6px;padding:8px;text-align:center;font-size:11px">
@@ -362,65 +426,88 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
       <div style="padding:0 12px 12px;font-size:11px;color:#6e7681;font-style:italic">See if the raid is actually improving pull to pull</div>
     </div>
 
-    <!-- Wipe Summary / Discord -->
+    <!-- TIMELINE FILTERS -->
     <div style="background:#161b22;border:1px solid #30363d;border-radius:10px;overflow:hidden">
-      <div style="background:#1a1200;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#ffd700;font-weight:600">⚠️ Discord Wipe Summary</div>
-      <div style="padding:12px;font-family:monospace;font-size:11px;color:#c9d1d9;line-height:1.8;background:#0d1117;border-radius:4px;margin-bottom:8px">
-        <span style="color:#ffd700">📋 RaidLens Pull Summary — Vorasius</span><br>
-        <span style="color:#f85149">❌ Wipe</span> | Duration: 3:51 | 24 players<br><br>
-        <span style="color:#f85149">💀 Deaths (4):</span><br>
-        &nbsp;&nbsp;Sumanis [Druid] @ 0m 47s — Shadowclaw Slam<br>
-        &nbsp;&nbsp;Frostbolt [Mage] @ 1m 12s — Void Eruption<br><br>
-        <span style="color:#e3a008">⚔️ Missed CDs: Linkpain: Recklessness</span><br>
-        <span style="color:#f85149">🧪 No Potion: Sumanis, Daemor</span>
+      <div style="background:#0d2318;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#3fb950;font-weight:600">🔄 Timeline — filterable CD view</div>
+      <div style="padding:12px">
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
+          <span style="background:#0d1f33;border:1px solid #79c0ff;color:#79c0ff;padding:3px 9px;border-radius:4px;font-size:10px;font-weight:600">All</span>
+          <span style="background:#161b22;border:1px solid #30363d;color:#8b949e;padding:3px 9px;border-radius:4px;font-size:10px">Offensive</span>
+          <span style="background:#161b22;border:1px solid #30363d;color:#8b949e;padding:3px 9px;border-radius:4px;font-size:10px">Defensive</span>
+          <span style="background:#161b22;border:1px solid #30363d;color:#8b949e;padding:3px 9px;border-radius:4px;font-size:10px">Bloodlust</span>
+        </div>
+        <div style="position:relative;height:60px;background:#0d1117;border-radius:4px;overflow:hidden">
+          <div style="position:absolute;left:5%;top:12px;width:8px;height:8px;border-radius:50%;background:#f85149" title="Combustion @ 12s"></div>
+          <div style="position:absolute;left:22%;top:12px;width:8px;height:8px;border-radius:50%;background:#f85149" title="Recklessness @ 32s"></div>
+          <div style="position:absolute;left:35%;top:12px;width:8px;height:8px;border-radius:50%;background:#79c0ff" title="Barkskin @ 47s"></div>
+          <div style="position:absolute;left:55%;top:12px;width:8px;height:8px;border-radius:50%;background:#ffd700" title="Bloodlust @ 85s"></div>
+          <div style="position:absolute;left:72%;top:12px;width:8px;height:8px;border-radius:50%;background:#f85149" title="Combustion @ 115s"></div>
+          <div style="position:absolute;bottom:4px;left:0;right:0;height:1px;background:#21262d"></div>
+          <div style="position:absolute;bottom:2px;left:5%;font-size:8px;color:#6e7681">12s</div>
+          <div style="position:absolute;bottom:2px;left:55%;font-size:8px;color:#ffd700">BL 85s</div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:#6e7681">Filter by player, by CD type, or both</div>
       </div>
-      <div style="padding:0 12px 12px;font-size:11px;color:#6e7681;font-style:italic">Paste straight into #raid-logs — one click</div>
+      <div style="padding:0 12px 12px;font-size:11px;color:#6e7681;font-style:italic">See exactly when every CD was used across the whole pull</div>
     </div>
 
-    <!-- Player links card -->
+    <!-- AUTO SCAN + FOCUS MODE -->
     <div style="background:#161b22;border:1px solid #30363d;border-radius:10px;overflow:hidden">
-      <div style="background:#1a0a00;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#f5a623;font-weight:600">🔗 Quick Links Per Player</div>
+      <div style="background:#1a1400;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#ffd700;font-weight:600">🤖 Auto-scan + Focus Mode</div>
+      <div style="padding:12px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;background:#0d2318;border:1px solid #3fb950;border-radius:6px">
+            <span style="font-size:20px">🤖</span>
+            <div><div style="font-size:12px;font-weight:600;color:#3fb950">Auto: Latest Pull</div><div style="font-size:10px;color:#8b949e">One click — pulls the most recent fight automatically</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;background:#1a0e2e;border:1px solid #9580ff;border-radius:6px">
+            <span style="font-size:20px">⏱️</span>
+            <div><div style="font-size:12px;font-weight:600;color:#9580ff">Auto-scan: On</div><div style="font-size:10px;color:#8b949e">Polls every 90s for new pulls while you raid</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;background:#161b22;border:1px solid #30363d;border-radius:6px">
+            <span style="font-size:20px">🎯</span>
+            <div><div style="font-size:12px;font-weight:600;color:#c9d1d9">Focus Mode</div><div style="font-size:10px;color:#8b949e">Hides landing content, sticks tabs — just the data</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:0 12px 12px;font-size:11px;color:#6e7681;font-style:italic">Built for live raid nights — minimal clicks, maximum clarity</div>
+    </div>
+
+    <!-- PLAYER LINKS + WOWANALYZER -->
+    <div style="background:#161b22;border:1px solid #30363d;border-radius:10px;overflow:hidden">
+      <div style="background:#1a0a00;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#f5a623;font-weight:600">🔗 Per-Player Links + WoWAnalyzer</div>
       <div style="padding:12px;display:flex;flex-direction:column;gap:8px">
         <div style="display:flex;align-items:center;gap:8px">
           <div style="width:32px;height:32px;border-radius:5px;background:#21262d;display:flex;align-items:center;justify-content:center;font-size:14px;color:#FF7C0A;flex-shrink:0">S</div>
           <div style="font-size:12px;font-weight:600;color:#FF7C0A;flex:1">Sumanis</div>
-          <div style="display:flex;gap:5px;flex-wrap:wrap">
-            <span style="background:#0d1f33;border:1px solid #1f6feb;color:#79c0ff;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600">WCL ↗</span>
-            <span style="background:#0d1929;border:1px solid #1f6feb;color:#79c0ff;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600">Raider.io ↗</span>
-            <span style="background:#1a0e2e;border:1px solid #9580ff;color:#9580ff;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600">🎮 Sim ↗</span>
-            <span style="background:#1a0a00;border:1px solid #f5a623;color:#f5a623;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600">⚔️ Armory ↗</span>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">
+            <span style="background:#0d1f33;border:1px solid #1f6feb;color:#79c0ff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600">WCL ↗</span>
+            <span style="background:#0d1929;border:1px solid #1f6feb;color:#79c0ff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600">Rio ↗</span>
+            <span style="background:#1a0e2e;border:1px solid #9580ff;color:#9580ff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600">🎮 Sim ↗</span>
+            <span style="background:#1a0e00;border:1px solid #f5a623;color:#f5a623;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600">⚔️ WoWA ↗</span>
           </div>
         </div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <div style="width:32px;height:32px;border-radius:5px;background:#21262d;display:flex;align-items:center;justify-content:center;font-size:14px;color:#3FC7EB;flex-shrink:0">F</div>
-          <div style="font-size:12px;font-weight:600;color:#3FC7EB;flex:1">Frostbolt</div>
-          <div style="display:flex;gap:5px;flex-wrap:wrap">
-            <span style="background:#0d1f33;border:1px solid #1f6feb;color:#79c0ff;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600">WCL ↗</span>
-            <span style="background:#0d1929;border:1px solid #1f6feb;color:#79c0ff;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600">Raider.io ↗</span>
-            <span style="background:#1a0e2e;border:1px solid #9580ff;color:#9580ff;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600">🎮 Sim ↗</span>
-            <span style="background:#1a0a00;border:1px solid #f5a623;color:#f5a623;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600">⚔️ Armory ↗</span>
-          </div>
-        </div>
+        <div style="font-size:10px;color:#6e7681;line-height:1.6;padding:4px 0">WoWAnalyzer opens directly to that player's log for deeper class analysis. Armory, Raider.io, and Raidbots sim also one click away.</div>
       </div>
-      <div style="padding:0 12px 12px;font-size:11px;color:#6e7681;font-style:italic">One click to WCL report, Raider.io profile, Raidbots sim or Armory — per player</div>
+      <div style="padding:0 12px 12px;font-size:11px;color:#6e7681;font-style:italic">WCL · WoWAnalyzer · Raider.io · Raidbots · Armory — every player, one click</div>
     </div>
 
-    <!-- Mechanic Deaths preview -->
+    <!-- MECHANIC DEATHS -->
     <div style="background:#161b22;border:1px solid #30363d;border-radius:10px;overflow:hidden">
-      <div style="background:#2d1b1b;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#f85149;font-weight:600">🎯 Mechanic Deaths</div>
+      <div style="background:#2d1b1b;border-bottom:1px solid #21262d;padding:8px 14px;font-size:11px;color:#f85149;font-weight:600">🎯 Mechanic Deaths by Ability</div>
       <div style="padding:12px;display:flex;flex-direction:column;gap:6px">
         <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #21262d">
-          <span style="color:#f85149;font-weight:700;font-size:14px;min-width:28px">22</span>
+          <span style="color:#f85149;font-weight:700;font-size:14px;min-width:28px">8</span>
           <div style="flex:1">
             <div style="font-size:12px;font-weight:600;color:#c9d1d9">Shadowclaw Slam</div>
-            <div style="font-size:10px;color:#8b949e;margin-top:2px">Sumanis · Frostbolt · Linkpain · Huntmaster +18</div>
+            <div style="font-size:10px;color:#8b949e;margin-top:2px">Sumanis · Frostbolt · Linkpain · Daemor +4</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #21262d">
-          <span style="color:#f85149;font-weight:700;font-size:14px;min-width:28px">4</span>
+          <span style="color:#f85149;font-weight:700;font-size:14px;min-width:28px">3</span>
           <div style="flex:1">
             <div style="font-size:12px;font-weight:600;color:#c9d1d9">Void Eruption</div>
-            <div style="font-size:10px;color:#8b949e;margin-top:2px">Daemor · Mistrester · Navvia · Belunea</div>
+            <div style="font-size:10px;color:#8b949e;margin-top:2px">Daemor · Mistrester · Navvia</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;padding:6px 0">
@@ -431,7 +518,7 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
           </div>
         </div>
       </div>
-      <div style="padding:0 12px 12px;font-size:11px;color:#6e7681;font-style:italic">See exactly which mechanic is killing the raid each pull</div>
+      <div style="padding:0 12px 12px;font-size:11px;color:#6e7681;font-style:italic">See which mechanic is murdering the raid each pull</div>
     </div>
 
   </div>
@@ -475,6 +562,9 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
         <a id="pkceDirectLink" href="#" style="color:#f97316;font-size:11px;text-decoration:underline" onclick="event.preventDefault();handleConnectClick();">
           Having trouble? Click here
         </a>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:#6e7681;text-align:center;max-width:260px">
+        You'll be redirected to WarcraftLogs to approve read-only access, then sent straight back here.
       </div>
     </div>
   </div>
@@ -713,9 +803,9 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
     <div class="rtab" onclick="switchRTab('wipe',this)">⚠️ Wipe Summary</div>
     <div class="rtab" onclick="switchRTab('pullcompare',this)">🔁 Pull Compare</div>
   </div>
-  <div class="rtab-panel active" id="rtab-defensives"><div class="tw"><table id="tDef"><thead><tr><th onclick="srt('tDef',0)">Player ↕</th><th onclick="srt('tDef',1)">Class/Spec ↕</th><th>Defensives Used</th><th onclick="srt('tDef',3)" class="num">Total ↕</th></tr></thead><tbody id="bDef"></tbody></table></div></div>
+  <div class="rtab-panel active" id="rtab-defensives"><div class="tw"><table id="tDef"><thead><tr><th onclick="srt('tDef',0)">Player ↕</th><th onclick="srt('tDef',1)">Class/Spec ↕</th><th title="Personal defensive cooldowns cast during the fight — tracked from combat log cast events.">Def CDs ⓘ</th><th onclick="srt('tDef',3)" class="num">Total ↕</th></tr></thead><tbody id="bDef"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-consumables"><div class="sn">Potion and Healthstone usage per player during the fight.</div><div class="tw"><table id="tCons"><thead><tr><th onclick="srt('tCons',0)">Player ↕</th><th onclick="srt('tCons',1)">Class/Spec ↕</th><th style="text-align:center">Potion</th><th style="text-align:center">Healthstone</th></tr></thead><tbody id="bCons"></tbody></table></div></div>
-  <div class="rtab-panel" id="rtab-deaths"><div class="sn">All player deaths ordered by time. Killing blow shown where available.</div><div id="cleanPullBanner" style="display:none"></div><div class="tw"><table id="tDeath"><thead><tr><th onclick="srt('tDeath',0)">Player ↕</th><th onclick="srt('tDeath',1)">Class/Spec ↕</th><th onclick="srt('tDeath',2)">Time ↕</th><th>Killing Blow</th><th onclick="srt('tDeath',4)" class="num">Deaths ↕</th><th></th></tr></thead><tbody id="bDeath"></tbody></table></div></div>
+  <div class="rtab-panel" id="rtab-deaths"><div class="sn">All player deaths ordered by time. Killing blow shown where available.</div><div id="cleanPullBanner" style="display:none"></div><div id="topKillersBox" style="display:none;margin-bottom:12px"></div><div class="tw"><table id="tDeath"><thead><tr><th onclick="srt('tDeath',0)">Player ↕</th><th onclick="srt('tDeath',1)">Class/Spec ↕</th><th onclick="srt('tDeath',2)">Time ↕</th><th>Killing Blow</th><th onclick="srt('tDeath',4)" class="num">Deaths ↕</th><th></th></tr></thead><tbody id="bDeath"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-interrupts"><div class="sn">Who interrupted what and how many times.</div><div class="tw"><table id="tInt"><thead><tr><th onclick="srt('tInt',0)">Player ↕</th><th onclick="srt('tInt',1)">Class/Spec ↕</th><th>Spells Interrupted</th><th onclick="srt('tInt',3)" class="num">Total ↕</th></tr></thead><tbody id="bInt"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dispels"><div class="sn">Who dispelled what.</div><div class="tw"><table id="tDisp"><thead><tr><th onclick="srt('tDisp',0)">Player ↕</th><th onclick="srt('tDisp',1)">Class/Spec ↕</th><th>Spells Dispelled</th><th onclick="srt('tDisp',3)" class="num">Total ↕</th></tr></thead><tbody id="bDisp"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-damage"><div class="sn">Total damage taken per player. 🟡 Tank · 🟢 Healer · 🔵 DPS. Click a player for full breakdown.</div><div class="tw"><table id="tDmg"><thead><tr><th onclick="srt('tDmg',0)">Player ↕</th><th onclick="srt('tDmg',1)">Class/Spec ↕</th><th onclick="srt('tDmg',2)">Role ↕</th><th>Bar</th><th onclick="srt('tDmg',4)" class="num">Total Taken ↕</th><th onclick="srt('tDmg',5)" class="num">DTPS ↕</th><th onclick="srt('tDmg',6)" class="num">% of Raid ↕</th></tr></thead><tbody id="bDmg"></tbody></table></div></div>
@@ -834,7 +924,7 @@ body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padd
       <th>Activity</th>
       <th onclick="srt('tDowntime',3)" class="num">Active ↕</th>
       <th onclick="srt('tDowntime',4)" class="num">Downtime ↕</th>
-      <th onclick="srt('tDowntime',5)" class="num">Downtime% ↕</th>
+      <th onclick="srt('tDowntime',5)" class="num" title="Seconds of zero damage output as a % of fight duration. &gt;10% on a long fight is a red flag.">Downtime% ⓘ ↕</th>
     </tr></thead><tbody id="bDowntime"></tbody></table></div>
   </div>
   <!-- PULL COMPARE -->
@@ -1881,6 +1971,20 @@ async function analyze(){
     const bDeath=document.getElementById("bDeath");bDeath.innerHTML="";const drows=[];
     sorted.forEach(p=>{if(!p.deaths.length){drows.push({...p,time:Infinity,killer:"—",timeStr:"Survived",dcount:0,ctx:null});}else p.deaths.forEach(d=>drows.push({...p,time:d.time,killer:d.killer,timeStr:d.timeStr||ftime(d.time),dcount:p.deaths.length,ctx:d.ctx||null}));});
     drows.sort((a,b)=>a.time-b.time);
+    // top killers summary above the table -- saves scrolling through 20 death rows to figure out what killed everyone
+    const _realDrows=drows.filter(d=>d.dcount>0);
+    const _killerBox=document.getElementById('topKillersBox');
+    if(_killerBox){
+      if(_realDrows.length){
+        const _kc={};_realDrows.forEach(d=>{if(d.killer&&d.killer!=='—'&&d.killer!=='Unknown')_kc[d.killer]=(_kc[d.killer]||0)+1;});
+        const _ksorted=Object.entries(_kc).sort((a,b)=>b[1]-a[1]).slice(0,5);
+        if(_ksorted.length){
+          const _khtml=_ksorted.map(([k,n])=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #21262d"><span style="color:#f85149;font-weight:700;font-size:14px;min-width:20px;text-align:right">${n}</span><span style="font-size:12px;color:#c9d1d9;flex:1">${k}</span><div style="width:${Math.round(n/_realDrows.length*100)}px;max-width:80px;height:6px;background:#f85149;border-radius:2px;opacity:.7"></div></div>`).join('');
+          _killerBox.innerHTML='<div style="background:#2d1118;border:1px solid #f8514940;border-radius:8px;padding:10px 14px;margin-bottom:4px"><div style="font-size:11px;color:#f85149;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Top Killers this pull</div>'+_khtml+'</div>';
+          _killerBox.style.display='block';
+        } else { _killerBox.style.display='none'; }
+      } else { _killerBox.style.display='none'; }
+    }
     // clean pull banner -- empty table looks like a bug, this makes it obvious
     const realDeaths=drows.filter(d=>d.dcount>0).length;
     const cleanBanner=document.getElementById("cleanPullBanner");
@@ -2065,7 +2169,7 @@ async function analyze(){
     const summaryDiv=document.getElementById("summaryContent");summaryDiv.innerHTML="";
     const _missedOffTotal=sorted.reduce((s,p)=>{const exp=SPEC_OFFS[(p.cls||"")+("|")+(p.spec||"")]||null;return s+(exp?exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]).length:0);},0);
     const _noPotDps=sorted.filter(p=>p.role==="dps"&&!p.pots).map(p=>p.name);
-    const _v5BandCtx={fight,sorted,shortPull,drows,missedOffTotal:_missedOffTotal,noPotDps:_noPotDps};
+    const _v5BandCtx={fight,sorted,shortPull,drows,missedOffTotal:_missedOffTotal,noPotDps:_noPotDps,pullHistory};
     const totalDeaths=sorted.reduce((s,p)=>s+p.deaths.length,0);
     const totalInts=sorted.reduce((s,p)=>s+Object.values(p.ints).reduce((a,c)=>a+c,0),0);
     const totalDisps=sorted.reduce((s,p)=>s+Object.values(p.disps).reduce((a,c)=>a+c,0),0);
@@ -2547,21 +2651,61 @@ function pickWipeCause(drows){
 }
 
 function buildSummaryBand(ctx){
-  const{fight,sorted,shortPull,drows,missedOffTotal,noPotDps}=ctx;
+  const{fight,sorted,shortPull,drows,missedOffTotal,noPotDps,pullHistory}=ctx;
   const cause=pickWipeCause(drows);
   const callouts=[];
+
+  // --- primary issue line: wipe cause + boss % + tank death flag ---
+  // this one gets the big treatment -- visual dominance matters here
+  const bpct=(!fight.kill&&fight.bossPercentage!=null)?(' · Boss at '+fight.bossPercentage.toFixed(1)+'%'):'';
+  const tankDeaths=drows.filter(d=>d.dcount>0&&d.role==='tanks');
+  const tankFlag=tankDeaths.length?' 🛡️ TANK DIED':'';
   if(!fight.kill&&cause&&cause.topKiller&&cause.topKiller.count>=2){
-    callouts.push({cls:'crit',text:'🔥 Primary wipe cause: '+cause.topKiller.name+' ('+cause.topKiller.count+' kills'+(cause.firstDeath?' · first @ '+cause.firstDeath.timeStr:'')+')' });
+    callouts.push({primary:true,cls:'crit',text:'🔥 Primary wipe cause: '+cause.topKiller.name+' (×'+cause.topKiller.count+(cause.firstDeath?' · first @ '+cause.firstDeath.timeStr:'')+')'+bpct+tankFlag});
   } else if(cause&&cause.firstDeath){
-    callouts.push({cls:fight.kill?'':'crit',text:'💀 First death: '+cause.firstDeath.name+' @ '+cause.firstDeath.timeStr+' — '+cause.firstDeath.killer});
+    callouts.push({primary:!fight.kill,cls:fight.kill?'':'crit',text:'💀 First death: '+cause.firstDeath.name+' @ '+cause.firstDeath.timeStr+' — '+cause.firstDeath.killer+bpct+tankFlag});
+  } else if(!fight.kill&&bpct){
+    callouts.push({primary:true,cls:'crit',text:'💀 Wipe'+bpct+tankFlag});
   }
+
+  // --- tank death gets its own callout if there was a wipe ---
+  if(!fight.kill&&tankDeaths.length){
+    const names=tankDeaths.map(d=>d.name).join(', ');
+    callouts.push({cls:'crit',text:'🛡️ Tank death: '+names+' — almost always the wipe cause'});
+  }
+
   if(missedOffTotal>0&&!shortPull){
     const offenders=sorted.map(p=>{const exp=SPEC_OFFS[(p.cls||'')+'|'+(p.spec||'')]||null;const n=exp?exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]).length:0;return{name:p.name,n};}).filter(x=>x.n>0).sort((a,b)=>b.n-a.n).slice(0,3).map(x=>x.name);
     callouts.push({cls:missedOffTotal>=5?'crit':'warn',text:'⚔️ Critical CD failures: '+missedOffTotal+(offenders.length?' — '+offenders.join(', '):'')});
   }
   if(noPotDps.length)callouts.push({cls:'warn',text:'🧪 No in-fight pot: '+noPotDps.join(', ')+' (prepots not trackable)'});
   if(shortPull)callouts.push({cls:'',text:'ℹ️ Short pull ('+Math.round((fight.endTime-fight.startTime)/1000)+'s)'});
-  if(!callouts.length)callouts.push({cls:'good',text:'✅ Clean pull — no major issues'});
+  if(!callouts.length)callouts.push({primary:true,cls:'good',text:'✅ Clean pull — no major issues detected'});
+
+  // --- pull duration trend ---
+  let trendLine='';
+  if(pullHistory&&pullHistory.length>=2){
+    const prev=pullHistory[pullHistory.length-2];
+    const curr=pullHistory[pullHistory.length-1];
+    // convert "4:32" to seconds for comparison
+    const toSec=s=>{const p=s.split(':');return parseInt(p[0])*60+parseInt(p[1]||0);};
+    const cs=toSec(curr.duration),ps=toSec(prev.duration),diff=cs-ps;
+    const sign=diff>0?'+':'';
+    const color=diff<0?'#3fb950':diff>0?'#e3a008':'#8b949e';
+    trendLine='<div style="margin-top:6px;font-size:11px;color:#6e7681">Pull duration: <span style="color:#c9d1d9;font-weight:600">'+curr.duration+'</span> · Prev: '+prev.duration+' <span style="color:'+color+';font-weight:600">('+sign+diff+'s)</span>'+(curr.kill?' 🏆 Kill!':diff<0?' 📈 Trending right':'')+'</div>';
+  }
+
+  // --- next pull focus: simple rule-based suggestion ---
+  let focusLine='';
+  if(!fight.kill){
+    const tops=[];
+    if(tankDeaths.length)tops.push('assign tank defensive coverage');
+    else if(cause&&cause.topKiller&&cause.topKiller.count>=2)tops.push('coordinate defensives for '+cause.topKiller.name);
+    if(missedOffTotal>=3)tops.push('enforce offensive CDs — '+missedOffTotal+' missed');
+    if(noPotDps.length>2)tops.push('remind '+(noPotDps.length)+' players to pot');
+    if(tops.length)focusLine='<div style="margin-top:8px;padding:6px 10px;background:#0d1f33;border-left:3px solid #79c0ff;border-radius:0 4px 4px 0;font-size:11px;color:#79c0ff"><strong>Next pull focus:</strong> '+tops.slice(0,2).join(' · ')+'</div>';
+  }
+
   const jumps=[
     {l:'💀 Deaths',t:'deaths'},{l:'🎯 Mechanics',t:'mechdeaths'},
     {l:'⚔️ Off CDs',t:'offensive'},{l:'🔄 Timeline',t:'timeline'},
@@ -2572,7 +2716,13 @@ function buildSummaryBand(ctx){
     +'<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">'
     +'<div style="flex:1;min-width:200px">'
     +'<div class="v5-band-title">🔭 Raid Lead Summary</div>'
-    +callouts.map(o=>'<div class="v5-callout '+o.cls+'">'+o.text+'</div>').join('')
+    +callouts.map((o,i)=>{
+      // first callout (primary issue) gets bigger treatment
+      if(i===0&&o.primary)return '<div class="v5-callout-primary">'+o.text+'</div>';
+      return '<div class="v5-callout '+o.cls+'">'+o.text+'</div>';
+    }).join('')
+    +trendLine
+    +focusLine
     +'<div style="margin-top:10px;display:flex;gap:4px;flex-wrap:wrap">'+jumps+'</div>'
     +'</div>'
     +'<div style="display:flex;flex-direction:column;gap:6px">'
