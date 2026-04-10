@@ -1703,10 +1703,22 @@ async function searchGuild(){
 }
 
 // load the fights list for a given report code
-async function loadFights(token,code){
+
+  // WoW M+ affix ID -> name. WCL only gives us the IDs, not names.
+  // this list covers current and recent seasons -- if a new one shows up itll just fall back to "Affix #ID"
+  const AFFIX_NAMES={2:"Skittish",3:"Volcanic",4:"Necrotic",5:"Teeming",6:"Raging",7:"Bolstering",
+    8:"Sanguine",9:"Tyrannical",10:"Fortified",11:"Bursting",12:"Grievous",13:"Explosive",14:"Quaking",
+    15:"Infested",116:"Reaping",117:"Beguiling",119:"Awakened",120:"Corrupted",121:"Inspiring",
+    122:"Storming",123:"Spiteful",124:"Prideful",128:"Tormented",129:"Infernal",130:"Encrypted",
+    131:"Shrouded",132:"Thundering",133:"Afflicted",134:"Incorporeal",135:"Entangling",136:"Shielding",
+    137:"Thorned",138:"Reckless",139:"Attuned",140:"Oblivious",141:"Xal'atath's Bargain: Ascendant",
+    142:"Xal'atath's Bargain: Voidbound",143:"Xal'atath's Bargain: Devour",144:"Xal'atath's Bargain: Fraying",
+    145:"Xal'atath's Guile",158:"Xal'atath's Bargain: Oblivion",160:"Undermined",162:"Cooperative"};
+  function affixName(id){return AFFIX_NAMES[id]||("Affix #"+id);}
+  async function loadFights(token,code){
   if(!token)token=await getValidToken();
   reportCode=code;log(`📋 Loading fights for ${code}...`);
-  const data=await gql(token,`{reportData{report(code:"${code}"){title startTime endTime zone{name} fights{id startTime endTime name kill bossPercentage encounterID keystoneLevel keystoneAffixes{id name} keystoneTime completionTime} masterData(translate:true){abilities{gameID name}}}}}`);
+  const data=await gql(token,`{reportData{report(code:"${code}"){title startTime endTime zone{name} fights{id startTime endTime name kill bossPercentage encounterID keystoneLevel keystoneAffixes keystoneTime} masterData(translate:true){abilities{gameID name}}}}}`);
   const rpt=data?.reportData?.report;
   if(!rpt)throw new Error("can't find that report — is it set to public on WCL?");
   abilities=rpt.masterData.abilities;
@@ -1725,15 +1737,17 @@ async function loadFights(token,code){
     // M+ report -- group by dungeon run, show timer header, then per-boss sub-entries
     dungeonFights.forEach(dFight=>{
       const bossFights=allFights.filter(f=>(!f.keystoneLevel||f.keystoneLevel===0)&&f.startTime>=dFight.startTime&&f.endTime<=dFight.endTime+120000);
-      const par=dFight.keystoneTime,actual=dFight.completionTime;
+      const par=dFight.keystoneTime,runMs=dFight.endTime-dFight.startTime;
       let timerHtml="";
-      if(par&&actual){
-        const delta=Math.abs(par-actual),mins=Math.floor(delta/60000),secs=Math.floor((delta%60000)/1000);
+      if(!dFight.kill){
+        timerHtml=`<span style="background:#1a1400;border:1px solid #e3a008;color:#e3a008;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">⚠ Not completed</span>`;
+      }else if(par){
+        const delta=Math.abs(par-runMs),mins=Math.floor(delta/60000),secs=Math.floor((delta%60000)/1000);
         const ds=`${mins}:${secs.toString().padStart(2,"0")}`;
-        if(actual<=par){const pctU=Math.round((par-actual)/par*100);timerHtml=`<span style="background:#0d2318;border:1px solid #3fb950;color:#3fb950;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">✓ Timed +${ds} (${pctU}% under)</span>`;}
-        else{timerHtml=`<span style="background:#2d1b1b;border:1px solid #f85149;color:#f85149;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">✗ Depleted +${ds} over timer</span>`;}
-      }else if(par&&!actual){timerHtml=`<span style="background:#1a1400;border:1px solid #e3a008;color:#e3a008;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">⚠ Not completed</span>`;}
-      const affixes=(dFight.keystoneAffixes||[]).map(a=>`<span style="background:#161b22;border:1px solid #30363d;color:#8b949e;border-radius:3px;padding:1px 6px;font-size:10px">${a.name}</span>`).join(" ");
+        if(runMs<=par){const pctU=Math.round((par-runMs)/par*100);timerHtml=`<span style="background:#0d2318;border:1px solid #3fb950;color:#3fb950;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">✓ Timed +${ds} (${pctU}% under)</span>`;}
+        else{timerHtml=`<span style="background:#2d1b1b;border:1px solid #f85149;color:#f85149;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">✗ Depleted +${ds} over</span>`;}
+      }
+      const affixes=(dFight.keystoneAffixes||[]).map(id=>`<span style="background:#161b22;border:1px solid #30363d;color:#8b949e;border-radius:3px;padding:1px 6px;font-size:10px">${affixName(id)}</span>`).join(" ");
       const runDur=fdur(dFight.endTime-dFight.startTime);
       const hdr=document.createElement("div");
       hdr.style="background:#0d1f33;border:1px solid #1f6feb;border-radius:8px;padding:10px 14px;margin-bottom:6px;cursor:pointer";
@@ -2242,7 +2256,7 @@ async function analyze(){
     },0);
 
     const cards=[
-      {val:isMPlus?(fight.completionTime&&fight.completionTime<=fight.keystoneTime?"✓ Timed":"✗ Depleted"):(fight.kill?"✓ Kill":"✗ Wipe"),lbl:isMPlus?"Timer Result":"Outcome",cls:isMPlus?(fight.completionTime&&fight.completionTime<=fight.keystoneTime?"good":"bad"):(fight.kill?"good":"bad")},
+      {val:isMPlus?((fight.endTime-fight.startTime)<=fight.keystoneTime?"✓ Timed":"✗ Depleted"):(fight.kill?"✓ Kill":"✗ Wipe"),lbl:isMPlus?"Timer Result":"Outcome",cls:isMPlus?((fight.endTime-fight.startTime)<=fight.keystoneTime?"good":"bad"):(fight.kill?"good":"bad")},
       {val:totalDeaths,lbl:"Total Deaths",cls:totalDeaths===0?"good":totalDeaths<=3?"warn":"bad"},
       {val:totalInts,lbl:"Interrupts",cls:totalInts>=5?"good":totalInts>=2?"warn":"bad"},
       {val:totalDisps,lbl:"Dispels",cls:""},
@@ -2260,32 +2274,28 @@ async function analyze(){
     const fightDurStr=fdur(fight.endTime-fight.startTime);
     // M+ detect -- keystoneLevel on the fight means this is the dungeon-level entry
     const isMPlus=fight.keystoneLevel>0;
-    const enrageColor=isMPlus?(fight.completionTime&&fight.completionTime<=fight.keystoneTime?"#3fb950":"#f85149"):(fight.kill?"#3fb950":"#f85149");
+    const runMs=fight.endTime-fight.startTime;
+    const timed=isMPlus&&fight.kill&&(!fight.keystoneTime||runMs<=fight.keystoneTime);
+    const enrageColor=isMPlus?(timed?"#3fb950":"#f85149"):(fight.kill?"#3fb950":"#f85149");
     // build M+ timer banner if applicable
     let mplusBanner="";
     if(isMPlus){
-      const par=fight.keystoneTime,actual=fight.completionTime;
-      const affixLine=(fight.keystoneAffixes||[]).map(a=>`<span style="background:#21262d;border:1px solid #30363d;color:#8b949e;border-radius:3px;padding:1px 7px;font-size:11px">${a.name}</span>`).join(" ");
+      const par=fight.keystoneTime,runMsF=fight.endTime-fight.startTime;
+      const affixLine=(fight.keystoneAffixes||[]).map(id=>`<span style="background:#21262d;border:1px solid #30363d;color:#8b949e;border-radius:3px;padding:1px 7px;font-size:11px">${affixName(id)}</span>`).join(" ");
       let timerLine="";
-      if(par&&actual){
-        const delta=Math.abs(par-actual),mins=Math.floor(delta/60000),secs=Math.floor((delta%60000)/1000);
+      if(!fight.kill){
+        timerLine=`<div style="margin-top:6px"><span style="background:#1a1400;border:1px solid #e3a008;color:#e3a008;border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700">⚠ Run not completed</span></div>`;
+      }else if(par){
+        const delta=Math.abs(par-runMsF),mins=Math.floor(delta/60000),secs=Math.floor((delta%60000)/1000);
         const ds=`${mins}:${secs.toString().padStart(2,"0")}`;
         const parStr=`${Math.floor(par/60000)}:${Math.floor((par%60000)/1000).toString().padStart(2,"0")}`;
-        if(actual<=par){
-          const pctU=Math.round((par-actual)/par*100);
-          timerLine=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px">
-            <span style="background:#0d2318;border:1px solid #3fb950;color:#3fb950;border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700">✓ Timed — +${ds} under (${pctU}% faster)</span>
-            <span style="color:#6e7681;font-size:11px">Par: ${parStr}</span>
-          </div>`;
+        if(runMsF<=par){
+          const pctU=Math.round((par-runMsF)/par*100);
+          timerLine=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px"><span style="background:#0d2318;border:1px solid #3fb950;color:#3fb950;border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700">✓ Timed — +${ds} under (${pctU}% faster)</span><span style="color:#6e7681;font-size:11px">Par: ${parStr}</span></div>`;
         }else{
-          const pctO=Math.round((actual-par)/par*100);
-          timerLine=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px">
-            <span style="background:#2d1b1b;border:1px solid #f85149;color:#f85149;border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700">✗ Depleted — +${ds} over timer (${pctO}% slow)</span>
-            <span style="color:#6e7681;font-size:11px">Par: ${parStr}</span>
-          </div>`;
+          const pctO=Math.round((runMsF-par)/par*100);
+          timerLine=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px"><span style="background:#2d1b1b;border:1px solid #f85149;color:#f85149;border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700">✗ Depleted — +${ds} over timer (${pctO}% slow)</span><span style="color:#6e7681;font-size:11px">Par: ${parStr}</span></div>`;
         }
-      }else if(par&&!actual){
-        timerLine=`<div style="margin-top:6px"><span style="background:#1a1400;border:1px solid #e3a008;color:#e3a008;border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700">⚠ Run not completed</span></div>`;
       }
       // per-boss breakdown table -- find boss fights within this dungeon's time range
       const bossRows=allFights.filter(f=>(!f.keystoneLevel||f.keystoneLevel===0)&&f.startTime>=fight.startTime&&f.endTime<=fight.endTime+120000);
