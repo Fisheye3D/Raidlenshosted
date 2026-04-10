@@ -2169,7 +2169,9 @@ async function analyze(){
     const summaryDiv=document.getElementById("summaryContent");summaryDiv.innerHTML="";
     const _missedOffTotal=sorted.reduce((s,p)=>{const exp=SPEC_OFFS[(p.cls||"")+("|")+(p.spec||"")]||null;return s+(exp?exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]).length:0);},0);
     const _noPotDps=sorted.filter(p=>p.role==="dps"&&!p.pots).map(p=>p.name);
-    const _v5BandCtx={fight,sorted,shortPull,drows,missedOffTotal:_missedOffTotal,noPotDps:_noPotDps,pullHistory};
+    // pullHist isn't populated yet at this point -- it gets set below after sessionStorage is read
+    // passing null here and then updating before the band renders. wasted 20 minutes on this.
+    const _v5BandCtx={fight,sorted,shortPull,drows,missedOffTotal:_missedOffTotal,noPotDps:_noPotDps,pullHistory:null};
     const totalDeaths=sorted.reduce((s,p)=>s+p.deaths.length,0);
     const totalInts=sorted.reduce((s,p)=>s+Object.values(p.ints).reduce((a,c)=>a+c,0),0);
     const totalDisps=sorted.reduce((s,p)=>s+Object.values(p.disps).reduce((a,c)=>a+c,0),0);
@@ -2218,7 +2220,8 @@ async function analyze(){
         <div style="font-size:12px;color:#8b949e">${fight.kill?"Kill":"Wipe"} &nbsp;·&nbsp; ${Object.keys(P).length} players &nbsp;·&nbsp; Pull ${fight.pull}</div>
       </div>
     </div>`;
-    const _v5Band=buildSummaryBand(_v5BandCtx);
+    // band is rendered after pullHist is populated below -- dont call it here
+    const _v5Band="";
     const scoreHTML=`${_v5Band}${summaryHeader}<div class="scorecard">${cards.map(c=>`<div class="score-card ${c.cls}"><div class="sc-val" style="color:${c.cls==="good"?"#3fb950":c.cls==="bad"?"#f85149":c.cls==="warn"?"#e3a008":"#ffd700"}">${c.val}</div><div class="sc-lbl">${c.lbl}</div></div>`).join("")}</div>`;
 
     // Per-player summary table
@@ -2415,6 +2418,11 @@ async function analyze(){
     sessionStorage.setItem(pullKey,JSON.stringify(pullHist.slice(-10)));
     renderPullCompare(pullHist,fight.name);
 
+    // now that pullHist is populated, backfill it and prepend the band to summaryDiv
+    // this is why the context was built with pullHistory:null above -- order of operations nightmare
+    _v5BandCtx.pullHistory=pullHist;
+    const _bandHtml=buildSummaryBand(_v5BandCtx);
+    summaryDiv.innerHTML=_bandHtml+summaryDiv.innerHTML;
 
     // wipe summary for discord. paste it into #raid-logs and move on
     const deathList2=drows.filter(d=>d.dcount>0).sort((a,b)=>a.time-b.time);
