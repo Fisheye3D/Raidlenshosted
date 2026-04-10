@@ -1706,35 +1706,81 @@ async function searchGuild(){
 async function loadFights(token,code){
   if(!token)token=await getValidToken();
   reportCode=code;log(`📋 Loading fights for ${code}...`);
-  const data=await gql(token,`{reportData{report(code:"${code}"){title startTime endTime zone{name} fights{id startTime endTime name kill bossPercentage encounterID} masterData(translate:true){abilities{gameID name}}}}}`);
+  const data=await gql(token,`{reportData{report(code:"${code}"){title startTime endTime zone{name} fights{id startTime endTime name kill bossPercentage encounterID keystoneLevel keystoneAffixes{id name} keystoneTime completionTime} masterData(translate:true){abilities{gameID name}}}}}`);
   const rpt=data?.reportData?.report;
   if(!rpt)throw new Error("can't find that report — is it set to public on WCL?");
   abilities=rpt.masterData.abilities;
-  // encounterID>0 means its a real boss, 0 = trash pull or training dummy
-    // without this the fight list was a disaster -- every trash pack showed up as a "fight"
-    const rawFights=rpt.fights.filter(f=>f.name&&f.id&&f.encounterID>0);
+  // encounterID>0 = real boss, 0 = trash. M+ dungeon-level fights have keystoneLevel > 0.
+  // individual boss fights within M+ sit inside the dungeon time window with no keystoneLevel
+  const rawFights=rpt.fights.filter(f=>f.name&&f.id&&f.encounterID>0);
   const pc2={};
   allFights=rawFights.map(f=>{pc2[f.name]=(pc2[f.name]||0)+1;return{...f,pull:pc2[f.name]};});
   if(!allFights.length)throw new Error("no boss fights in here — is this the right log?");
   log(`✅ ${allFights.length} fights loaded`);
   saveRpt(buildRptObj({...rpt,code}));
-  const pc={};const mapped=allFights.map(f=>{pc[f.name]=(pc[f.name]||0)+1;return{...f,pull:pc[f.name]};});
+  const dungeonFights=allFights.filter(f=>f.keystoneLevel>0);
+  const isMythicPlus=dungeonFights.length>0;
   const list=document.getElementById("fightList");list.innerHTML="";
-  mapped.forEach(f=>{
-    const d=fdur(f.endTime-f.startTime),pct=(!f.kill&&f.bossPercentage!=null)?` · ${f.bossPercentage.toFixed(1)}%`:"";
-    const div=document.createElement("div");div.className="fi";
-    // boss icon from rpglogs CDN -- uses WCL encounter IDs, NOT JournalEncounterID
-    // zamimg uses JournalEncounterID which is a completely different number -- wasted an hour on that
-    const bossIcon=f.encounterID?`<img src="https://assets.rpglogs.com/img/warcraft/bosses/${f.encounterID}-icon.jpg" onerror="this.style.display='none'" style="width:32px;height:32px;border-radius:4px;object-fit:cover;flex-shrink:0;margin-right:6px" alt="">`:"";
-    div.innerHTML=`${bossIcon}<span class="kb ${f.kill?"kill":"wipe"}">${f.kill?"Kill":"Wipe"}</span><span class="fi-name">${f.name}</span><span class="fi-pull">Pull ${f.pull}${pct}</span><span class="fi-dur">${d}</span><a href="https://www.warcraftlogs.com/reports/${reportCode}#fight=${f.id}" target="_blank" onclick="event.stopPropagation()" style="margin-left:8px;background:#0d1f33;border:1px solid #4a9eff;color:#4a9eff;padding:5px 12px;border-radius:5px;font-size:12px;font-weight:700;text-decoration:none;flex-shrink:0;white-space:nowrap;box-shadow:0 0 6px #4a9eff30" title="Open in WarcraftLogs">📊 WCL ↗</a>`;
-    div.onclick=()=>{document.querySelectorAll(".fi").forEach(d=>d.classList.remove("selected"));div.classList.add("selected");fightId=f.id;document.getElementById("analyzeBtn").disabled=false;};
-    list.appendChild(div);
-  });
+  if(isMythicPlus){
+    // M+ report -- group by dungeon run, show timer header, then per-boss sub-entries
+    dungeonFights.forEach(dFight=>{
+      const bossFights=allFights.filter(f=>(!f.keystoneLevel||f.keystoneLevel===0)&&f.startTime>=dFight.startTime&&f.endTime<=dFight.endTime+120000);
+      const par=dFight.keystoneTime,actual=dFight.completionTime;
+      let timerHtml="";
+      if(par&&actual){
+        const delta=Math.abs(par-actual),mins=Math.floor(delta/60000),secs=Math.floor((delta%60000)/1000);
+        const ds=`${mins}:${secs.toString().padStart(2,"0")}`;
+        if(actual<=par){const pctU=Math.round((par-actual)/par*100);timerHtml=`<span style="background:#0d2318;border:1px solid #3fb950;color:#3fb950;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">✓ Timed +${ds} (${pctU}% under)</span>`;}
+        else{timerHtml=`<span style="background:#2d1b1b;border:1px solid #f85149;color:#f85149;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">✗ Depleted +${ds} over timer</span>`;}
+      }else if(par&&!actual){timerHtml=`<span style="background:#1a1400;border:1px solid #e3a008;color:#e3a008;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">⚠ Not completed</span>`;}
+      const affixes=(dFight.keystoneAffixes||[]).map(a=>`<span style="background:#161b22;border:1px solid #30363d;color:#8b949e;border-radius:3px;padding:1px 6px;font-size:10px">${a.name}</span>`).join(" ");
+      const runDur=fdur(dFight.endTime-dFight.startTime);
+      const hdr=document.createElement("div");
+      hdr.style="background:#0d1f33;border:1px solid #1f6feb;border-radius:8px;padding:10px 14px;margin-bottom:6px;cursor:pointer";
+      hdr.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-size:14px;font-weight:700;color:#ffd700">+${dFight.keystoneLevel}</span><span style="font-size:13px;font-weight:600;color:#c9d1d9">${dFight.name}</span><span style="color:#8b949e;font-size:12px">${runDur}</span>${timerHtml}<span style="margin-left:auto;display:flex;gap:4px;flex-wrap:wrap">${affixes}</span></div><div style="font-size:10px;color:#6e7681;margin-top:4px">Click to analyze full run · ${bossFights.length} boss${bossFights.length!==1?"es":""} below</div>`;
+      hdr.onclick=()=>{document.querySelectorAll(".fi,.mplus-dung-hdr").forEach(x=>{x.classList.remove("selected");x.style.borderColor="";});hdr.style.borderColor="#ffd700";fightId=dFight.id;document.getElementById("analyzeBtn").disabled=false;};
+      hdr.classList.add("mplus-dung-hdr");
+      list.appendChild(hdr);
+      const bossWrap=document.createElement("div");bossWrap.style="margin-left:16px;margin-bottom:12px;display:flex;flex-direction:column;gap:4px";
+      const bpc={};
+      bossFights.forEach(f=>{
+        bpc[f.name]=(bpc[f.name]||0)+1;
+        const d=fdur(f.endTime-f.startTime),pct=(!f.kill&&f.bossPercentage!=null)?` · ${f.bossPercentage.toFixed(1)}%`:"";
+        const div=document.createElement("div");div.className="fi";
+        const bossIcon=f.encounterID?`<img src="https://assets.rpglogs.com/img/warcraft/bosses/${f.encounterID}-icon.jpg" onerror="this.style.display='none'" style="width:28px;height:28px;border-radius:4px;object-fit:cover;flex-shrink:0;margin-right:6px" alt="">`:"";
+        div.innerHTML=`${bossIcon}<span class="kb ${f.kill?"kill":"wipe"}">${f.kill?"Kill":"Wipe"}</span><span class="fi-name">${f.name}</span><span class="fi-pull">Pull ${bpc[f.name]}${pct}</span><span class="fi-dur">${d}</span><a href="https://www.warcraftlogs.com/reports/${reportCode}#fight=${f.id}" target="_blank" onclick="event.stopPropagation()" style="margin-left:8px;background:#0d1117;border:1px solid #30363d;color:#6e7681;padding:4px 10px;border-radius:4px;font-size:11px;text-decoration:none;flex-shrink:0" title="Open in WarcraftLogs">WCL ↗</a>`;
+        div.onclick=()=>{document.querySelectorAll(".fi,.mplus-dung-hdr").forEach(x=>{x.classList.remove("selected");x.style.borderColor="";});div.classList.add("selected");fightId=f.id;document.getElementById("analyzeBtn").disabled=false;};
+        bossWrap.appendChild(div);
+      });
+      list.appendChild(bossWrap);
+    });
+    // orphan fights not inside any dungeon window (weird/split logs edge case)
+    const coveredIds=new Set(dungeonFights.flatMap(dFight=>allFights.filter(f=>(!f.keystoneLevel||f.keystoneLevel===0)&&f.startTime>=dFight.startTime&&f.endTime<=dFight.endTime+120000).map(f=>f.id)).concat(dungeonFights.map(f=>f.id)));
+    allFights.filter(f=>!coveredIds.has(f.id)).forEach(f=>{
+      const div=document.createElement("div");div.className="fi";
+      const d=fdur(f.endTime-f.startTime);
+      div.innerHTML=`<span class="kb ${f.kill?"kill":"wipe"}">${f.kill?"Kill":"Wipe"}</span><span class="fi-name">${f.name}</span><span class="fi-dur">${d}</span>`;
+      div.onclick=()=>{document.querySelectorAll(".fi,.mplus-dung-hdr").forEach(x=>{x.classList.remove("selected");x.style.borderColor="";});div.classList.add("selected");fightId=f.id;document.getElementById("analyzeBtn").disabled=false;};
+      list.appendChild(div);
+    });
+  }else{
+    // normal raid rendering -- unchanged
+    const pc={};const mapped=allFights.map(f=>{pc[f.name]=(pc[f.name]||0)+1;return{...f,pull:pc[f.name]};});
+    mapped.forEach(f=>{
+      const d=fdur(f.endTime-f.startTime),pct=(!f.kill&&f.bossPercentage!=null)?` · ${f.bossPercentage.toFixed(1)}%`:"";
+      const div=document.createElement("div");div.className="fi";
+      // boss icon from rpglogs CDN -- uses WCL encounter IDs, NOT JournalEncounterID
+      // zamimg uses JournalEncounterID which is a completely different number -- wasted an hour on that
+      const bossIcon=f.encounterID?`<img src="https://assets.rpglogs.com/img/warcraft/bosses/${f.encounterID}-icon.jpg" onerror="this.style.display='none'" style="width:32px;height:32px;border-radius:4px;object-fit:cover;flex-shrink:0;margin-right:6px" alt="">`:"";
+      div.innerHTML=`${bossIcon}<span class="kb ${f.kill?"kill":"wipe"}">${f.kill?"Kill":"Wipe"}</span><span class="fi-name">${f.name}</span><span class="fi-pull">Pull ${f.pull}${pct}</span><span class="fi-dur">${d}</span><a href="https://www.warcraftlogs.com/reports/${reportCode}#fight=${f.id}" target="_blank" onclick="event.stopPropagation()" style="margin-left:8px;background:#0d1f33;border:1px solid #4a9eff;color:#4a9eff;padding:5px 12px;border-radius:5px;font-size:12px;font-weight:700;text-decoration:none;flex-shrink:0;white-space:nowrap;box-shadow:0 0 6px #4a9eff30" title="Open in WarcraftLogs">📊 WCL ↗</a>`;
+      div.onclick=()=>{document.querySelectorAll(".fi").forEach(d=>d.classList.remove("selected"));div.classList.add("selected");fightId=f.id;document.getElementById("analyzeBtn").disabled=false;};
+      list.appendChild(div);
+    });
+  }
   fightId=null;document.getElementById("analyzeBtn").disabled=true;
   document.getElementById("fightSection").style.display="block";
   document.getElementById("rosterSection").style.display="block";
-  const rosterGrid=document.getElementById("rosterGrid");
-  rosterGrid.innerHTML=""; // cleared here, populated after analyze()
+  document.getElementById("rosterGrid").innerHTML=""; // cleared here, populated after analyze()
 }
 
 // click column header to sort. SS tracks asc/desc state per table
@@ -2196,7 +2242,7 @@ async function analyze(){
     },0);
 
     const cards=[
-      {val:fight.kill?"✓ Kill":"✗ Wipe",lbl:"Outcome",cls:fight.kill?"good":"bad"},
+      {val:isMPlus?(fight.completionTime&&fight.completionTime<=fight.keystoneTime?"✓ Timed":"✗ Depleted"):(fight.kill?"✓ Kill":"✗ Wipe"),lbl:isMPlus?"Timer Result":"Outcome",cls:isMPlus?(fight.completionTime&&fight.completionTime<=fight.keystoneTime?"good":"bad"):(fight.kill?"good":"bad")},
       {val:totalDeaths,lbl:"Total Deaths",cls:totalDeaths===0?"good":totalDeaths<=3?"warn":"bad"},
       {val:totalInts,lbl:"Interrupts",cls:totalInts>=5?"good":totalInts>=2?"warn":"bad"},
       {val:totalDisps,lbl:"Dispels",cls:""},
@@ -2212,12 +2258,58 @@ async function analyze(){
     // big duration at top of summary -- raid leaders think in terms of fight length
     // green = kill, red = wipe. obvious but useful at a glance
     const fightDurStr=fdur(fight.endTime-fight.startTime);
-    const enrageColor=fight.kill?"#3fb950":"#f85149";
-    const summaryHeader=`<div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;padding:14px 18px;background:#161b22;border:1px solid #30363d;border-radius:8px;flex-wrap:wrap">
+    // M+ detect -- keystoneLevel on the fight means this is the dungeon-level entry
+    const isMPlus=fight.keystoneLevel>0;
+    const enrageColor=isMPlus?(fight.completionTime&&fight.completionTime<=fight.keystoneTime?"#3fb950":"#f85149"):(fight.kill?"#3fb950":"#f85149");
+    // build M+ timer banner if applicable
+    let mplusBanner="";
+    if(isMPlus){
+      const par=fight.keystoneTime,actual=fight.completionTime;
+      const affixLine=(fight.keystoneAffixes||[]).map(a=>`<span style="background:#21262d;border:1px solid #30363d;color:#8b949e;border-radius:3px;padding:1px 7px;font-size:11px">${a.name}</span>`).join(" ");
+      let timerLine="";
+      if(par&&actual){
+        const delta=Math.abs(par-actual),mins=Math.floor(delta/60000),secs=Math.floor((delta%60000)/1000);
+        const ds=`${mins}:${secs.toString().padStart(2,"0")}`;
+        const parStr=`${Math.floor(par/60000)}:${Math.floor((par%60000)/1000).toString().padStart(2,"0")}`;
+        if(actual<=par){
+          const pctU=Math.round((par-actual)/par*100);
+          timerLine=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px">
+            <span style="background:#0d2318;border:1px solid #3fb950;color:#3fb950;border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700">✓ Timed — +${ds} under (${pctU}% faster)</span>
+            <span style="color:#6e7681;font-size:11px">Par: ${parStr}</span>
+          </div>`;
+        }else{
+          const pctO=Math.round((actual-par)/par*100);
+          timerLine=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px">
+            <span style="background:#2d1b1b;border:1px solid #f85149;color:#f85149;border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700">✗ Depleted — +${ds} over timer (${pctO}% slow)</span>
+            <span style="color:#6e7681;font-size:11px">Par: ${parStr}</span>
+          </div>`;
+        }
+      }else if(par&&!actual){
+        timerLine=`<div style="margin-top:6px"><span style="background:#1a1400;border:1px solid #e3a008;color:#e3a008;border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700">⚠ Run not completed</span></div>`;
+      }
+      // per-boss breakdown table -- find boss fights within this dungeon's time range
+      const bossRows=allFights.filter(f=>(!f.keystoneLevel||f.keystoneLevel===0)&&f.startTime>=fight.startTime&&f.endTime<=fight.endTime+120000);
+      const bossTableRows=bossRows.map(f=>{
+        const bDur=f.endTime-f.startTime;
+        const pct=allFights.filter(x=>x.name===f.name&&(!x.keystoneLevel||x.keystoneLevel===0)).length>1?` · Pull ${f.pull}`:"";
+        return `<tr><td style="padding:5px 8px;color:#c9d1d9;font-size:12px">${f.name}${pct}</td><td style="padding:5px 8px;font-size:12px;font-weight:600;color:${f.kill?"#3fb950":"#f85149"}">${f.kill?"Kill":"Wipe"}</td><td style="padding:5px 8px;font-size:12px;color:#79c0ff;text-align:right">${fdur(bDur)}</td><td style="padding:5px 8px;font-size:11px;color:#8b949e;text-align:right">${f.bossPercentage!=null&&!f.kill?f.bossPercentage.toFixed(1)+"%":""}</td></tr>`;
+      }).join("");
+      const bossTable=bossRows.length?`<div style="margin-top:10px"><div style="font-size:10px;color:#6e7681;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Boss Breakdown</div><table style="width:100%;border-collapse:collapse;border:1px solid #21262d;border-radius:6px;overflow:hidden"><thead><tr style="background:#161b22"><th style="padding:5px 8px;font-size:10px;color:#6e7681;text-align:left;text-transform:uppercase">Boss</th><th style="padding:5px 8px;font-size:10px;color:#6e7681;text-align:left;text-transform:uppercase">Result</th><th style="padding:5px 8px;font-size:10px;color:#6e7681;text-align:right;text-transform:uppercase">Time</th><th style="padding:5px 8px;font-size:10px;color:#6e7681;text-align:right;text-transform:uppercase">HP%</th></tr></thead><tbody>${bossTableRows}</tbody></table></div>`:"";
+      mplusBanner=`<div style="background:#0d1f33;border:1px solid #1f6feb;border-radius:8px;padding:14px 18px;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span style="font-size:22px;font-weight:700;color:#ffd700">+${fight.keystoneLevel}</span>
+          <span style="font-size:15px;font-weight:600;color:#c9d1d9">${fight.name}</span>
+          <span style="color:#8b949e;font-size:12px">${fightDurStr}</span>
+          <span style="margin-left:auto;display:flex;gap:4px;flex-wrap:wrap">${affixLine}</span>
+        </div>
+        ${timerLine}${bossTable}
+      </div>`;
+    }
+    const summaryHeader=`${mplusBanner}<div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;padding:14px 18px;background:#161b22;border:1px solid #30363d;border-radius:8px;flex-wrap:wrap">
       <div style="font-size:28px;font-weight:700;color:${enrageColor}">${fightDurStr}</div>
       <div style="display:flex;flex-direction:column;gap:2px">
         <div style="font-size:15px;font-weight:600;color:#c9d1d9">${fight.name}</div>
-        <div style="font-size:12px;color:#8b949e">${fight.kill?"Kill":"Wipe"} &nbsp;·&nbsp; ${Object.keys(P).length} players &nbsp;·&nbsp; Pull ${fight.pull}</div>
+        <div style="font-size:12px;color:#8b949e">${isMPlus?`+${fight.keystoneLevel} Mythic+`:(fight.kill?"Kill":"Wipe")} &nbsp;·&nbsp; ${Object.keys(P).length} players${isMPlus?"":` &nbsp;·&nbsp; Pull ${fight.pull}`}</div>
       </div>
     </div>`;
     // band is rendered after pullHist is populated below -- dont call it here
