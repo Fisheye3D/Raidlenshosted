@@ -1744,7 +1744,7 @@ async function searchGuild(){
       }else if(par){
         const delta=Math.abs(par-runMs),mins=Math.floor(delta/60000),secs=Math.floor((delta%60000)/1000);
         const ds=`${mins}:${secs.toString().padStart(2,"0")}`;
-        if(runMs<=par){const pctU=Math.round((par-runMs)/par*100);timerHtml=`<span style="background:#0d2318;border:1px solid #3fb950;color:#3fb950;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">✓ Timed +${ds} (${pctU}% under)</span>`;}
+        if(runMs<=par){const pctU=Math.round((par-runMs)/par*100);timerHtml=`<span style="background:#0d2318;border:1px solid #3fb950;color:#3fb950;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">✓ Timed -${ds} (${pctU}% under)</span>`;}
         else{timerHtml=`<span style="background:#2d1b1b;border:1px solid #f85149;color:#f85149;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">✗ Depleted +${ds} over</span>`;}
       }
       const affixes=(dFight.keystoneAffixes||[]).map(id=>`<span style="background:#161b22;border:1px solid #30363d;color:#8b949e;border-radius:3px;padding:1px 6px;font-size:10px">${affixName(id)}</span>`).join(" ");
@@ -2255,6 +2255,11 @@ async function analyze(){
       }).length:0);
     },0);
 
+    // M+ detect -- must come before cards since cards references isMPlus
+    const isMPlus=fight.keystoneLevel>0;
+    const runMs=fight.endTime-fight.startTime;
+    const timed=isMPlus&&fight.kill&&(!fight.keystoneTime||runMs<=fight.keystoneTime);
+
     const cards=[
       {val:isMPlus?((fight.endTime-fight.startTime)<=fight.keystoneTime?"✓ Timed":"✗ Depleted"):(fight.kill?"✓ Kill":"✗ Wipe"),lbl:isMPlus?"Timer Result":"Outcome",cls:isMPlus?((fight.endTime-fight.startTime)<=fight.keystoneTime?"good":"bad"):(fight.kill?"good":"bad")},
       {val:totalDeaths,lbl:"Total Deaths",cls:totalDeaths===0?"good":totalDeaths<=3?"warn":"bad"},
@@ -2271,11 +2276,7 @@ async function analyze(){
     ];
     // big duration at top of summary -- raid leaders think in terms of fight length
     // green = kill, red = wipe. obvious but useful at a glance
-    const fightDurStr=fdur(fight.endTime-fight.startTime);
-    // M+ detect -- keystoneLevel on the fight means this is the dungeon-level entry
-    const isMPlus=fight.keystoneLevel>0;
-    const runMs=fight.endTime-fight.startTime;
-    const timed=isMPlus&&fight.kill&&(!fight.keystoneTime||runMs<=fight.keystoneTime);
+    const fightDurStr=fdur(runMs);
     const enrageColor=isMPlus?(timed?"#3fb950":"#f85149"):(fight.kill?"#3fb950":"#f85149");
     // build M+ timer banner if applicable
     let mplusBanner="";
@@ -2291,7 +2292,7 @@ async function analyze(){
         const parStr=`${Math.floor(par/60000)}:${Math.floor((par%60000)/1000).toString().padStart(2,"0")}`;
         if(runMsF<=par){
           const pctU=Math.round((par-runMsF)/par*100);
-          timerLine=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px"><span style="background:#0d2318;border:1px solid #3fb950;color:#3fb950;border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700">✓ Timed — +${ds} under (${pctU}% faster)</span><span style="color:#6e7681;font-size:11px">Par: ${parStr}</span></div>`;
+          timerLine=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px"><span style="background:#0d2318;border:1px solid #3fb950;color:#3fb950;border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700">✓ Timed -${ds} (${pctU}% under par)</span><span style="color:#6e7681;font-size:11px">Par: ${parStr}</span></div>`;
         }else{
           const pctO=Math.round((runMsF-par)/par*100);
           timerLine=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px"><span style="background:#2d1b1b;border:1px solid #f85149;color:#f85149;border-radius:4px;padding:3px 10px;font-size:12px;font-weight:700">✗ Depleted — +${ds} over timer (${pctO}% slow)</span><span style="color:#6e7681;font-size:11px">Par: ${parStr}</span></div>`;
