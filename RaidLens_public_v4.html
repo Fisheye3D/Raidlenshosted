@@ -62,12 +62,15 @@ button:disabled:hover{transform:none}
 .tab-panel{display:none}
 .tab-panel.active{display:block}
 .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-bottom:12px}
-.report-grid-scroll{max-height:min(60vh,560px);overflow-y:auto;align-content:start;padding-right:4px;scrollbar-gutter:stable}
-.report-grid-scroll::-webkit-scrollbar{width:10px}
-.report-grid-scroll::-webkit-scrollbar-track{background:#0f1620;border-radius:999px}
-.report-grid-scroll::-webkit-scrollbar-thumb{background:#2b3745;border-radius:999px;border:2px solid #0f1620}
-.report-grid-scroll::-webkit-scrollbar-thumb:hover{background:#3a4b5e}
+.report-grid-scroll{align-content:start}
 .report-grid-footnote{font-size:11px;color:#6e7681;margin:-2px 0 10px}
+.report-grid-pager{display:none;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:-2px 0 12px}
+.report-grid-pager.show{display:flex}
+.report-grid-pager-meta{font-size:11px;color:#8b949e}
+.report-grid-pager-controls{display:flex;align-items:center;gap:6px}
+.report-grid-pager-btn{background:#161b22;border:1px solid #30363d;color:#c9d1d9;padding:6px 10px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer}
+.report-grid-pager-btn:hover:not(:disabled){border-color:#8b949e}
+.report-grid-pager-btn:disabled{opacity:.45;cursor:default}
 .card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px 14px;cursor:pointer;transition:border-color .15s;position:relative}
 .card:hover{border-color:#8b949e;transform:translateY(-1px);box-shadow:0 8px 24px #00000018}
 .card.selected{border-color:#ffd700;background:#1e1a0e}
@@ -925,6 +928,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
     <div class="hint" id="myLogsHint"></div>
     <div id="myLogsFootnote" class="report-grid-footnote" style="display:none"></div>
     <div id="myLogsGrid" class="card-grid report-grid-scroll"></div>
+    <div id="myLogsPager" class="report-grid-pager"></div>
     <div id="myLogsEmpty" class="empty" style="display:none">Nothing here yet. Load a report and it'll show up.</div>
   </div>
 
@@ -949,6 +953,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
       <div style="font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Pick a Raid Night</div>
       <div id="searchGuildFootnote" class="report-grid-footnote" style="display:none"></div>
       <div id="searchGuildGrid" class="card-grid report-grid-scroll"></div>
+      <div id="searchGuildPager" class="report-grid-pager"></div>
     </div>
   </div>
 </div>
@@ -1592,6 +1597,15 @@ async function handlePKCECallback(){
       if(uid) localStorage.setItem(K_USERID,String(uid));
     }catch(e){ console.warn("could not fetch user ID:",e); }
     localStorage.setItem(K_TYPE,"user");
+    try{
+      const ui=JSON.parse(localStorage.getItem("rl_ui_v5")||"{}");
+      localStorage.setItem("rl_ui_v5",JSON.stringify({
+        focusMode:true,
+        copyMode:ui.copyMode||"short"
+      }));
+    }catch{
+      localStorage.setItem("rl_ui_v5",JSON.stringify({focusMode:true,copyMode:"short"}));
+    }
     // strip the ?code= from URL so a page refresh doesnt try to re-exchange
     window.history.replaceState({},"",PKCE_REDIRECT);
     sessionStorage.removeItem("rl_pkce_verifier");
@@ -1685,6 +1699,8 @@ async function refreshToken(){
 let reportCode=null,fightId=null,allFights=[],abilities=[],selectedType=null;
 window._raidLensPlayers=[];
 window._raidLensFightSec=0;
+const REPORTS_PER_PAGE=16;
+let _myLogsPage=0,_guildPage=0,_guildReports=[];
 
 function getSaved(){try{return JSON.parse(localStorage.getItem(K_REPORTS)||"[]");}catch{return[];}}
 function saveRpt(r){const s=getSaved().filter(x=>x.code!==r.code);s.unshift(r);localStorage.setItem(K_REPORTS,JSON.stringify(s.slice(0,20)));}
@@ -1705,6 +1721,14 @@ function clrErr(){document.getElementById("errorBox").style.display="none";}
 function showSErr(m){const b=document.getElementById("setupErrBox");b.style.display="block";b.textContent="❌ "+m;}
 function hideFights(){document.getElementById("fightSection").style.display="none";document.getElementById("fightList").innerHTML="";fightId=null;document.getElementById("analyzeBtn").disabled=true;}
 function hideResults(){document.getElementById("results").style.display="none";document.getElementById("resultsDivider").style.display="none";}
+function renderReportPager(id,page,totalItems,onChange){
+  const el=document.getElementById(id);if(!el)return;
+  const totalPages=Math.max(1,Math.ceil(totalItems/REPORTS_PER_PAGE));
+  if(totalItems<=REPORTS_PER_PAGE){el.className="report-grid-pager";el.innerHTML="";return;}
+  el.className="report-grid-pager show";
+  el.innerHTML=`<div class="report-grid-pager-meta">Showing ${page*REPORTS_PER_PAGE+1}-${Math.min((page+1)*REPORTS_PER_PAGE,totalItems)} of ${totalItems}</div><div class="report-grid-pager-controls"><button class="report-grid-pager-btn" ${page<=0?"disabled":""} data-dir="-1">← Prev</button><div class="report-grid-pager-meta">Page ${page+1} / ${totalPages}</div><button class="report-grid-pager-btn" ${page>=totalPages-1?"disabled":""} data-dir="1">Next →</button></div>`;
+  el.querySelectorAll("[data-dir]").forEach(btn=>btn.onclick=()=>onChange(Number(btn.dataset.dir)));
+}
 
 // setup -- runs once, never again unless you reset
 // "Public Client" on WCL must be UNCHECKED or the oauth breaks, cost me an hour
@@ -1869,14 +1893,18 @@ function selectFightById(id,autoAnalyze){
 // my logs grid -- pulls from localStorage, shows last 20 reports
 function renderMyLogs(){
   const saved=getSaved(),grid=document.getElementById("myLogsGrid"),empty=document.getElementById("myLogsEmpty"),foot=document.getElementById("myLogsFootnote");
+  const totalPages=Math.max(1,Math.ceil(saved.length/REPORTS_PER_PAGE));
+  _myLogsPage=Math.min(_myLogsPage,totalPages-1);
+  const pageItems=saved.slice(_myLogsPage*REPORTS_PER_PAGE,(_myLogsPage+1)*REPORTS_PER_PAGE);
   grid.innerHTML="";
   if(foot){
-    foot.style.display=saved.length>8?"block":"none";
-    foot.textContent=saved.length>8?`${saved.length} saved reports. Scroll to browse older logs.`:"";
+    foot.style.display=saved.length>0?"block":"none";
+    foot.textContent=saved.length>REPORTS_PER_PAGE?`${saved.length} saved reports.`:`${saved.length} saved report${saved.length===1?"":"s"}.`;
   }
+  renderReportPager("myLogsPager",_myLogsPage,saved.length,dir=>{_myLogsPage=Math.min(totalPages-1,Math.max(0,_myLogsPage+dir));renderMyLogs();});
   if(!saved.length){empty.style.display="block";return;}
   empty.style.display="none";
-  saved.forEach(r=>{
+  pageItems.forEach(r=>{
     const card=document.createElement("div");card.className="card";
     card.innerHTML=`<button class="c-del" onclick="event.stopPropagation();delMyLog('${r.code}')">×</button><div class="c-zone">${r.zone||""}</div><div class="c-date">${r.date||r.code}</div><div class="c-title">${r.title||r.code}</div><div class="c-meta">${r.meta||""}</div>`;
     card.onclick=()=>{document.querySelectorAll("#myLogsGrid .card").forEach(c=>c.classList.remove("selected"));card.classList.add("selected");clrErr();clrLog();hideFights();hideResults();loadFights(getToken(),r.code).catch(e=>showErr(e.message));};
@@ -1884,6 +1912,29 @@ function renderMyLogs(){
   });
 }
 function delMyLog(c){delRpt(c);renderMyLogs();}
+function changeGuildPage(dir){
+  const totalPages=Math.max(1,Math.ceil(_guildReports.length/REPORTS_PER_PAGE));
+  _guildPage=Math.min(totalPages-1,Math.max(0,_guildPage+dir));
+  renderGuildReports();
+}
+function renderGuildReports(){
+  const grid=document.getElementById("searchGuildGrid"),foot=document.getElementById("searchGuildFootnote");
+  if(!grid)return;
+  grid.innerHTML="";
+  const totalPages=Math.max(1,Math.ceil(_guildReports.length/REPORTS_PER_PAGE));
+  _guildPage=Math.min(_guildPage,totalPages-1);
+  if(foot){
+    foot.style.display=_guildReports.length>0?"block":"none";
+    foot.textContent=_guildReports.length>REPORTS_PER_PAGE?`${_guildReports.length} guild reports found.`:`${_guildReports.length} guild report${_guildReports.length===1?"":"s"} found.`;
+  }
+  renderReportPager("searchGuildPager",_guildPage,_guildReports.length,changeGuildPage);
+  _guildReports.slice(_guildPage*REPORTS_PER_PAGE,(_guildPage+1)*REPORTS_PER_PAGE).forEach(r=>{
+    const obj=buildRptObj(r);const card=document.createElement("div");card.className="card";
+    card.innerHTML=`<div class="c-zone">${obj.zone}</div><div class="c-date">${obj.date}</div><div class="c-title">${obj.title}</div><div class="c-meta">${obj.meta}</div>`;
+    card.onclick=()=>{document.querySelectorAll("#searchGuildGrid .card").forEach(c=>c.classList.remove("selected"));card.classList.add("selected");clrErr();clrLog();hideFights();hideResults();loadFights(getToken(),r.code).catch(e=>showErr(e.message));};
+    grid.appendChild(card);
+  });
+}
 
 // WCL graphql. returns HTTP 200 even when auth fails. the errors are in json.errors.
 // yes this is a terrible API design decision. no i cant fix it
@@ -1938,18 +1989,9 @@ async function searchGuild(){
     const reports=data?.reportData?.reports?.data||[];
     if(!reports.length)throw new Error(`No reports found for "${guild}" on ${server} (${region}).`);
     log(`✅ ${reports.length} report(s) found`);clrLog();
-    const grid=document.getElementById("searchGuildGrid");grid.innerHTML="";
-    const foot=document.getElementById("searchGuildFootnote");
-    if(foot){
-      foot.style.display=reports.length>8?"block":"none";
-      foot.textContent=reports.length>8?`${reports.length} guild reports found. Scroll to browse older logs.`:"";
-    }
-    reports.forEach(r=>{
-      const obj=buildRptObj(r);const card=document.createElement("div");card.className="card";
-      card.innerHTML=`<div class="c-zone">${obj.zone}</div><div class="c-date">${obj.date}</div><div class="c-title">${obj.title}</div><div class="c-meta">${obj.meta}</div>`;
-      card.onclick=()=>{document.querySelectorAll("#searchGuildGrid .card").forEach(c=>c.classList.remove("selected"));card.classList.add("selected");clrErr();clrLog();hideFights();hideResults();loadFights(token,r.code).catch(e=>showErr(e.message));};
-      grid.appendChild(card);
-    });
+    _guildReports=reports;
+    _guildPage=0;
+    renderGuildReports();
     document.getElementById("searchGuildSection").style.display="block";
   }catch(e){showErr(e.message);}finally{btn.disabled=false;btn.innerHTML="Search";}
 }
