@@ -1000,7 +1000,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
     <div class="rtab" onclick="switchRTab('pullcompare',this)">🔁 Pull Compare</div>
   </div>
   <div class="rtab-panel active" id="rtab-defensives"><div class="tw"><table id="tDef"><thead><tr><th onclick="srt('tDef',0)">Player ↕</th><th onclick="srt('tDef',1)">Class/Spec ↕</th><th title="Personal defensive cooldowns cast during the fight — tracked from combat log cast events.">Def CDs ⓘ</th><th onclick="srt('tDef',3)" class="num">Total ↕</th></tr></thead><tbody id="bDef"></tbody></table></div></div>
-  <div class="rtab-panel" id="rtab-consumables"><div class="sn">Consumable usage per player during the fight, including potions, flask buffs, food buffs, and healthstones.</div><div class="tw"><table id="tCons"><thead><tr><th onclick="srt('tCons',0)">Player ↕</th><th onclick="srt('tCons',1)">Class/Spec ↕</th><th style="text-align:center">Potion</th><th style="text-align:center">Flask</th><th style="text-align:center">Food</th><th style="text-align:center">Healthstone</th></tr></thead><tbody id="bCons"></tbody></table></div></div>
+  <div class="rtab-panel" id="rtab-consumables"><div class="sn">Potion and Healthstone usage per player during the fight.</div><div class="tw"><table id="tCons"><thead><tr><th onclick="srt('tCons',0)">Player ↕</th><th onclick="srt('tCons',1)">Class/Spec ↕</th><th style="text-align:center">Potion</th><th style="text-align:center">Healthstone</th></tr></thead><tbody id="bCons"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-deaths"><div class="sn">All player deaths ordered by time. Killing blow shown where available.</div><div id="cleanPullBanner" style="display:none"></div><div id="topKillersBox" style="display:none;margin-bottom:12px"></div><div class="tw"><table id="tDeath"><thead><tr><th onclick="srt('tDeath',0)">Player ↕</th><th onclick="srt('tDeath',1)">Class/Spec ↕</th><th onclick="srt('tDeath',2)">Time ↕</th><th>Killing Blow</th><th onclick="srt('tDeath',4)" class="num">Deaths ↕</th><th></th></tr></thead><tbody id="bDeath"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-interrupts"><div class="sn">Who interrupted what and how many times.</div><div class="tw"><table id="tInt"><thead><tr><th onclick="srt('tInt',0)">Player ↕</th><th onclick="srt('tInt',1)">Class/Spec ↕</th><th>Spells Interrupted</th><th onclick="srt('tInt',3)" class="num">Total ↕</th></tr></thead><tbody id="bInt"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dispels"><div class="sn">Who dispelled what.</div><div class="tw"><table id="tDisp"><thead><tr><th onclick="srt('tDisp',0)">Player ↕</th><th onclick="srt('tDisp',1)">Class/Spec ↕</th><th>Spells Dispelled</th><th onclick="srt('tDisp',3)" class="num">Total ↕</th></tr></thead><tbody id="bDisp"></tbody></table></div></div>
@@ -2194,7 +2194,7 @@ function openPlayerModal(p,fSec){
   const tagList=(entries,variant,label)=>entries.length?entries.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),variant,label)).join(""):"<span style='color:#6e7681'>None</span>";
   const statRow=(label,val,color="#c9d1d9")=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #21262d;font-size:13px"><span style="color:#8b949e">${label}</span><span style="font-weight:600;color:${color}">${val}</span></div>`;
   let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-    <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("Potion",p.pots?"✓ Used ("+p.pots+")":"✗ None detected",p.pots?"#3fb950":"#6e7681")}${statRow("Flask",p.flask?`✓ ${p.flaskName||"Detected"}`:"✗ None detected",p.flask?"#3fb950":"#6e7681")}${statRow("Food",p.food?`✓ ${p.foodName||"Detected"}`:"✗ None detected",p.food?"#3fb950":"#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
+    <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("Potion",p.pots?"✓ Used ("+p.pots+")":"✗ None detected",p.pots?"#3fb950":"#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
     <div>${statRow("Damage Taken",fmtNum(p.dtaken))}${statRow("Interrupts",Object.values(p.ints).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Dispels",Object.values(p.disps).reduce((s,c)=>s+c,0),"#3fb950")}${statRow("CC Used",Object.values(p.cc).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Def CDs Used",Object.values(p.defs).reduce((s,c)=>s+c,0),"#ffd700")}${statRow("Off CDs Used",Object.values(p.offs).reduce((s,c)=>s+c,0),"#ffd700")}</div></div>`;
   if(p.deaths.length){html+=`<div class="modal-section"><h4>Deaths</h4><div class="spell-grid">${p.deaths.map(d=>spellChip(`${d.timeStr||"?"} — ${d.killer}`,null,d.killerId||findAbilityIdByName(d.killer),"danger","death cause")).join("")}</div></div>`;}
   if(Object.keys(p.dmgBySpell||{}).length){html+=`<div class="modal-section"><h4>Damage Done Breakdown</h4>${renderSpellBreakdown(p.dmgBySpell,p.ddealt,"cool","damage done")}</div>`;}
@@ -2290,8 +2290,8 @@ async function analyze(){
   try{
     const fight=allFights.find(f=>f.id===fightId),fSec=(fight.endTime-fight.startTime)/1000,fightMs=fight.endTime-fight.startTime;
     log(`⚔️  Analyzing: ${fight.name} (${fdur(fight.endTime-fight.startTime)})`);
-    const aName={},potIDs=new Set(),flaskIDs=new Set(),foodIDs=new Set();
-    abilities.forEach(a=>{aName[a.gameID]=a.name;const n=(a.name||"").toLowerCase();if(n.includes("potion"))potIDs.add(a.gameID);if(n.includes("flask"))flaskIDs.add(a.gameID);if(n.includes("well fed")||n.includes("feast")||n.includes("food"))foodIDs.add(a.gameID);});
+    const aName={},potIDs=new Set();
+    abilities.forEach(a=>{aName[a.gameID]=a.name;const n=(a.name||"").toLowerCase();if(n.includes("potion"))potIDs.add(a.gameID);});
     log("👥 Fetching roster...");
     const dd=await gql(token,`{reportData{report(code:"${reportCode}"){playerDetails(fightIDs:[${fight.id}]) rankedCharacters{name server{name slug region{slug}}}}}}`);
     const pd=dd.reportData.report.playerDetails,pdObj=pd?.data?.playerDetails||pd?.playerDetails||pd,P={};
@@ -2308,7 +2308,7 @@ async function analyze(){
       const charInfo=charServerMap[p.name.toLowerCase()]||{};
       P[p.id]={id:p.id,name:p.name,cls:p.type,spec:p.specs?.[0]?.spec||"",role,
         server:charInfo.server||"",region:charInfo.region||"us",
-        defs:{},offs:{},pots:0,potName:null,flask:false,flaskName:null,food:false,foodName:null,hs:false,ints:{},disps:{},cc:{},
+        defs:{},offs:{},pots:0,potName:null,hs:false,ints:{},disps:{},cc:{},
         dtaken:0,ddealt:0,healed:0,overheal:0,absorbs:0,deaths:[],rio:null,
         dmgBySpell:{},takenBySpell:{},healBySpell:{}};
     });});
@@ -2323,13 +2323,6 @@ async function analyze(){
       prepotEvts.forEach(ev=>{if(potIDs.has(ev.abilityGameID)&&P[ev.sourceID]){prepotPlayerIDs.add(ev.sourceID);if(!P[ev.sourceID].potName)P[ev.sourceID].potName=aName[ev.abilityGameID];}});
       log(`✅ Prepot scan: ${prepotPlayerIDs.size} prepot(s) found`);
     }catch(e){console.warn("prepot fetch failed:",e);}
-    log("📡 Buffs...");const buffs=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Buffs");log(`✅ ${buffs.length}`);
-    buffs.forEach(ev=>{
-      const p=P[ev.targetID];if(!p)return;
-      const sid=ev.abilityGameID;
-      if(flaskIDs.has(sid)){p.flask=true;if(!p.flaskName)p.flaskName=aName[sid];}
-      if(foodIDs.has(sid)){p.food=true;if(!p.foodName)p.foodName=aName[sid];}
-    });
     // track lust separately so we know timing + who was actually alive for it
     const bloodlusts=[];
     casts.forEach(ev=>{
@@ -2381,12 +2374,25 @@ async function analyze(){
     const kb=document.getElementById("resultKill");kb.textContent=fight.kill?"Kill":"Wipe";kb.className=`kb ${fight.kill?"kill":"wipe"}`;
     document.getElementById("resultMeta").textContent=`Duration: ${fdur(fight.endTime-fight.startTime)} · ${Object.keys(P).length} players`;
     const clr=p=>CC[p.cls]||"#c9d1d9",cs=p=>`style="font-weight:600;color:${clr(p)}"`,cs2=p=>`style="color:${clr(p)};font-size:12px"`,spec=p=>`${p.cls||"?"}${p.spec?" · "+p.spec:""}`,cb=v=>`<span class="badge ${v?"yes":"no"}">${v?"✓":"✗"}</span>`;
+    const bindRowAction=(tr,handler,title)=>{
+      tr.classList.add("clickable-row");
+      tr.tabIndex=0;
+      tr.setAttribute("role","button");
+      tr.setAttribute("title",title||"Open player details");
+      tr.onclick=handler;
+      tr.onkeydown=e=>{
+        if(e.key==="Enter"||e.key===" "){
+          e.preventDefault();
+          handler();
+        }
+      };
+    };
     // DEFENSIVES
     const bDef=document.getElementById("bDef");bDef.innerHTML="";
-    sorted.forEach(p=>{const de=Object.entries(p.defs),tot=de.reduce((s,[,c])=>s+c,0);const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td>${de.length?de.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),"gold","defensive cooldown")).join(""):'<span class="none-t">None detected</span>'}</td><td class="num" data-val="${tot}" style="color:${tot>0?"#ffd700":"#6e7681"};font-weight:600">${tot||"—"}</td>`;bDef.appendChild(tr);});
+    sorted.forEach(p=>{const de=Object.entries(p.defs),tot=de.reduce((s,[,c])=>s+c,0);const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td>${de.length?de.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),"gold","defensive cooldown")).join(""):'<span class="none-t">None detected</span>'}</td><td class="num" data-val="${tot}" style="color:${tot>0?"#ffd700":"#6e7681"};font-weight:600">${tot||"—"}</td>`;bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");bDef.appendChild(tr);});
     // CONSUMABLES
     const bCons=document.getElementById("bCons");bCons.innerHTML="";
-    sorted.forEach(p=>{const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td style="text-align:center">${p.pots>0?`<span class="badge yes" title="${p.potName||"Potion detected"}">✓ ×${p.pots}</span>`:cb(false)}</td><td style="text-align:center">${p.flask?`<span class="badge yes" title="${p.flaskName||"Flask buff detected"}">✓</span>`:cb(false)}</td><td style="text-align:center">${p.food?`<span class="badge yes" title="${p.foodName||"Food buff detected"}">✓</span>`:cb(false)}</td><td style="text-align:center">${cb(p.hs)}</td>`;bCons.appendChild(tr);});
+    sorted.forEach(p=>{const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td style="text-align:center">${p.pots>0?`<span class="badge yes" title="${p.potName||"Potion detected"}">✓ ×${p.pots}</span>`:cb(false)}</td><td style="text-align:center">${cb(p.hs)}</td>`;bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");bCons.appendChild(tr);});
     // DEATHS
     const bDeath=document.getElementById("bDeath");bDeath.innerHTML="";const drows=[];
     sorted.forEach(p=>{if(!p.deaths.length){drows.push({...p,time:Infinity,killer:"—",killerId:null,timeStr:"Survived",dcount:0,ctx:null});}else p.deaths.forEach(d=>drows.push({...p,time:d.time,killer:d.killer,killerId:d.killerId||null,timeStr:d.timeStr||ftime(d.time),dcount:p.deaths.length,ctx:d.ctx||null}));});
@@ -2427,10 +2433,10 @@ async function analyze(){
 });
     // INTERRUPTS
     const bInt=document.getElementById("bInt");bInt.innerHTML="";
-    [...sorted].sort((a,b)=>Object.values(b.ints).reduce((s,c)=>s+c,0)-Object.values(a.ints).reduce((s,c)=>s+c,0)).forEach(p=>{const ie=Object.entries(p.ints),tot=ie.reduce((s,[,c])=>s+c,0);const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td>${ie.length?ie.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),"cool","interrupt")).join(""):'<span class="none-t">None</span>'}</td><td class="num" data-val="${tot}" style="color:${tot>0?"#79c0ff":"#6e7681"};font-weight:600">${tot||"—"}</td>`;bInt.appendChild(tr);});
+    [...sorted].sort((a,b)=>Object.values(b.ints).reduce((s,c)=>s+c,0)-Object.values(a.ints).reduce((s,c)=>s+c,0)).forEach(p=>{const ie=Object.entries(p.ints),tot=ie.reduce((s,[,c])=>s+c,0);const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td>${ie.length?ie.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),"cool","interrupt")).join(""):'<span class="none-t">None</span>'}</td><td class="num" data-val="${tot}" style="color:${tot>0?"#79c0ff":"#6e7681"};font-weight:600">${tot||"—"}</td>`;bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");bInt.appendChild(tr);});
     // DISPELS
     const bDisp=document.getElementById("bDisp");bDisp.innerHTML="";
-    [...sorted].sort((a,b)=>Object.values(b.disps).reduce((s,c)=>s+c,0)-Object.values(a.disps).reduce((s,c)=>s+c,0)).forEach(p=>{const de2=Object.entries(p.disps),tot=de2.reduce((s,[,c])=>s+c,0);const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td>${de2.length?de2.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),"good","dispel")).join(""):'<span class="none-t">None</span>'}</td><td class="num" data-val="${tot}" style="color:${tot>0?"#3fb950":"#6e7681"};font-weight:600">${tot||"—"}</td>`;bDisp.appendChild(tr);});
+    [...sorted].sort((a,b)=>Object.values(b.disps).reduce((s,c)=>s+c,0)-Object.values(a.disps).reduce((s,c)=>s+c,0)).forEach(p=>{const de2=Object.entries(p.disps),tot=de2.reduce((s,[,c])=>s+c,0);const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td>${de2.length?de2.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),"good","dispel")).join(""):'<span class="none-t">None</span>'}</td><td class="num" data-val="${tot}" style="color:${tot>0?"#3fb950":"#6e7681"};font-weight:600">${tot||"—"}</td>`;bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");bDisp.appendChild(tr);});
     // DAMAGE TAKEN
     const bDmg=document.getElementById("bDmg");bDmg.innerHTML="";
     const maxDT=Math.max(...Object.values(P).map(p=>p.dtaken),1);
@@ -2440,24 +2446,24 @@ async function analyze(){
       const barPct=Math.round(p.dtaken/maxDT*100);
       const raidPct=(p.dtaken/totalRaidDmg*100).toFixed(1);
       const bc=p.role==="tanks"?"#e3a008":p.role==="healers"?"#3fb950":"#79c0ff";
-      const tr=document.createElement("tr");tr.className="clickable-row";
+      const tr=document.createElement("tr");
       tr.innerHTML=`<td ${cs(p)}>${compactNameCell(p,"expand")}</td><td ${cs2(p)}>${spec(p)}</td>
         <td data-val="${p.role}" style="font-size:12px">${roleDisplay(p.role)}</td>
         <td><div class="bw"><div class="bf" style="width:${barPct}%;background:${bc}"></div></div></td>
         <td class="num" data-val="${p.dtaken}">${fmt(p.dtaken)}</td>
         <td class="num" data-val="${dtps}" style="color:#8b949e">${fmt(dtps)}</td>
         <td class="num" data-val="${raidPct}" style="color:${parseFloat(raidPct)>20?"#f85149":parseFloat(raidPct)>12?"#e3a008":"#8b949e"}">${raidPct}%</td>`;
-      tr.onclick=()=>toggleBreakdownRow(tr,p,"taken",7);
+      bindRowAction(tr,()=>toggleBreakdownRow(tr,p,"taken",7),"Expand spell breakdown");
       bDmg.appendChild(tr);
     });
     // DPS
     const bDps=document.getElementById("bDps");bDps.innerHTML="";const dpsP=Object.values(P).filter(p=>p.ddealt>0).sort((a,b)=>b.ddealt-a.ddealt),maxDD=Math.max(...dpsP.map(p=>p.ddealt),1);
     if(!dpsP.length){bDps.innerHTML="<tr><td colspan='5' style='color:#6e7681;text-align:center;padding:20px'>No damage data found</td></tr>";}
-    dpsP.forEach(p=>{const dps=fSec>0?Math.round(p.ddealt/fSec):0,pct=Math.round(p.ddealt/maxDD*100);const tr=document.createElement("tr");tr.className="clickable-row";tr.innerHTML=`<td ${cs(p)}>${compactNameCell(p,"expand")}</td><td ${cs2(p)}>${spec(p)}</td><td><div class="bw"><div class="bf" style="width:${pct}%;background:#79c0ff"></div></div></td><td class="num" data-val="${p.ddealt}">${fmt(p.ddealt)}</td><td class="num" data-val="${dps}" style="color:#79c0ff;font-weight:600">${fmt(dps)}</td>`;tr.onclick=()=>toggleBreakdownRow(tr,p,"done",5);bDps.appendChild(tr);});
+    dpsP.forEach(p=>{const dps=fSec>0?Math.round(p.ddealt/fSec):0,pct=Math.round(p.ddealt/maxDD*100);const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${compactNameCell(p,"expand")}</td><td ${cs2(p)}>${spec(p)}</td><td><div class="bw"><div class="bf" style="width:${pct}%;background:#79c0ff"></div></div></td><td class="num" data-val="${p.ddealt}">${fmt(p.ddealt)}</td><td class="num" data-val="${dps}" style="color:#79c0ff;font-weight:600">${fmt(dps)}</td>`;bindRowAction(tr,()=>toggleBreakdownRow(tr,p,"done",5),"Expand spell breakdown");bDps.appendChild(tr);});
     // HPS
     const bHps=document.getElementById("bHps");bHps.innerHTML="";const hpsP=Object.values(P).filter(p=>p.healed>0).sort((a,b)=>b.healed-a.healed),maxH=Math.max(...hpsP.map(p=>p.healed),1);
     if(!hpsP.length){bHps.innerHTML="<tr><td colspan='5' style='color:#6e7681;text-align:center;padding:20px'>No healing data found</td></tr>";}
-    hpsP.forEach(p=>{const hps=fSec>0?Math.round(p.healed/fSec):0,pct=Math.round(p.healed/maxH*100);const tr=document.createElement("tr");tr.className="clickable-row";tr.innerHTML=`<td ${cs(p)}>${compactNameCell(p,"expand")}</td><td ${cs2(p)}>${spec(p)}</td><td><div class="bw"><div class="bf" style="width:${pct}%;background:#3fb950"></div></div></td><td class="num" data-val="${p.healed}">${fmt(p.healed)}</td><td class="num" data-val="${hps}" style="color:#3fb950;font-weight:600">${fmt(hps)}</td>`;tr.onclick=()=>toggleBreakdownRow(tr,p,"healing",5);bHps.appendChild(tr);});
+    hpsP.forEach(p=>{const hps=fSec>0?Math.round(p.healed/fSec):0,pct=Math.round(p.healed/maxH*100);const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${compactNameCell(p,"expand")}</td><td ${cs2(p)}>${spec(p)}</td><td><div class="bw"><div class="bf" style="width:${pct}%;background:#3fb950"></div></div></td><td class="num" data-val="${p.healed}">${fmt(p.healed)}</td><td class="num" data-val="${hps}" style="color:#3fb950;font-weight:600">${fmt(hps)}</td>`;bindRowAction(tr,()=>toggleBreakdownRow(tr,p,"healing",5),"Expand spell breakdown");bHps.appendChild(tr);});
     // DPS breakdown per player
     const bDpsBreak=document.getElementById("bDpsBreak");bDpsBreak.innerHTML="";
     const dpsBreakPlayers=Object.values(P).filter(p=>p.ddealt>0).sort((a,b)=>b.ddealt-a.ddealt);
@@ -2471,7 +2477,7 @@ async function analyze(){
         if(Array.isArray(cd)) return !cd.some(opt=>p.offs[opt]); // choice node
         return !p.offs[cd]; // regular CD
       }).length:0;
-      const tr=document.createElement("tr");tr.className="clickable-row";
+      const tr=document.createElement("tr");
       tr.innerHTML=`<td ${cs(p)}>${compactNameCell(p,"expand")}</td><td ${cs2(p)}>${spec(p)}</td>
         <td class="num" data-val="${p.ddealt}">${fmt(p.ddealt)}</td>
         <td class="num" data-val="${dps}" style="color:#79c0ff;font-weight:600">${fmt(dps)}</td>
@@ -2480,7 +2486,7 @@ async function analyze(){
         <td class="num" data-val="${offTotal}" style="color:${offTotal>0?"#ffd700":"#6e7681"}">${offTotal||"—"}</td>
         <td class="num" data-val="${missed}" style="color:${missed>0?"#f85149":"#3fb950"};font-weight:600">${missed||"✓"}</td>
         <td style="text-align:center"><span class="badge ${p.pots>0?"yes":"no"}">${p.pots>0?"✓":"✗"}</span></td>`;
-      tr.onclick=()=>toggleBreakdownRow(tr,p,"done",10);
+      bindRowAction(tr,()=>toggleBreakdownRow(tr,p,"done",10),"Expand spell breakdown");
       // Add Raidbots button as last cell
       const simCell=document.createElement("td");
       simCell.style.textAlign="center";
@@ -2517,6 +2523,7 @@ async function analyze(){
       else if(!used.length&&expected&&!missedCDs.length){cdHtml='<span class="none-t">None detected</span>';}
       const tr=document.createElement("tr");
       tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td>${cdHtml}</td><td class="num" data-val="${usedTotal}" style="color:${usedTotal>0?"#ffd700":"#6e7681"};font-weight:600">${usedTotal||"—"}</td><td class="num" data-val="${missedTotal}" style="color:${missedTotal>0?"#f85149":"#3fb950"};font-weight:600">${missedTotal||"✓"}</td>`;
+      bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
       bOff.appendChild(tr);
     });
     // CC tab
@@ -2525,6 +2532,7 @@ async function analyze(){
       const ce=Object.entries(p.cc),tot=ce.reduce((s,[,c])=>s+c,0);
       const tr=document.createElement("tr");
       tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td>${ce.length?ce.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),"cool","crowd control")).join(""):'<span class="none-t">None</span>'}</td><td class="num" data-val="${tot}" style="color:${tot>0?"#79c0ff":"#6e7681"};font-weight:600">${tot||"—"}</td>`;
+      bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
       bCC.appendChild(tr);
     });
 
@@ -2748,7 +2756,7 @@ async function analyze(){
       const tr=document.createElement("tr");tr.className="clickable-row";
       tr.dataset.role=p.role;tr.dataset.hasIssue=_sev.issues.length?"1":"0";
       tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td style="text-align:center;padding:0 4px"><a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" onclick="event.stopPropagation()" style="color:#79c0ff;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:#0d1a2e;border:1px solid #4a9eff30;padding:2px 7px;border-radius:4px;display:inline-flex;align-items:center;gap:3px" title="Open in WoWAnalyzer">🔬 WoWAnalyzer</a></td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num" title="${p.pots?'Potion used in-fight or detected as a prepot':'No potion detected during the tracked window'}"><span style="color:${p.pots?'#3fb950':'#6e7681'}">${p.pots?"✓ Yes":"— n/a"}</span></td><td style="text-align:center"><span class="sev-${_sev.sev}">${grade}</span></td>`;
-      tr.onclick=()=>openPlayerModal(p,fSec);
+      bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
       tSumBody.appendChild(tr);
     });
 
@@ -2804,7 +2812,7 @@ async function analyze(){
           <td class="num" data-val="${r.amount||0}">${r.amount?fmtNum(Math.round(r.amount)):"—"}</td>
           <td class="num" data-val="${r.itemLevel||0}" style="color:#8b949e">${r.itemLevel||"—"}</td>
           <td style="font-size:12px;color:#6e7681">${r.rank||"?"}/${r.outOf||"?"}</td>`;
-        if(p)tr.onclick=()=>openPlayerModal(p,fSec);
+        if(p)bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
         bParses.appendChild(tr);
       });
     }).catch(()=>{
@@ -2874,7 +2882,7 @@ async function analyze(){
       const actSec=Math.max(0,Math.round(fightMs/1000)-dtSec);
       const dtPct=Math.round(dtMs/fightMs*100);
       const dtClr=dtPct>20?"#f85149":dtPct>10?"#e3a008":"#3fb950";
-      const tr=document.createElement("tr");tr.className="clickable-row";
+      const tr=document.createElement("tr");
       tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td>
         <td><div style="background:#21262d;border-radius:3px;height:8px;width:160px;overflow:hidden;display:inline-flex;vertical-align:middle">
           <div style="height:100%;width:${100-dtPct}%;background:#3fb950"></div>
@@ -2883,7 +2891,7 @@ async function analyze(){
         <td class="num" data-val="${actSec}" style="color:#3fb950">${actSec}s</td>
         <td class="num" data-val="${dtSec}" style="color:${dtClr}">${dtSec}s</td>
         <td class="num" data-val="${dtPct}" style="color:${dtClr};font-weight:600">${dtPct}%</td>`;
-      tr.onclick=()=>openPlayerModal(p,fSec);
+      bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
       bDowntime.appendChild(tr);
     });
 
