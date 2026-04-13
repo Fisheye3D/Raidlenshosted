@@ -2380,6 +2380,13 @@ async function analyze(){
       tr.setAttribute("role","button");
       tr.setAttribute("title",title||"Open player details");
       tr.onclick=handler;
+      Array.from(tr.cells||[]).forEach(td=>{
+        if(td.querySelector("a,button,input,select,textarea"))return;
+        td.onclick=e=>{
+          e.stopPropagation();
+          handler();
+        };
+      });
       tr.onkeydown=e=>{
         if(e.key==="Enter"||e.key===" "){
           e.preventDefault();
