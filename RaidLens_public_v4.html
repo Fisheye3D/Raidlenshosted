@@ -447,6 +447,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   </div>
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:4px">
     <a href="https://github.com/Fisheye3D/Raidlens/blob/main/README.md" target="_blank" style="background:#0d2a1a;border:1px solid #3fb950;color:#3fb950;font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:6px">📖 Full Guide &amp; FAQ — all info here ↗</a>
+    <a href="mailto:Raidlens.org@gmail.com?subject=RaidLens%20Feedback&body=Feedback%2C%20suggestions%20or%20issues%3A%0A%0AWhat%20I%20was%20doing%3A%0AWhat%20happened%3A%0AWhat%20I%20expected%3A%0A" style="background:#1a1200;border:1px solid #e3a008;color:#ffd700;font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:6px">✉ Feedback, Suggestions or Issues</a>
     <a href="https://github.com/Fisheye3D/Raidlens" target="_blank" style="color:#8b949e;font-size:11px;text-decoration:none">GitHub ↗</a>
     <span style="color:#6e7681;font-size:11px">v5</span>
   </div>
@@ -999,7 +1000,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
     <div class="rtab" onclick="switchRTab('pullcompare',this)">🔁 Pull Compare</div>
   </div>
   <div class="rtab-panel active" id="rtab-defensives"><div class="tw"><table id="tDef"><thead><tr><th onclick="srt('tDef',0)">Player ↕</th><th onclick="srt('tDef',1)">Class/Spec ↕</th><th title="Personal defensive cooldowns cast during the fight — tracked from combat log cast events.">Def CDs ⓘ</th><th onclick="srt('tDef',3)" class="num">Total ↕</th></tr></thead><tbody id="bDef"></tbody></table></div></div>
-  <div class="rtab-panel" id="rtab-consumables"><div class="sn">Potion and Healthstone usage per player during the fight.</div><div class="tw"><table id="tCons"><thead><tr><th onclick="srt('tCons',0)">Player ↕</th><th onclick="srt('tCons',1)">Class/Spec ↕</th><th style="text-align:center">Potion</th><th style="text-align:center">Healthstone</th></tr></thead><tbody id="bCons"></tbody></table></div></div>
+  <div class="rtab-panel" id="rtab-consumables"><div class="sn">Consumable usage per player during the fight, including potions, flask buffs, food buffs, and healthstones.</div><div class="tw"><table id="tCons"><thead><tr><th onclick="srt('tCons',0)">Player ↕</th><th onclick="srt('tCons',1)">Class/Spec ↕</th><th style="text-align:center">Potion</th><th style="text-align:center">Flask</th><th style="text-align:center">Food</th><th style="text-align:center">Healthstone</th></tr></thead><tbody id="bCons"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-deaths"><div class="sn">All player deaths ordered by time. Killing blow shown where available.</div><div id="cleanPullBanner" style="display:none"></div><div id="topKillersBox" style="display:none;margin-bottom:12px"></div><div class="tw"><table id="tDeath"><thead><tr><th onclick="srt('tDeath',0)">Player ↕</th><th onclick="srt('tDeath',1)">Class/Spec ↕</th><th onclick="srt('tDeath',2)">Time ↕</th><th>Killing Blow</th><th onclick="srt('tDeath',4)" class="num">Deaths ↕</th><th></th></tr></thead><tbody id="bDeath"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-interrupts"><div class="sn">Who interrupted what and how many times.</div><div class="tw"><table id="tInt"><thead><tr><th onclick="srt('tInt',0)">Player ↕</th><th onclick="srt('tInt',1)">Class/Spec ↕</th><th>Spells Interrupted</th><th onclick="srt('tInt',3)" class="num">Total ↕</th></tr></thead><tbody id="bInt"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dispels"><div class="sn">Who dispelled what.</div><div class="tw"><table id="tDisp"><thead><tr><th onclick="srt('tDisp',0)">Player ↕</th><th onclick="srt('tDisp',1)">Class/Spec ↕</th><th>Spells Dispelled</th><th onclick="srt('tDisp',3)" class="num">Total ↕</th></tr></thead><tbody id="bDisp"></tbody></table></div></div>
@@ -1833,6 +1834,7 @@ function activateRTab(n,el,preserveScroll){
   document.querySelectorAll(".rtab-panel").forEach(p=>p.classList.remove("active"));
   targetEl.classList.add("active");
   targetPanel.classList.add("active");
+  refreshWowheadTooltips();
   if(preserveScroll)window.scrollTo({top:sy,behavior:"instant"});
 }
 
@@ -2149,6 +2151,7 @@ function toggleBreakdownRow(anchor,p,kind,colspan){
   const body=isTaken?renderSpellBreakdown(p.takenBySpell,total,"danger","damage taken"):isHealing?renderHealingBreakdown(p.healBySpell,total):renderSpellBreakdown(p.dmgBySpell,total,"cool","damage done");
   detail.innerHTML=`<td colspan="${colspan}"><div class="detail-panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap"><div class="detail-title">${p.name} · ${title}</div><button class="mini-link" onclick="event.stopPropagation();openPlayerModalByName('${escJs(p.name)}')">Player Modal</button></div>${body}</div></td>`;
   anchor.insertAdjacentElement("afterend",detail);
+  refreshWowheadTooltips();
 }
 
 function compactNameCell(p,context){
@@ -2191,7 +2194,7 @@ function openPlayerModal(p,fSec){
   const tagList=(entries,variant,label)=>entries.length?entries.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),variant,label)).join(""):"<span style='color:#6e7681'>None</span>";
   const statRow=(label,val,color="#c9d1d9")=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #21262d;font-size:13px"><span style="color:#8b949e">${label}</span><span style="font-weight:600;color:${color}">${val}</span></div>`;
   let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-    <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("In-fight Pot",p.pots?"✓ Used ("+p.pots+")":"✗ None detected",p.pots?"#3fb950":"#6e7681")+statRow("Prepot","Cannot detect from logs","#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
+    <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("Potion",p.pots?"✓ Used ("+p.pots+")":"✗ None detected",p.pots?"#3fb950":"#6e7681")}${statRow("Flask",p.flask?`✓ ${p.flaskName||"Detected"}`:"✗ None detected",p.flask?"#3fb950":"#6e7681")}${statRow("Food",p.food?`✓ ${p.foodName||"Detected"}`:"✗ None detected",p.food?"#3fb950":"#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
     <div>${statRow("Damage Taken",fmtNum(p.dtaken))}${statRow("Interrupts",Object.values(p.ints).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Dispels",Object.values(p.disps).reduce((s,c)=>s+c,0),"#3fb950")}${statRow("CC Used",Object.values(p.cc).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Def CDs Used",Object.values(p.defs).reduce((s,c)=>s+c,0),"#ffd700")}${statRow("Off CDs Used",Object.values(p.offs).reduce((s,c)=>s+c,0),"#ffd700")}</div></div>`;
   if(p.deaths.length){html+=`<div class="modal-section"><h4>Deaths</h4><div class="spell-grid">${p.deaths.map(d=>spellChip(`${d.timeStr||"?"} — ${d.killer}`,null,d.killerId||findAbilityIdByName(d.killer),"danger","death cause")).join("")}</div></div>`;}
   if(Object.keys(p.dmgBySpell||{}).length){html+=`<div class="modal-section"><h4>Damage Done Breakdown</h4>${renderSpellBreakdown(p.dmgBySpell,p.ddealt,"cool","damage done")}</div>`;}
@@ -2305,7 +2308,7 @@ async function analyze(){
       const charInfo=charServerMap[p.name.toLowerCase()]||{};
       P[p.id]={id:p.id,name:p.name,cls:p.type,spec:p.specs?.[0]?.spec||"",role,
         server:charInfo.server||"",region:charInfo.region||"us",
-        defs:{},offs:{},pots:0,potName:null,hs:false,ints:{},disps:{},cc:{},
+        defs:{},offs:{},pots:0,potName:null,flask:false,flaskName:null,food:false,foodName:null,hs:false,ints:{},disps:{},cc:{},
         dtaken:0,ddealt:0,healed:0,overheal:0,absorbs:0,deaths:[],rio:null,
         dmgBySpell:{},takenBySpell:{},healBySpell:{}};
     });});
@@ -2320,6 +2323,13 @@ async function analyze(){
       prepotEvts.forEach(ev=>{if(potIDs.has(ev.abilityGameID)&&P[ev.sourceID]){prepotPlayerIDs.add(ev.sourceID);if(!P[ev.sourceID].potName)P[ev.sourceID].potName=aName[ev.abilityGameID];}});
       log(`✅ Prepot scan: ${prepotPlayerIDs.size} prepot(s) found`);
     }catch(e){console.warn("prepot fetch failed:",e);}
+    log("📡 Buffs...");const buffs=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Buffs");log(`✅ ${buffs.length}`);
+    buffs.forEach(ev=>{
+      const p=P[ev.targetID];if(!p)return;
+      const sid=ev.abilityGameID;
+      if(flaskIDs.has(sid)){p.flask=true;if(!p.flaskName)p.flaskName=aName[sid];}
+      if(foodIDs.has(sid)){p.food=true;if(!p.foodName)p.foodName=aName[sid];}
+    });
     // track lust separately so we know timing + who was actually alive for it
     const bloodlusts=[];
     casts.forEach(ev=>{
@@ -2376,7 +2386,7 @@ async function analyze(){
     sorted.forEach(p=>{const de=Object.entries(p.defs),tot=de.reduce((s,[,c])=>s+c,0);const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td>${de.length?de.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),"gold","defensive cooldown")).join(""):'<span class="none-t">None detected</span>'}</td><td class="num" data-val="${tot}" style="color:${tot>0?"#ffd700":"#6e7681"};font-weight:600">${tot||"—"}</td>`;bDef.appendChild(tr);});
     // CONSUMABLES
     const bCons=document.getElementById("bCons");bCons.innerHTML="";
-    sorted.forEach(p=>{const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td style="text-align:center">${p.pots>0?`<span class="badge yes" title="${p.potName||""}">✓ ×${p.pots}</span>`:cb(false)}</td><td style="text-align:center">${cb(p.hs)}</td>`;bCons.appendChild(tr);});
+    sorted.forEach(p=>{const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td style="text-align:center">${p.pots>0?`<span class="badge yes" title="${p.potName||"Potion detected"}">✓ ×${p.pots}</span>`:cb(false)}</td><td style="text-align:center">${p.flask?`<span class="badge yes" title="${p.flaskName||"Flask buff detected"}">✓</span>`:cb(false)}</td><td style="text-align:center">${p.food?`<span class="badge yes" title="${p.foodName||"Food buff detected"}">✓</span>`:cb(false)}</td><td style="text-align:center">${cb(p.hs)}</td>`;bCons.appendChild(tr);});
     // DEATHS
     const bDeath=document.getElementById("bDeath");bDeath.innerHTML="";const drows=[];
     sorted.forEach(p=>{if(!p.deaths.length){drows.push({...p,time:Infinity,killer:"—",killerId:null,timeStr:"Survived",dcount:0,ctx:null});}else p.deaths.forEach(d=>drows.push({...p,time:d.time,killer:d.killer,killerId:d.killerId||null,timeStr:d.timeStr||ftime(d.time),dcount:p.deaths.length,ctx:d.ctx||null}));});
@@ -2716,7 +2726,7 @@ async function analyze(){
       <th onclick="srt('tSum',3)" class="num">Ints</th>
       <th onclick="srt('tSum',4)" class="num">Disps</th>
       <th onclick="srt('tSum',5)" class="num">Def CDs</th>
-      <th onclick="srt('tSum',6)" class="num" title="In-fight potion only — prepots cannot be detected from logs">In-fight Pot ⓘ</th>
+        <th onclick="srt('tSum',6)" class="num" title="Counts an in-fight potion, and also credits a prepot when Warcraft Logs exposes it">Pot ⓘ</th>
       <th onclick="srt('tSum',7)">Grade</th>
     </tr></thead><tbody id="tSumBody"></tbody></table></div>`;
     summaryDiv.innerHTML=scoreHTML+perPlayerHtml;
@@ -2729,7 +2739,7 @@ async function analyze(){
       const defTotal=Object.values(p.defs).reduce((s,c)=>s+c,0);
       let score=100;
       score-=deaths*15;
-      // removed pot penalty from score -- prepots undetectable, penalizing is inaccurate
+      // removed pot penalty from score -- potion visibility can vary, so penalizing it is noisy
       // letter grade -- S/A/B/C/F based on deaths, pots, missed CDs
       const grade=score>=90?"S":score>=75?"A":score>=60?"B":score>=45?"C":"D";
       const gc=grade==="S"?"#ffd700":grade==="A"?"#3fb950":grade==="B"?"#79c0ff":grade==="C"?"#e3a008":"#f85149";
@@ -2737,7 +2747,7 @@ async function analyze(){
       const _badge=getRepeatBadge(p.name);
       const tr=document.createElement("tr");tr.className="clickable-row";
       tr.dataset.role=p.role;tr.dataset.hasIssue=_sev.issues.length?"1":"0";
-      tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td style="text-align:center;padding:0 4px"><a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" onclick="event.stopPropagation()" style="color:#79c0ff;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:#0d1a2e;border:1px solid #4a9eff30;padding:2px 7px;border-radius:4px;display:inline-flex;align-items:center;gap:3px" title="Open in WoWAnalyzer">🔬 WoWAnalyzer</a></td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num" title="${p.pots?'In-fight pot used':'No in-fight pot detected — prepots cannot be tracked'}"><span style="color:${p.pots?'#3fb950':'#6e7681'}">${p.pots?"✓ Yes":"— n/a"}</span></td><td style="text-align:center"><span class="sev-${_sev.sev}">${grade}</span></td>`;
+      tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td style="text-align:center;padding:0 4px"><a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" onclick="event.stopPropagation()" style="color:#79c0ff;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:#0d1a2e;border:1px solid #4a9eff30;padding:2px 7px;border-radius:4px;display:inline-flex;align-items:center;gap:3px" title="Open in WoWAnalyzer">🔬 WoWAnalyzer</a></td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num" title="${p.pots?'Potion used in-fight or detected as a prepot':'No potion detected during the tracked window'}"><span style="color:${p.pots?'#3fb950':'#6e7681'}">${p.pots?"✓ Yes":"— n/a"}</span></td><td style="text-align:center"><span class="sev-${_sev.sev}">${grade}</span></td>`;
       tr.onclick=()=>openPlayerModal(p,fSec);
       tSumBody.appendChild(tr);
     });
@@ -3101,7 +3111,7 @@ function getRepeatBadge(name){
   if(!pm||pm.fights<3)return '';
   // only show chronic badge if pattern is consistent across 3+ pulls
   if(pm.deaths/pm.fights>=1.5)return ' <span class="repeat-badge" title="Avg '+(pm.deaths/pm.fights).toFixed(1)+' deaths/pull over '+pm.fights+' pulls">💀 repeat</span>';
-  // removed noPot chronic badge -- can't detect prepots so this was always wrong
+  // removed noPot chronic badge -- potion visibility can vary, so this was too noisy
   if(pm.missedOff/pm.fights>=1.5)return ' <span class="repeat-badge" title="Avg '+(pm.missedOff/pm.fights).toFixed(1)+' missed CDs/pull">⚔ misses CDs</span>';
   return '';
 }
@@ -3109,7 +3119,7 @@ function getRepeatBadge(name){
 function getV5Sev(p,shortPull){
   const issues=[];
   if(p.deaths.length)issues.push('deaths');
-  // removed noPot from severity -- can't detect prepots so false positives everywhere
+  // removed noPot from severity -- potion visibility can vary, so false positives were common
   const exp=SPEC_OFFS[(p.cls||'')+'|'+(p.spec||'')]||null;
   if(exp&&!shortPull){const mc=exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]);if(mc.length)issues.push('missedOff');}
   return{issues,sev:p.deaths.length>=2?'crit':issues.length?'warn':'ok'};
@@ -3156,7 +3166,7 @@ function buildSummaryBand(ctx){
     const offenders=sorted.map(p=>{const exp=SPEC_OFFS[(p.cls||'')+'|'+(p.spec||'')]||null;const n=exp?exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]).length:0;return{name:p.name,n};}).filter(x=>x.n>0).sort((a,b)=>b.n-a.n).slice(0,3).map(x=>x.name);
     callouts.push({cls:missedOffTotal>=5?'crit':'warn',text:'⚔️ Critical CD failures: '+missedOffTotal+(offenders.length?' — '+offenders.join(', '):'')});
   }
-  if(noPotDps.length)callouts.push({cls:'warn',text:'🧪 No in-fight pot: '+noPotDps.join(', ')+' (prepots not trackable)'});
+  if(noPotDps.length)callouts.push({cls:'warn',text:'🧪 No potion detected: '+noPotDps.join(', ')+' (prepots may not always be visible in logs)'});
   if(shortPull)callouts.push({cls:'',text:'ℹ️ Short pull ('+Math.round((fight.endTime-fight.startTime)/1000)+'s)'});
   if(!callouts.length)callouts.push({primary:true,cls:'good',text:'✅ Clean pull — no major issues detected'});
 
