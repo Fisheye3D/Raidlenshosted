@@ -1699,7 +1699,7 @@ async function refreshToken(){
 let reportCode=null,fightId=null,allFights=[],abilities=[],selectedType=null;
 window._raidLensPlayers=[];
 window._raidLensFightSec=0;
-const REPORTS_PER_PAGE=16;
+const REPORTS_PER_PAGE=24;
 let _myLogsPage=0,_guildPage=0,_guildReports=[];
 
 function getSaved(){try{return JSON.parse(localStorage.getItem(K_REPORTS)||"[]");}catch{return[];}}
@@ -1793,6 +1793,13 @@ function showMainUI(){
   localStorage.setItem('rl_safety_collapsed','1');
   document.getElementById("readyBar").style.display="flex";
   document.getElementById("mainArea").style.display="block";
+  loadV5UI();
+  document.body.classList.toggle('focus-mode',!!_v5UI.focusMode);
+  const fb=document.getElementById('focusBtn');
+  if(fb){
+    fb.textContent=_v5UI.focusMode?'🎯 Focus: On':'🎯 Focus Mode';
+    fb.classList.toggle('focus-on',!!_v5UI.focusMode);
+  }
   const labels={user:isPKCEAuthed()?"✓ Connected via WarcraftLogs":`✓ Personal logs (user #${localStorage.getItem(K_USERID)})`,manual:"✓ Manual mode — paste a URL to load reports"};
   let label=labels[type]||"✓ Ready";
   if(type==="guild"){try{const g=JSON.parse(localStorage.getItem(K_GUILD));label=`✓ Guild: ${g.name} — ${g.server} (${g.region})`;}catch{}}
