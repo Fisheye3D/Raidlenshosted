@@ -2761,7 +2761,7 @@ async function analyze(){
       const _badge=getRepeatBadge(p.name);
       const tr=document.createElement("tr");tr.className="clickable-row";
       tr.dataset.role=p.role;tr.dataset.hasIssue=_sev.issues.length?"1":"0";tr.dataset.player=p.name;
-      tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td style="text-align:center;padding:0 4px"><a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" onclick="event.stopPropagation()" style="color:#79c0ff;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:#0d1a2e;border:1px solid #4a9eff30;padding:2px 7px;border-radius:4px;display:inline-flex;align-items:center;gap:3px" title="Open in WoWAnalyzer">🔬 WoWAnalyzer</a></td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num" title="${p.pots?'Potion used in-fight or detected as a prepot':'No potion detected during the tracked window'}"><span style="color:${p.pots?'#3fb950':'#6e7681'}">${p.pots?"✓ Yes":"— n/a"}</span></td><td style="text-align:center"><span class="sev-${_sev.sev}">${grade}</span></td>`;
+      tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td style="text-align:center;padding:0 4px"><a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" onclick="event.stopPropagation()" style="color:#79c0ff;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:#0d1a2e;border:1px solid #4a9eff30;padding:2px 7px;border-radius:4px;display:inline-flex;align-items:center;gap:3px" title="Open in WoWAnalyzer">🔬 WoWAnalyzer</a></td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num" title="${p.pots?'Potion used in-fight or detected as a prepot':'No potion detected during the tracked window'}"><span style="color:${p.pots?'#3fb950':'#6e7681'}">${p.pots?(p.potName?`✓ ${p.potName}`:"✓ Yes"):"— n/a"}</span></td><td style="text-align:center"><span class="sev-${_sev.sev}">${grade}</span></td>`;
       bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
       tSumBody.appendChild(tr);
     });
@@ -2926,7 +2926,7 @@ async function analyze(){
     // this is why the context was built with pullHistory:null above -- order of operations nightmare
     _v5BandCtx.pullHistory=pullHist;
     const _bandHtml=buildSummaryBand(_v5BandCtx);
-    summaryDiv.innerHTML=_bandHtml+summaryDiv.innerHTML;
+    summaryDiv.insertAdjacentHTML("afterbegin",_bandHtml);
 
     // wipe summary for discord. paste it into #raid-logs and move on
     const deathList2=drows.filter(d=>d.dcount>0).sort((a,b)=>a.time-b.time);
