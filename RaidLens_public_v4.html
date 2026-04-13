@@ -11,7 +11,7 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RaidLens v4</title>
+<title>RaidLens</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
 <script>
   window.whTooltips = { colorLinks: false, iconizeLinks: false, renameLinks: false };
@@ -449,7 +449,6 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
     <a href="https://github.com/Fisheye3D/Raidlens/blob/main/README.md" target="_blank" style="background:#0d2a1a;border:1px solid #3fb950;color:#3fb950;font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:6px">📖 Full Guide &amp; FAQ — all info here ↗</a>
     <a href="mailto:Raidlens.org@gmail.com?subject=RaidLens%20Feedback&body=Feedback%2C%20suggestions%20or%20issues%3A%0A%0AWhat%20I%20was%20doing%3A%0AWhat%20happened%3A%0AWhat%20I%20expected%3A%0A" style="background:#1a1200;border:1px solid #e3a008;color:#ffd700;font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:6px">✉ Feedback, Suggestions or Issues</a>
     <a href="https://github.com/Fisheye3D/Raidlens" target="_blank" style="color:#8b949e;font-size:11px;text-decoration:none">GitHub ↗</a>
-    <span style="color:#6e7681;font-size:11px">v5</span>
   </div>
   <div class="hero-preview">
     <div class="hero-preview-card primary">
@@ -485,7 +484,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
 <div id="whatsnewBar" style="background:linear-gradient(90deg,#0d2a1a,#1a0e2e);border:1px solid #3fb95060;border-radius:8px;padding:10px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
   <span style="font-size:16px">🆕</span>
   <div style="flex:1;font-size:12px;color:#c9d1d9">
-    <strong style="color:#3fb950">What's new in v5:</strong>
+    <strong style="color:#3fb950">What's new in this version:</strong>
     &nbsp;Raid verdict summary &nbsp;·&nbsp; Death context &nbsp;·&nbsp; 4 Discord copy formats &nbsp;·&nbsp; Timeline filters &nbsp;·&nbsp; Auto-scan &nbsp;·&nbsp; Focus mode &nbsp;·&nbsp; WoWAnalyzer links
   </div>
   <button onclick="document.getElementById('whatsnewBar').style.display='none';localStorage.setItem('rl_wnew_v5','1')" style="background:none;border:none;color:#6e7681;font-size:16px;cursor:pointer;padding:0 4px;flex-shrink:0">×</button>
@@ -2399,7 +2398,7 @@ async function analyze(){
     sorted.forEach(p=>{const de=Object.entries(p.defs),tot=de.reduce((s,[,c])=>s+c,0);const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td>${de.length?de.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),"gold","defensive cooldown")).join(""):'<span class="none-t">None detected</span>'}</td><td class="num" data-val="${tot}" style="color:${tot>0?"#ffd700":"#6e7681"};font-weight:600">${tot||"—"}</td>`;bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");bDef.appendChild(tr);});
     // CONSUMABLES
     const bCons=document.getElementById("bCons");bCons.innerHTML="";
-    sorted.forEach(p=>{const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td style="text-align:center">${p.pots>0?`<span class="badge yes" title="${p.potName||"Potion detected"}">✓ ×${p.pots}</span>`:cb(false)}</td><td style="text-align:center">${cb(p.hs)}</td>`;bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");bCons.appendChild(tr);});
+    sorted.forEach(p=>{const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td style="text-align:center">${p.pots>0?`<span class="badge yes" title="${p.potName||"Potion detected"}">✓ ×${p.pots}</span><span style="margin-left:8px;color:#3fb950;font-size:11px;font-weight:600">${p.potName||"Potion detected"}</span>`:cb(false)}</td><td style="text-align:center">${cb(p.hs)}</td>`;bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");bCons.appendChild(tr);});
     // DEATHS
     const bDeath=document.getElementById("bDeath");bDeath.innerHTML="";const drows=[];
     sorted.forEach(p=>{if(!p.deaths.length){drows.push({...p,time:Infinity,killer:"—",killerId:null,timeStr:"Survived",dcount:0,ctx:null});}else p.deaths.forEach(d=>drows.push({...p,time:d.time,killer:d.killer,killerId:d.killerId||null,timeStr:d.timeStr||ftime(d.time),dcount:p.deaths.length,ctx:d.ctx||null}));});
@@ -2761,11 +2760,18 @@ async function analyze(){
       const _sev=getV5Sev(p,shortPull);
       const _badge=getRepeatBadge(p.name);
       const tr=document.createElement("tr");tr.className="clickable-row";
-      tr.dataset.role=p.role;tr.dataset.hasIssue=_sev.issues.length?"1":"0";
+      tr.dataset.role=p.role;tr.dataset.hasIssue=_sev.issues.length?"1":"0";tr.dataset.player=p.name;
       tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td style="text-align:center;padding:0 4px"><a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" onclick="event.stopPropagation()" style="color:#79c0ff;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:#0d1a2e;border:1px solid #4a9eff30;padding:2px 7px;border-radius:4px;display:inline-flex;align-items:center;gap:3px" title="Open in WoWAnalyzer">🔬 WoWAnalyzer</a></td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num" title="${p.pots?'Potion used in-fight or detected as a prepot':'No potion detected during the tracked window'}"><span style="color:${p.pots?'#3fb950':'#6e7681'}">${p.pots?"✓ Yes":"— n/a"}</span></td><td style="text-align:center"><span class="sev-${_sev.sev}">${grade}</span></td>`;
       bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
       tSumBody.appendChild(tr);
     });
+    tSumBody.onclick=e=>{
+      if(e.target.closest("a,button,input,select,textarea"))return;
+      const row=e.target.closest("tr[data-player]");
+      if(!row)return;
+      const p=sorted.find(x=>x.name===row.dataset.player);
+      if(p)openPlayerModal(p,fSec);
+    };
 
     // clicking a player row opens the modal with their full breakdown
     // lust tab -- shows timing + who was alive to receive it
