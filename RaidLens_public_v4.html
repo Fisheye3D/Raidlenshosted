@@ -267,7 +267,7 @@ body>*{position:relative;z-index:1}
 
 
 /* ── V5 ── */
-body.focus-mode .hero,body.focus-mode #whatsnewBar,body.focus-mode #showcaseSection{display:none!important}
+body.focus-mode #whatsnewBar,body.focus-mode #showcaseSection{display:none!important}
 body.focus-mode .rtabs{position:sticky;top:0;z-index:100;background:#0d1117;padding:6px 0;border-bottom:1px solid #21262d}
 .v5-chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:12px;border:1px solid #30363d;background:#161b22;color:#8b949e;font-size:11px;font-weight:600;cursor:pointer;user-select:none}
 .v5-chip.on{border-color:#f97316;color:#f97316;background:#1a0f00}
@@ -1776,6 +1776,12 @@ async function saveSetup(){
 
 function resetSetup(){
   // clear both legacy and PKCE auth so user gets a clean slate
+  try{
+    const ui=JSON.parse(localStorage.getItem(K_UI_V5)||"{}");
+    localStorage.setItem(K_UI_V5,JSON.stringify({...ui,focusMode:false}));
+  }catch{
+    localStorage.setItem(K_UI_V5,JSON.stringify({focusMode:false,copyMode:"short"}));
+  }
   [K_TOKEN,K_TOKEN_EXP,K_CLIENT_ID,K_CLIENT_SECRET,K_TYPE,K_USERID,K_GUILD,K_REPORTS,
    K_PKCE_TOKEN,K_PKCE_EXP,K_PKCE_REFRESH,K_PKCE_AUTHED].forEach(k=>localStorage.removeItem(k));
   location.reload();
