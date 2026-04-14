@@ -189,6 +189,11 @@ tr:hover td{background:#161b22}
 .timeline-marker{position:absolute;top:0;bottom:0;width:3px;border-radius:2px;cursor:pointer}
 .timeline-marker:hover::after{content:attr(data-tip);position:absolute;bottom:32px;left:50%;transform:translateX(-50%);background:#161b22;border:1px solid #30363d;border-radius:4px;padding:4px 8px;font-size:11px;white-space:nowrap;z-index:10;color:#c9d1d9}
 .timeline-tick{position:absolute;bottom:-16px;font-size:10px;color:#6e7681;transform:translateX(-50%)}
+.timeline-phase-band{display:flex;height:18px;border-radius:6px;overflow:hidden;border:1px solid #30363d;background:#111824;margin-bottom:10px}
+.timeline-phase-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#dce6f2;border-right:1px solid #0d1117}
+.timeline-boss-row .timeline-track{background:#2a1c10;border:1px solid #5a3e18}
+.timeline-boss-row .timeline-label{display:flex;align-items:center;gap:8px;color:#ffdd75}
+.timeline-boss-pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 8px;font-size:10px;font-weight:700;background:#201a0b;border:1px solid #6b5513;color:#ffdd75}
 .scorecard{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:16px}
 .score-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px;text-align:center}
 .score-card .sc-val{font-size:24px;font-weight:700;margin-bottom:4px}
@@ -196,6 +201,20 @@ tr:hover td{background:#161b22}
 .score-card.good{border-color:#3fb950}
 .score-card.warn{border-color:#e3a008}
 .score-card.bad{border-color:#f85149}
+.summary-grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:16px}
+.summary-note-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:14px}
+.summary-note-title{font-size:10px;color:#8ea2b8;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
+.summary-note-body{font-size:12px;color:#c9d1d9;line-height:1.75}
+.summary-note-sub{font-size:11px;color:#8b949e;line-height:1.7;margin-top:6px}
+.phase-strip{display:flex;gap:8px;flex-wrap:wrap;margin:-2px 0 14px}
+.phase-chip{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:8px 10px;min-width:140px}
+.phase-chip-k{font-size:10px;color:#8ea2b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.phase-chip-v{font-size:14px;font-weight:700;color:#f4f7fb}
+.phase-chip-sub{font-size:11px;color:#8b949e;margin-top:4px;line-height:1.5}
+.ready-pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.ready-pill.good{background:#102218;border:1px solid #225437;color:#5fdd8e}
+.ready-pill.warn{background:#201a0b;border:1px solid #6b5513;color:#ffdd75}
+.ready-pill.bad{background:#231416;border:1px solid #5a2323;color:#f87171}
 .clickable-row{cursor:pointer}
 .clickable-row:hover td{background:#1c2333!important}
 .clickable-row td:first-child::after{content:" 🔍";font-size:10px;opacity:.5}
@@ -995,12 +1014,14 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
     <div class="rtab" onclick="switchRTab('defensives',this)">🛡️ Defensives</div>
     <div class="rtab" onclick="switchRTab('offensive',this)">⚔️ Offensive CDs</div>
     <div class="rtab" onclick="switchRTab('consumables',this)">🧪 Consumables</div>
+    <div class="rtab" onclick="switchRTab('builds',this)">🧬 Build + Ready</div>
     <div class="rtab" onclick="switchRTab('bloodlust',this)">⚡ Bloodlust</div>
     <div class="tab-sep">·</div>
     <!-- Utility -->
     <div class="rtab" onclick="switchRTab('interrupts',this)">⚡ Interrupts</div>
     <div class="rtab" onclick="switchRTab('dispels',this)">✨ Dispels</div>
     <div class="rtab" onclick="switchRTab('cc',this)">🛑 CC</div>
+    <div class="rtab" onclick="switchRTab('mechanics',this)">🧿 Mechanics</div>
     <div class="tab-sep">·</div>
     <!-- Performance -->
     <div class="rtab" onclick="switchRTab('damage',this)">💥 Dmg Taken</div>
@@ -1018,6 +1039,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   </div>
   <div class="rtab-panel active" id="rtab-defensives"><div class="tw"><table id="tDef"><thead><tr><th onclick="srt('tDef',0)">Player ↕</th><th onclick="srt('tDef',1)">Class/Spec ↕</th><th title="Personal defensive cooldowns cast during the fight — tracked from combat log cast events.">Def CDs ⓘ</th><th onclick="srt('tDef',3)" class="num">Total ↕</th></tr></thead><tbody id="bDef"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-consumables"><div class="sn">Potion and Healthstone usage per player during the fight.</div><div class="tw"><table id="tCons"><thead><tr><th onclick="srt('tCons',0)">Player ↕</th><th onclick="srt('tCons',1)">Class/Spec ↕</th><th style="text-align:center">Potion</th><th style="text-align:center">Healthstone</th></tr></thead><tbody id="bCons"></tbody></table></div></div>
+  <div class="rtab-panel" id="rtab-builds"><div class="sn">Build snapshot and Ready Check+ pulled from Warcraft Logs combatant info. Kept short on purpose so raid leads can spot setup issues fast.</div><div class="tw"><table id="tBuilds"><thead><tr><th onclick="srt('tBuilds',0)">Player ↕</th><th onclick="srt('tBuilds',1)">Class/Spec ↕</th><th onclick="srt('tBuilds',2)" class="num">iLvl ↕</th><th>Build Snapshot</th><th>Ready Check+</th><th>Copy</th></tr></thead><tbody id="bBuilds"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-deaths"><div class="sn">All player deaths ordered by time. Killing blow shown where available.</div><div id="cleanPullBanner" style="display:none"></div><div id="topKillersBox" style="display:none;margin-bottom:12px"></div><div class="tw"><table id="tDeath"><thead><tr><th onclick="srt('tDeath',0)">Player ↕</th><th onclick="srt('tDeath',1)">Class/Spec ↕</th><th onclick="srt('tDeath',2)">Time ↕</th><th>Killing Blow</th><th onclick="srt('tDeath',4)" class="num">Deaths ↕</th><th></th></tr></thead><tbody id="bDeath"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-interrupts"><div class="sn">Who interrupted what and how many times.</div><div class="tw"><table id="tInt"><thead><tr><th onclick="srt('tInt',0)">Player ↕</th><th onclick="srt('tInt',1)">Class/Spec ↕</th><th>Spells Interrupted</th><th onclick="srt('tInt',3)" class="num">Total ↕</th></tr></thead><tbody id="bInt"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dispels"><div class="sn">Who dispelled what.</div><div class="tw"><table id="tDisp"><thead><tr><th onclick="srt('tDisp',0)">Player ↕</th><th onclick="srt('tDisp',1)">Class/Spec ↕</th><th>Spells Dispelled</th><th onclick="srt('tDisp',3)" class="num">Total ↕</th></tr></thead><tbody id="bDisp"></tbody></table></div></div>
@@ -1054,6 +1076,11 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
     <div class="sn">CC used per player — stuns, roots, incaps.</div>
     <div class="tw"><table id="tCC"><thead><tr><th onclick="srt('tCC',0)">Player ↕</th><th onclick="srt('tCC',1)">Class/Spec ↕</th><th>CC Used</th><th onclick="srt('tCC',3)" class="num">Total ↕</th></tr></thead><tbody id="bCC"></tbody></table></div>
   </div>
+  <div class="rtab-panel" id="rtab-mechanics">
+    <div class="sn">Wipefest-style mechanic clarity: dangerous debuffs, repeat offenders, and raid damage pressure without burying you in raw log spam.</div>
+    <div id="mechanicSummaryGrid" class="summary-grid-2"></div>
+    <div class="tw"><table id="tMechDebuffs"><thead><tr><th onclick="srt('tMechDebuffs',0)">Mechanic ↕</th><th onclick="srt('tMechDebuffs',1)" class="num">Players ↕</th><th onclick="srt('tMechDebuffs',2)" class="num">Applications ↕</th><th onclick="srt('tMechDebuffs',3)">Longest Hold ↕</th><th>Who / Why it matters</th></tr></thead><tbody id="bMechDebuffs"></tbody></table></div>
+  </div>
   <!-- HEALING BREAKDOWN -->
   <div class="rtab-panel" id="rtab-healbreak">
     <div class="sn">Detailed healing breakdown per healer — effective healing, overhealing, and absorbs.</div>
@@ -1069,12 +1096,14 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   </div>
   <!-- CD TIMELINE -->
   <div class="rtab-panel" id="rtab-timeline">
-    <div class="sn">Visual timeline of major cooldowns used during the fight. Each bar = one fight second. Hover markers for spell name and time.</div>
+    <div class="sn">Visual timeline of major cooldowns used during the fight, plus boss-ability lanes so you can see whether personals and raid CDs lined up with the dangerous moments.</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
       <span style="font-size:11px;color:#8b949e;font-weight:600">Show:</span>
       <span class="v5-chip on" id="tlChip-off"  onclick="toggleTL('off')" >⚔️ Offensive</span>
       <span class="v5-chip on" id="tlChip-def"  onclick="toggleTL('def')" >🛡️ Defensive</span>
+      <span class="v5-chip on" id="tlChip-raid" onclick="toggleTL('raid')">💚 Raid CDs</span>
       <span class="v5-chip on" id="tlChip-lust" onclick="toggleTL('lust')">⚡ Lust</span>
+      <span class="v5-chip on" id="tlChip-boss" onclick="toggleTL('boss')">👹 Boss Abilities</span>
       <span style="margin-left:8px;font-size:11px;color:#8b949e;font-weight:600">Player:</span>
       <select id="tlPlayerSel" onchange="applyTLFilters()" style="background:#161b22;border:1px solid #30363d;color:#c9d1d9;padding:3px 8px;border-radius:6px;font-size:11px">
         <option value="all">All Players</option>
@@ -1431,6 +1460,240 @@ async function fetchFightRankings(token, code, fightId){
 // ── Bloodlust/Heroism spell IDs ──────────────────────────────────────────────
 // lust variants. drums in here is technically wrong (no exhaustion debuff) but leaving it
 const BL_IDS={2825:"Bloodlust",32182:"Heroism",80353:"Time Warp",264667:"Primal Rage",390386:"Fury of the Aspects",264706:"Feral Hide Drums"};
+const RAID_CD_HINTS=[
+  "tranquility","divine hymn","revival","spirit link","healing tide","power word: barrier",
+  "aura mastery","rewind","dream flight","darkness","rallying cry","anti-magic zone","spirit shell"
+];
+const WEAPON_BUFF_HINTS=["oil","whetstone","rune","howling","stormcharged","shaded"];
+const PASSIVE_AURA_HINTS=["well fed","food","feast","phial","flask","rune"];
+
+function safeArr(v){return Array.isArray(v)?v:[];}
+function uniq(arr){return [...new Set((arr||[]).filter(Boolean))];}
+function avg(arr){return arr&&arr.length?arr.reduce((s,v)=>s+v,0)/arr.length:0;}
+function escAttr(s){return String(s??"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function copyTiny(btn,text,done){
+  navigator.clipboard.writeText(text).then(()=>{
+    const prev=btn.textContent;
+    btn.textContent=done||"Copied!";
+    setTimeout(()=>btn.textContent=prev,1500);
+  }).catch(()=>{});
+}
+function detectRaidCD(name,sid){
+  const lower=(name||"").toLowerCase();
+  if(BL_IDS[sid])return"lust";
+  if(DEFS[sid])return"def";
+  if(OFFS[sid])return"off";
+  if(RAID_CD_HINTS.some(h=>lower.includes(h)))return"raid";
+  return null;
+}
+function buildTalentImportQuery(actorIds){
+  return actorIds.map(id=>`talent_${id}: talentImportCode(actorID:${id})`).join("\n");
+}
+function normalizePhaseTransitions(raw,fightStart,fightEnd){
+  const starts=safeArr(raw).map((ph,i)=>{
+    const rawStart=ph?.startTime??ph?.timestamp??ph?.time??ph?.start;
+    if(rawStart==null)return null;
+    const rel=rawStart>fightStart?rawStart-fightStart:rawStart;
+    return{index:i+2,name:ph?.name||`Phase ${i+2}`,start:Math.max(0,rel)};
+  }).filter(Boolean).sort((a,b)=>a.start-b.start);
+  const phases=[{index:1,name:"Phase 1",start:0},...starts].filter((ph,i,arr)=>i===0||ph.start>arr[i-1].start);
+  return phases.map((ph,i)=>({
+    ...ph,
+    end:i<phases.length-1?phases[i+1].start:(fightEnd-fightStart),
+    dur:(i<phases.length-1?phases[i+1].start:(fightEnd-fightStart))-ph.start
+  })).filter(ph=>ph.dur>0);
+}
+function phaseForTime(ms,phases){
+  const list=safeArr(phases);
+  return list.find(ph=>ms>=ph.start&&ms<ph.end)||list[list.length-1]||null;
+}
+function summarizeTalentTree(tree){
+  const names=uniq(safeArr(tree).flatMap(node=>{
+    const raw=node?.name||node?.spellName||node?.talentName||node?.spell?.name||node?.entry?.name||node?.selectedTalent?.name;
+    if(raw)return [raw];
+    const nested=safeArr(node?.entries||node?.talents||node?.choices).map(x=>x?.name||x?.spellName||x?.spell?.name).filter(Boolean);
+    return nested;
+  }));
+  return names.slice(0,6);
+}
+function extractCombatantInfo(entry){
+  const ci=entry?.combatantInfo||entry?.combatantinfo||entry?.combatant||null;
+  if(!ci){
+    return{
+      ilvl:0,enchants:0,gems:0,weaponBuffs:[],passiveBuffs:[],talentNames:[],
+      readyIssues:["Snapshot unavailable"],readyStatus:"warn",readyText:"Snapshot unavailable",stats:null
+    };
+  }
+  const gear=safeArr(ci?.gear);
+  const auras=safeArr(ci?.auras);
+  const talents=summarizeTalentTree(ci?.talentTree||ci?.talents||[]);
+  const ilvl=Math.round(avg(gear.map(g=>Number(g?.itemLevel||g?.itemLevelEquipped||0)).filter(Boolean)));
+  const enchants=gear.filter(g=>g?.permanentEnchant||g?.permanentEnchantName||g?.permanentEnchantId).length;
+  const gems=gear.reduce((sum,g)=>sum+safeArr(g?.gems).filter(Boolean).length,0);
+  const weaponBuffs=uniq(auras.map(a=>a?.name).filter(n=>WEAPON_BUFF_HINTS.some(h=>(n||"").toLowerCase().includes(h))));
+  const passiveBuffs=uniq(auras.map(a=>a?.name).filter(n=>PASSIVE_AURA_HINTS.some(h=>(n||"").toLowerCase().includes(h))));
+  const issues=[];
+  if(gear.length&&enchants===0)issues.push("No enchants seen");
+  else if(gear.length&&enchants<Math.max(2,Math.floor(gear.length*0.35)))issues.push("Light enchants");
+  if(gear.length&&gems===0)issues.push("No gems seen");
+  if(weaponBuffs.length===0)issues.push("No weapon buff seen");
+  const readyStatus=issues.length===0?"good":issues.length===1?"warn":"bad";
+  return{
+    ilvl:ilvl||0,enchants,gems,weaponBuffs,passiveBuffs,talentNames:talents,
+    readyIssues:issues,readyStatus,
+    readyText:issues.length?issues.slice(0,2).join(" · "):"Ready",
+    stats:ci?.stats||null
+  };
+}
+function buildBossAbilityRows(dmgT,debuffs,P,petOwnerMap,fightStart,fightEnd,aName){
+  const rows={};
+  const isFriendlySource=id=>!!(P[id]||P[petOwnerMap[id]]);
+  const register=(sid,name,t,playerName,kind,amount)=>{
+    const key=name||`Spell#${sid}`;
+    if(/melee|auto attack/i.test(key))return;
+    rows[key]=rows[key]||{id:sid,name:key,kind,damage:0,applications:0,targets:new Set(),times:[]};
+    const row=rows[key];
+    row.id=row.id||sid;
+    row.kind=row.kind==="damage"&&kind==="debuff"?"hybrid":row.kind||kind;
+    row.damage+=amount||0;
+    row.applications+=(kind==="debuff"?1:0);
+    if(playerName)row.targets.add(playerName);
+    row.times.push(t);
+  };
+  dmgT.forEach(ev=>{
+    const target=P[ev.targetID];
+    if(!target||isFriendlySource(ev.sourceID))return;
+    register(ev.abilityGameID,aName[ev.abilityGameID],ev.timestamp-fightStart,target.name,"damage",(ev.amount||0)+(ev.absorbed||0));
+  });
+  debuffs.forEach(ev=>{
+    const target=P[ev.targetID];
+    if(!target||isFriendlySource(ev.sourceID))return;
+    const type=(ev.type||"").toLowerCase();
+    if(type.includes("applydebuff"))register(ev.abilityGameID,aName[ev.abilityGameID],ev.timestamp-fightStart,target.name,"debuff",0);
+  });
+  const cluster=(times)=>{
+    const sorted=safeArr(times).sort((a,b)=>a-b);
+    const out=[];
+    sorted.forEach(t=>{
+      const last=out[out.length-1];
+      if(last&&t-last.t<=5000){last.count++;last.t=Math.round((last.t+t)/2);}
+      else out.push({t,count:1});
+    });
+    return out;
+  };
+  return Object.values(rows).map(row=>{
+    row.targetsCount=row.targets.size;
+    row.score=row.damage+(row.targetsCount*600000)+(row.applications*180000);
+    row.clusters=cluster(row.times).slice(0,8);
+    return row;
+  }).filter(row=>row.clusters.length&&(row.targetsCount>=2||row.damage>0||row.applications>=2)).sort((a,b)=>b.score-a.score).slice(0,6);
+}
+function buildMechanicRows(debuffs,P,fightStart,fightEnd,aName){
+  const rows={};
+  const open={};
+  debuffs.forEach(ev=>{
+    const target=P[ev.targetID];
+    if(!target)return;
+    const sid=ev.abilityGameID;
+    const name=aName[sid]||`Spell#${sid}`;
+    const type=(ev.type||"").toLowerCase();
+    rows[name]=rows[name]||{id:sid,name,players:new Set(),applications:0,totalMs:0,longestMs:0,longestPlayer:"—",playerCounts:{},playerDurations:{}};
+    const row=rows[name];
+    const key=`${target.id}|${sid}`;
+    if(type.includes("applydebuff")){
+      row.players.add(target.name);
+      row.applications++;
+      row.playerCounts[target.name]=(row.playerCounts[target.name]||0)+1;
+      open[key]=ev.timestamp;
+      target.debuffs=target.debuffs||{};
+      target.debuffs[name]=target.debuffs[name]||{id:sid,applications:0,totalMs:0,longestMs:0};
+      target.debuffs[name].applications++;
+    }else if(type.includes("refreshdebuff")){
+      if(open[key]==null)open[key]=ev.timestamp;
+    }else if(type.includes("removedebuff")){
+      const start=open[key];
+      if(start!=null){
+        const dur=Math.max(0,ev.timestamp-start);
+        row.totalMs+=dur;
+        row.playerDurations[target.name]=(row.playerDurations[target.name]||0)+dur;
+        if(dur>row.longestMs){row.longestMs=dur;row.longestPlayer=target.name;}
+        target.debuffs=target.debuffs||{};
+        target.debuffs[name]=target.debuffs[name]||{id:sid,applications:0,totalMs:0,longestMs:0};
+        target.debuffs[name].totalMs+=dur;
+        target.debuffs[name].longestMs=Math.max(target.debuffs[name].longestMs,dur);
+        delete open[key];
+      }
+    }
+  });
+  Object.entries(open).forEach(([key,start])=>{
+    const [pid,sid]=key.split("|");
+    const target=P[pid];
+    if(!target)return;
+    const name=aName[sid]||`Spell#${sid}`;
+    const row=rows[name];
+    if(!row)return;
+    const dur=Math.max(0,fightEnd-start);
+    row.totalMs+=dur;
+    row.playerDurations[target.name]=(row.playerDurations[target.name]||0)+dur;
+    if(dur>row.longestMs){row.longestMs=dur;row.longestPlayer=target.name;}
+    target.debuffs=target.debuffs||{};
+    target.debuffs[name]=target.debuffs[name]||{id:Number(sid),applications:0,totalMs:0,longestMs:0};
+    target.debuffs[name].totalMs+=dur;
+    target.debuffs[name].longestMs=Math.max(target.debuffs[name].longestMs,dur);
+  });
+  return Object.values(rows).map(row=>{
+    const topPlayers=Object.entries(row.playerCounts).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([name,count])=>`${name} ×${count}`);
+    row.playersCount=row.players.size;
+    row.avgMs=row.applications?Math.round(row.totalMs/row.applications):0;
+    row.topPlayers=topPlayers;
+    row.watch=row.playersCount>=4||row.longestMs>=8000||row.applications>=6;
+    return row;
+  }).filter(row=>row.playersCount>0).sort((a,b)=>b.playersCount-a.playersCount||b.applications-a.applications||b.totalMs-a.totalMs);
+}
+function buildCoverageSummary(bossRows,casts,aName,fightStart){
+  if(!bossRows.length)return [];
+  const cds=casts.map(ev=>{
+    const name=aName[ev.abilityGameID]||DEFS[ev.abilityGameID]||OFFS[ev.abilityGameID]||`Spell#${ev.abilityGameID}`;
+    const kind=detectRaidCD(name,ev.abilityGameID);
+    if(!kind)return null;
+    return{t:ev.timestamp-fightStart,kind,name};
+  }).filter(Boolean);
+  return bossRows.slice(0,4).map(row=>{
+    const windows=row.clusters.map(cl=>{
+      const nearby=cds.filter(cd=>Math.abs(cd.t-cl.t)<=6000);
+      return{
+        t:cl.t,
+        defs:nearby.filter(cd=>cd.kind==="def").length,
+        raids:nearby.filter(cd=>cd.kind==="raid").length,
+        lusts:nearby.filter(cd=>cd.kind==="lust").length
+      };
+    });
+    const uncovered=windows.filter(w=>w.defs===0&&w.raids===0&&w.lusts===0).length;
+    return{
+      name:row.name,
+      covered:windows.length-uncovered,
+      total:windows.length,
+      uncovered,
+      note:uncovered===0?"Covered every shown hit":uncovered>=windows.length?"No coverage lined up":"Some gaps in coverage"
+    };
+  });
+}
+function summarizePullTrends(pullHistory){
+  if(!pullHistory||pullHistory.length<2)return null;
+  const first=pullHistory[0],last=pullHistory[pullHistory.length-1];
+  const trend=(now,then,goodWhenLower)=>({
+    diff:now-then,
+    good:(goodWhenLower?now<then:now>then),
+    flat:now===then
+  });
+  return{
+    pulls:pullHistory.length,
+    deaths:trend(last.deaths,first.deaths,true),
+    raidDps:trend(last.raidDps||0,first.raidDps||0,false),
+    missed:trend(last.missedOffTotal||0,first.missedOffTotal||0,true),
+    pots:trend(last.noPotDps||0,first.noPotDps||0,true)
+  };
+}
 
 // boss vs add detection -- match target name to fight name
 // gets confused on council fights, acceptable tradeoff
@@ -1454,8 +1717,15 @@ function renderPullCompare(pullHistory,bossName){
     div.innerHTML='<div style="color:#6e7681;font-size:13px;padding:16px;background:#161b22;border:1px dashed #30363d;border-radius:8px;text-align:center;line-height:1.8">Only 1 pull of <strong style="color:#ffd700">'+bossName+'</strong> this session. Do another pull to see the comparison.</div>';
     return;
   }
+  const trends=summarizePullTrends(pullHistory);
   const allPlayers=[...new Set(pullHistory.flatMap(ph=>ph.players.map(p=>p.name)))].sort();
-  let html='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">'+
+  const trendChip=(label,obj,goodWhenLowerColor)=>{
+    const color=obj.flat?"#8b949e":obj.good?"#3fb950":"#f85149";
+    const sign=obj.flat?"±":obj.diff>0?"+":"";
+    return `<span class="hero-badge" style="border-color:${color}60;color:${color}">${label} ${sign}${obj.diff}</span>`;
+  };
+  let html=(trends?`<div class="summary-note-card" style="margin-bottom:12px"><div class="summary-note-title">Pull Trend Summary</div><div class="summary-note-body">We have ${trends.pulls} pulls of <span style="color:#ffd700;font-weight:700">${bossName}</span> in this session. Read this left to right before diving into the raw table.</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">${trendChip("Deaths",trends.deaths,true)}${trendChip("Raid DPS",trends.raidDps,false)}${trendChip("Missed Off CDs",trends.missed,true)}${trendChip("No Pot DPS",trends.pots,true)}</div><div class="summary-note-sub">${trends.deaths.good||trends.missed.good||trends.pots.good?"You’re trending in the right direction. Keep the improvements that stuck.":"No obvious trend improvement yet — look at deaths and mechanic failures first."}</div></div>`:"")+
+    '<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">'+
     pullHistory.map(ph=>'<div style="background:#161b22;border:1px solid '+(ph.kill?"#3fb950":"#30363d")+';border-radius:8px;padding:10px 12px;font-size:12px;min-width:220px;flex:1 1 220px"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px"><span style="color:#ffd700;font-weight:700">Pull '+ph.pull+'</span><span class="kb '+(ph.kill?"kill":"wipe")+'">'+(ph.kill?"Kill":"Wipe")+'</span><span style="color:#8b949e">'+ph.duration+'</span></div><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px"><div><div style="font-size:10px;color:#8b949e;text-transform:uppercase;letter-spacing:.06em">Deaths</div><div style="color:'+(ph.deaths>0?"#f85149":"#3fb950")+';font-weight:700">'+ph.deaths+'</div></div><div><div style="font-size:10px;color:#8b949e;text-transform:uppercase;letter-spacing:.06em">Raid DPS</div><div style="color:#79c0ff;font-weight:700">'+fmtNum(ph.raidDps||0)+'</div></div><div><div style="font-size:10px;color:#8b949e;text-transform:uppercase;letter-spacing:.06em">Raid HPS</div><div style="color:#3fb950;font-weight:700">'+fmtNum(ph.raidHps||0)+'</div></div><div><div style="font-size:10px;color:#8b949e;text-transform:uppercase;letter-spacing:.06em">Missed Off CDs</div><div style="color:'+((ph.missedOffTotal||0)>0?"#f85149":"#3fb950")+';font-weight:700">'+((ph.missedOffTotal||0)||"✓")+'</div></div><div style="grid-column:1 / -1"><div style="font-size:10px;color:#8b949e;text-transform:uppercase;letter-spacing:.06em">No Potion DPS</div><div style="color:'+((ph.noPotDps||0)>0?"#e3a008":"#3fb950")+';font-weight:700">'+((ph.noPotDps||0)>0?(ph.noPotDps+" player"+((ph.noPotDps||0)===1?"":"s")):"None ✓")+'</div></div></div></div>').join("")+
     '</div><div style="font-size:11px;color:#8b949e;margin:0 0 10px">Missed Off CDs = tracked offensive cooldowns that were expected for that spec on that pull but never cast.</div><div class="tw"><table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr>'+
     '<th style="background:#161b22;color:#ffd700;padding:8px 10px;border-bottom:2px solid #30363d">Player</th>'+
@@ -1701,9 +1971,10 @@ async function refreshToken(){
 
 // getValidToken() is defined above in the PKCE block -- handles both PKCE and legacy credential flows
 // this duplicate was overwriting it which broke the PKCE button entirely. removing it.
-let reportCode=null,fightId=null,allFights=[],abilities=[],selectedType=null;
+let reportCode=null,fightId=null,allFights=[],abilities=[],selectedType=null,_fightMetaCache={};
 window._raidLensPlayers=[];
 window._raidLensFightSec=0;
+window._raidLensFightMeta=null;
 const REPORTS_PER_PAGE=24;
 let _myLogsPage=0,_guildPage=0,_guildReports=[];
 
@@ -2281,8 +2552,11 @@ function openPlayerModal(p,fSec){
   const tagList=(entries,variant,label)=>entries.length?entries.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),variant,label)).join(""):"<span style='color:#6e7681'>None</span>";
   const statRow=(label,val,color="#c9d1d9")=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #21262d;font-size:13px"><span style="color:#8b949e">${label}</span><span style="font-weight:600;color:${color}">${val}</span></div>`;
   let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-    <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("Potion",p.pots?"✓ Used ("+p.pots+")":"✗ None detected",p.pots?"#3fb950":"#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
-    <div>${statRow("Damage Taken",fmtNum(p.dtaken))}${statRow("Interrupts",Object.values(p.ints).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Dispels",Object.values(p.disps).reduce((s,c)=>s+c,0),"#3fb950")}${statRow("CC Used",Object.values(p.cc).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Def CDs Used",Object.values(p.defs).reduce((s,c)=>s+c,0),"#ffd700")}${statRow("Off CDs Used",Object.values(p.offs).reduce((s,c)=>s+c,0),"#ffd700")}</div></div>`;
+    <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("Potion",p.pots?`✓ ${p.potName||"Used"} (${p.pots})`:"✗ None detected",p.pots?"#3fb950":"#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#e3a008")}${p.ilvl?statRow("Snapshot iLvl",p.ilvl,"#c9d1d9"):""}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
+    <div>${statRow("Damage Taken",fmtNum(p.dtaken))}${statRow("Interrupts",Object.values(p.ints).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Dispels",Object.values(p.disps).reduce((s,c)=>s+c,0),"#3fb950")}${statRow("CC Used",Object.values(p.cc).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Def CDs Used",Object.values(p.defs).reduce((s,c)=>s+c,0),"#ffd700")}${statRow("Off CDs Used",Object.values(p.offs).reduce((s,c)=>s+c,0),"#ffd700")}${p.weaponBuffs?.length?statRow("Weapon Buff",p.weaponBuffs.join(", "),"#ffdd75"):""}${p.pets?.length?statRow("Pets Counted",p.pets.length,"#8b949e"):""}</div></div>`;
+  if(p.talentNames?.length||p.buildCode||p.readyIssues?.length||p.passiveBuffs?.length){
+    html+=`<div class="modal-section"><h4>Build Snapshot</h4><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">${p.talentNames?.length?p.talentNames.map(n=>spellChip(n,null,null,"cool","talent snapshot")).join(""):"<span style='color:#6e7681'>No talent names surfaced by Warcraft Logs for this pull.</span>"}</div>${p.buildCode?`<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px"><span style="font-size:12px;color:#8b949e">Talent import string:</span><code style="background:#111824;border:1px solid #30363d;border-radius:6px;padding:4px 8px;font-size:11px;color:#79c0ff;max-width:100%;overflow:auto">${p.buildCode}</code><button class="mini-link" onclick="copyTiny(this,'${escJs(p.buildCode)}','✓')">Copy Build</button></div>`:""}${p.readyIssues?.length?`<div style="margin-top:8px;color:#ffdd75;font-size:12px">${p.readyIssues.join(" · ")}</div>`:`<div style="margin-top:8px;color:#3fb950;font-size:12px">Ready snapshot looked clean.</div>`}${p.passiveBuffs?.length?`<div style="margin-top:8px;color:#8b949e;font-size:11px">Buff snapshot: ${p.passiveBuffs.join(", ")}</div>`:""}</div>`;
+  }
   if(p.deaths.length){html+=`<div class="modal-section"><h4>Deaths</h4><div class="spell-grid">${p.deaths.map(d=>spellChip(`${d.timeStr||"?"} — ${d.killer}`,null,d.killerId||findAbilityIdByName(d.killer),"danger","death cause")).join("")}</div></div>`;}
   if(Object.keys(p.dmgBySpell||{}).length){html+=`<div class="modal-section"><h4>Damage Done Breakdown</h4>${renderSpellBreakdown(p.dmgBySpell,p.ddealt,"cool","damage done")}</div>`;}
   if(Object.keys(p.healBySpell||{}).length){html+=`<div class="modal-section"><h4>Healing Breakdown</h4>${renderHealingBreakdown(p.healBySpell,p.healed)}</div>`;}
@@ -2292,6 +2566,7 @@ function openPlayerModal(p,fSec){
   if(ints.length){html+=`<div class="modal-section"><h4>Interrupts</h4><div class="spell-grid">${tagList(ints,"cool","interrupt")}</div></div>`;}
   if(disps.length){html+=`<div class="modal-section"><h4>Dispels</h4><div class="spell-grid">${tagList(disps,"good","dispel")}</div></div>`;}
   if(cc.length){html+=`<div class="modal-section"><h4>Crowd Control</h4><div class="spell-grid">${tagList(cc,"cool","crowd control")}</div></div>`;}
+  if(Object.keys(p.debuffs||{}).length){html+=`<div class="modal-section"><h4>Mechanic Debuffs</h4><div class="spell-grid">${Object.entries(p.debuffs).sort((a,b)=>(b[1].totalMs||0)-(a[1].totalMs||0)).map(([n,v])=>spellChip(`${n} ${v.totalMs?`(${Math.round(v.totalMs/1000)}s)`:`×${v.applications||1}`}`,null,v.id,"danger","mechanic debuff")).join("")}</div></div>`;}
   document.getElementById("modalContent").innerHTML=html;
   document.getElementById("playerModal").style.display="flex";
   refreshWowheadTooltips();
@@ -2380,7 +2655,13 @@ async function analyze(){
     const aName={},potIDs=new Set();
     abilities.forEach(a=>{aName[a.gameID]=a.name;const n=(a.name||"").toLowerCase();if(n.includes("potion"))potIDs.add(a.gameID);});
     log("👥 Fetching roster...");
-    const dd=await gql(token,`{reportData{report(code:"${reportCode}"){playerDetails(fightIDs:[${fight.id}]) rankedCharacters{name server{name slug region{slug}}}}}}`);
+    let dd;
+    try{
+      dd=await gql(token,`{reportData{report(code:"${reportCode}"){playerDetails(fightIDs:[${fight.id}], includeCombatantInfo:true) rankedCharacters{name server{name slug region{slug}}}}}}`);
+    }catch(e){
+      console.warn("playerDetails includeCombatantInfo fallback:",e);
+      dd=await gql(token,`{reportData{report(code:"${reportCode}"){playerDetails(fightIDs:[${fight.id}]) rankedCharacters{name server{name slug region{slug}}}}}}`);
+    }
     const pd=dd.reportData.report.playerDetails,pdObj=pd?.data?.playerDetails||pd?.playerDetails||pd,P={};
     // build server/region lookup from rankedCharacters so we can link sims + armory
     const exportedChars=dd.reportData.report.rankedCharacters||[];
@@ -2391,15 +2672,50 @@ async function analyze(){
       charServerMap[c.name.toLowerCase()]={server:serverSlug,region:regionSlug};
     });
 
-    ["tanks","healers","dps"].forEach(role=>{(pdObj?.[role]||[]).forEach(p=>{
-      const charInfo=charServerMap[p.name.toLowerCase()]||{};
-      P[p.id]={id:p.id,name:p.name,cls:p.type,spec:p.specs?.[0]?.spec||"",role,
+    ["tanks","healers","dps"].forEach(role=>{(pdObj?.[role]||[]).forEach(entry=>{
+      const charInfo=charServerMap[entry.name.toLowerCase()]||{};
+      const ci=extractCombatantInfo(entry);
+      P[entry.id]={id:entry.id,name:entry.name,cls:entry.type,spec:entry.specs?.[0]?.spec||"",role,
         server:charInfo.server||"",region:charInfo.region||"us",
-        defs:{},offs:{},pots:0,potName:null,hs:false,ints:{},disps:{},cc:{},
+        defs:{},offs:{},pots:0,potName:null,hs:false,ints:{},disps:{},cc:{},debuffs:{},
         dtaken:0,ddealt:0,healed:0,overheal:0,absorbs:0,deaths:[],rio:null,
-        dmgBySpell:{},takenBySpell:{},healBySpell:{}};
+        dmgBySpell:{},takenBySpell:{},healBySpell:{},
+        ilvl:ci.ilvl||0,talentNames:ci.talentNames||[],buildCode:null,readyIssues:ci.readyIssues||[],
+        readyStatus:ci.readyStatus||"warn",readyText:ci.readyText||"No readiness data",
+        enchantCount:ci.enchants||0,gemCount:ci.gems||0,weaponBuffs:ci.weaponBuffs||[],
+        passiveBuffs:ci.passiveBuffs||[],stats:ci.stats||null,pets:[]};
     });});
     log(`👥 ${Object.keys(P).length} players`);
+    let phaseInfo=[],petOwnerMap={},friendlyPetNames={},bossTimelineRows=[],coverageSummary=[];
+    try{
+      const fightMeta=await gql(token,`{reportData{report(code:"${reportCode}"){fights(fightIDs:[${fight.id}]){id phaseTransitions{id startTime} friendlyPets{id petOwner gameID}}}}}`);
+      const metaFight=fightMeta?.reportData?.report?.fights?.[0];
+      phaseInfo=normalizePhaseTransitions(metaFight?.phaseTransitions||[],fight.startTime,fight.endTime);
+      safeArr(metaFight?.friendlyPets).forEach(pet=>{
+        if(pet?.id&&pet?.petOwner){
+          petOwnerMap[pet.id]=pet.petOwner;
+          friendlyPetNames[pet.id]=pet.gameID?`Pet #${pet.gameID}`:`Pet ${pet.id}`;
+          if(P[pet.petOwner])P[pet.petOwner].pets.push(friendlyPetNames[pet.id]);
+        }
+      });
+      window._raidLensFightMeta={phases:phaseInfo};
+    }catch(e){
+      console.warn("fight meta fetch failed:",e);
+      phaseInfo=[];
+      petOwnerMap={};
+      window._raidLensFightMeta={phases:[]};
+    }
+    try{
+      const actorIds=Object.keys(P).map(Number);
+      const talentQuery=buildTalentImportQuery(actorIds);
+      if(talentQuery){
+        const talentData=await gql(token,`{reportData{report(code:"${reportCode}"){fights(fightIDs:[${fight.id}]){id ${talentQuery}}}}}`);
+        const talentFight=talentData?.reportData?.report?.fights?.[0];
+        actorIds.forEach(id=>{if(P[id])P[id].buildCode=talentFight?.[`talent_${id}`]||null;});
+      }
+    }catch(e){
+      console.warn("talent import code fetch failed:",e);
+    }
     log("📡 Fetching casts...");const casts=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Casts");log(`✅ ${casts.length}`);
     // prepot fetch: separate query WITHOUT fightIDs so WCL doesn't clamp to fight boundaries
     // fightIDs filter locks to the fight window -- this is the only way to see pre-pull casts
@@ -2410,6 +2726,7 @@ async function analyze(){
       prepotEvts.forEach(ev=>{if(potIDs.has(ev.abilityGameID)&&P[ev.sourceID]){prepotPlayerIDs.add(ev.sourceID);if(!P[ev.sourceID].potName)P[ev.sourceID].potName=aName[ev.abilityGameID];}});
       log(`✅ Prepot scan: ${prepotPlayerIDs.size} prepot(s) found`);
     }catch(e){console.warn("prepot fetch failed:",e);}
+    const ownerForSource=id=>P[id]||P[petOwnerMap[id]]||null;
     // track lust separately so we know timing + who was actually alive for it
     const bloodlusts=[];
     casts.forEach(ev=>{
@@ -2428,13 +2745,17 @@ async function analyze(){
     ints.forEach(ev=>{const p=P[ev.sourceID];if(!p)return;const n=aName[ev.extraAbilityGameID]||aName[ev.abilityGameID]||`Spell#${ev.extraAbilityGameID||ev.abilityGameID}`;p.ints[n]=(p.ints[n]||0)+1;});
     log("📡 Dispels...");const disps=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Dispels");log(`✅ ${disps.length}`);
     disps.forEach(ev=>{const p=P[ev.sourceID];if(!p)return;const n=aName[ev.extraAbilityGameID]||aName[ev.abilityGameID]||`Spell#${ev.extraAbilityGameID||ev.abilityGameID}`;p.disps[n]=(p.disps[n]||0)+1;});
+    log("📡 Debuffs...");const debuffs=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Debuffs");log(`✅ ${debuffs.length}`);
     log("📡 Damage taken...");const dmgT=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"DamageTaken");log(`✅ ${dmgT.length}`);
     dmgT.forEach(ev=>{const p=P[ev.targetID];if(!p)return;const amt=(ev.amount||0)+(ev.absorbed||0),sid=ev.abilityGameID,n=aName[sid]||`Spell#${sid}`;p.dtaken+=amt;p.takenBySpell[n]=p.takenBySpell[n]||{id:sid,amount:0,hits:0};p.takenBySpell[n].amount+=amt;p.takenBySpell[n].hits++;});
     log("📡 Damage done...");const dmgD=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"DamageDone");log(`✅ ${dmgD.length}`);
-    dmgD.forEach(ev=>{const p=P[ev.sourceID];if(!p)return;const amt=(ev.amount||0),sid=ev.abilityGameID,n=aName[sid]||`Spell#${sid}`;p.ddealt+=amt;p.dmgBySpell[n]=p.dmgBySpell[n]||{id:sid,amount:0,hits:0};p.dmgBySpell[n].amount+=amt;p.dmgBySpell[n].hits++;});
+    dmgD.forEach(ev=>{const p=ownerForSource(ev.sourceID);if(!p)return;const amt=(ev.amount||0),sid=ev.abilityGameID,n=aName[sid]||`Spell#${sid}`;p.ddealt+=amt;p.dmgBySpell[n]=p.dmgBySpell[n]||{id:sid,amount:0,hits:0};p.dmgBySpell[n].amount+=amt;p.dmgBySpell[n].hits++;});
     log("📡 Healing...");const heals=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Healing");log(`✅ ${heals.length}`);
-    heals.forEach(ev=>{const p=P[ev.sourceID];if(!p)return;const sid=ev.abilityGameID,n=aName[sid]||`Spell#${sid}`,amt=(ev.amount||0);p.healed+=amt;p.overheal+=(ev.overheal||0);p.absorbs+=(ev.absorbed||0);p.healBySpell[n]=p.healBySpell[n]||{id:sid,amount:0,hits:0};p.healBySpell[n].amount+=amt;p.healBySpell[n].hits++;});
+    heals.forEach(ev=>{const p=ownerForSource(ev.sourceID);if(!p)return;const sid=ev.abilityGameID,n=aName[sid]||`Spell#${sid}`,amt=(ev.amount||0);p.healed+=amt;p.overheal+=(ev.overheal||0);p.absorbs+=(ev.absorbed||0);p.healBySpell[n]=p.healBySpell[n]||{id:sid,amount:0,hits:0};p.healBySpell[n].amount+=amt;p.healBySpell[n].hits++;});
     log("📡 Deaths...");const deaths=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Deaths");log(`✅ ${deaths.length}`);
+    const mechanicRows=buildMechanicRows(debuffs,P,fight.startTime,fight.endTime,aName);
+    bossTimelineRows=buildBossAbilityRows(dmgT,debuffs,P,petOwnerMap,fight.startTime,fight.endTime,aName);
+    coverageSummary=buildCoverageSummary(bossTimelineRows,casts,aName,fight.startTime);
     const sorted=Object.values(P).sort((a,b)=>a.name.localeCompare(b.name));
     const shortPull=(fight.endTime-fight.startTime)<45000;
     // killing blow: WCL death events dont actually say what killed you
@@ -2487,6 +2808,20 @@ async function analyze(){
     // CONSUMABLES
     const bCons=document.getElementById("bCons");bCons.innerHTML="";
     sorted.forEach(p=>{const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td style="text-align:center">${p.pots>0?`<span class="badge yes" title="${p.potName||"Potion detected"}">✓ ×${p.pots}</span><span style="margin-left:8px;color:#3fb950;font-size:11px;font-weight:600">${p.potName||"Potion detected"}</span>`:cb(false)}</td><td style="text-align:center">${cb(p.hs)}</td>`;bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");bCons.appendChild(tr);});
+    // BUILD + READY
+    const bBuilds=document.getElementById("bBuilds");if(bBuilds){
+      bBuilds.innerHTML="";
+      sorted.forEach(p=>{
+        const tr=document.createElement("tr");
+        const buildPreview=p.talentNames?.length?p.talentNames.slice(0,3).map(n=>spellChip(n,null,null,"cool","talent snapshot")).join(""):'<span class="none-t">Talent snapshot unavailable</span>';
+        const readyClass=p.readyStatus||"warn";
+        const readyHtml=`<span class="ready-pill ${readyClass}">${readyClass==="good"?"Ready":readyClass==="warn"?"Watch":"Fix"}</span><div style="margin-top:6px;color:${readyClass==="bad"?"#f87171":readyClass==="warn"?"#ffdd75":"#8b949e"};font-size:11px;line-height:1.6">${escAttr(p.readyText||"No readiness snapshot")}</div>`;
+        const copyBtn=p.buildCode?`<button class="mini-link" onclick="event.stopPropagation();copyTiny(this,'${escJs(p.buildCode)}','✓')">Copy Build</button>`:'<span class="none-t">—</span>';
+        tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td class="num" data-val="${p.ilvl||0}" style="color:${p.ilvl? "#c9d1d9":"#6e7681"}">${p.ilvl||"—"}</td><td>${buildPreview}${p.buildCode?`<div style="margin-top:6px;font-size:10px;color:#8b949e">${escAttr(p.buildCode.slice(0,28))}${p.buildCode.length>28?"…":""}</div>`:""}</td><td>${readyHtml}</td><td style="text-align:center">${copyBtn}</td>`;
+        bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
+        bBuilds.appendChild(tr);
+      });
+    }
     // DEATHS
     const bDeath=document.getElementById("bDeath");bDeath.innerHTML="";const drows=[];
     sorted.forEach(p=>{if(!p.deaths.length){drows.push({...p,time:Infinity,killer:"—",killerId:null,timeStr:"Survived",dcount:0,ctx:null});}else p.deaths.forEach(d=>drows.push({...p,time:d.time,killer:d.killer,killerId:d.killerId||null,timeStr:d.timeStr||ftime(d.time),dcount:p.deaths.length,ctx:d.ctx||null}));});
@@ -2629,6 +2964,29 @@ async function analyze(){
       bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
       bCC.appendChild(tr);
     });
+    // mechanic debuffs / failures
+    const mechanicSummaryGrid=document.getElementById("mechanicSummaryGrid");
+    const bMechDebuffs=document.getElementById("bMechDebuffs");
+    if(mechanicSummaryGrid&&bMechDebuffs){
+      const mechCause=pickWipeCause(drows);
+      const deathLead=realDeaths?`${realDeaths} death${realDeaths===1?"":"s"}. First: ${mechCause?.firstDeath?.name||"—"} @ ${mechCause?.firstDeath?.timeStr||"—"}.`:"Clean pull — nobody died.";
+      const debuffOffenders=mechanicRows.filter(r=>r.watch).slice(0,3);
+      const nonTankPressure=sorted.filter(p=>p.role!=="tanks").sort((a,b)=>b.dtaken-a.dtaken).slice(0,3);
+      mechanicSummaryGrid.innerHTML=[
+        `<div class="summary-note-card"><div class="summary-note-title">Start With Deaths</div><div class="summary-note-body">${deathLead}</div><div class="summary-note-sub">${mechCause&&mechCause.topKiller?`Main killer: ${mechCause.topKiller.name} ×${mechCause.topKiller.count}`:"No repeat killer identified yet."}</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Mechanic Failures</div><div class="summary-note-body">${debuffOffenders.length?debuffOffenders.map(r=>`${r.name} hit ${r.playersCount} players`).join(" · "):"No repeated debuff failure pattern jumped out on this pull."}</div><div class="summary-note-sub">${debuffOffenders.length?`Longest hold: ${debuffOffenders[0].longestPlayer} ${Math.round(debuffOffenders[0].longestMs/1000)}s`:"Raid debuff handling looked clean."}</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Damage Pressure Watchlist</div><div class="summary-note-body">${nonTankPressure.length?nonTankPressure.map(p=>`${p.name} ${fmt(p.dtaken)}`).join(" · "):"No non-tank pressure spike data."}</div><div class="summary-note-sub">Use this with deaths and boss-ability timeline, not as a raw blame chart.</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Cooldown Coverage</div><div class="summary-note-body">${coverageSummary.length?coverageSummary.map(r=>`${r.name}: ${r.covered}/${r.total} covered`).join(" · "):"No major boss-event windows were detected for a coverage pass."}</div><div class="summary-note-sub">${coverageSummary.find(r=>r.uncovered>0)?.note||"Raid and personal CDs were lining up with the shown boss hits."}</div></div>`
+      ].join("");
+      bMechDebuffs.innerHTML="";
+      mechanicRows.slice(0,16).forEach(row=>{
+        const tr=document.createElement("tr");
+        const why=row.watch?`Watch this mechanic. ${row.playersCount} players touched it and ${row.longestPlayer} held it ${Math.round(row.longestMs/1000)}s.`:`Lower-volume mechanic. Still useful if it lines up with deaths.`;
+        tr.innerHTML=`<td>${spellChip(row.name,null,row.id,"danger","mechanic debuff")}</td><td class="num" data-val="${row.playersCount}" style="color:${row.playersCount>=4?"#f85149":row.playersCount>=2?"#ffdd75":"#8b949e"};font-weight:700">${row.playersCount}</td><td class="num" data-val="${row.applications}" style="color:#79c0ff">${row.applications}</td><td data-val="${row.longestMs}" style="color:${row.longestMs>=8000?"#f85149":row.longestMs>=5000?"#ffdd75":"#8b949e"}">${row.longestPlayer} · ${Math.round(row.longestMs/1000)}s</td><td style="font-size:12px;line-height:1.7">${row.topPlayers.join(" · ")||"—"}<div style="color:#8b949e;font-size:11px;margin-top:4px">${why}</div></td>`;
+        bMechDebuffs.appendChild(tr);
+      });
+      if(!mechanicRows.length)bMechDebuffs.innerHTML="<tr><td colspan='5' style='color:#6e7681;text-align:center;padding:20px'>No meaningful debuff mechanics were found for this pull.</td></tr>";
+    }
 
     // mechanic deaths -- group by killing ability
     // this is the one tab that actually tells you WHY people are dying
@@ -2657,32 +3015,56 @@ async function analyze(){
       bHealBreak.appendChild(tr);
     });
 
-    // CD timeline -- visual bar showing when cooldowns were pressed
-    // useful for checking if everyone pops at the same time or if theyre staggered properly
+    // CD timeline -- player cooldowns + raid CDs + boss ability lane for alignment checks
     const tlContent=document.getElementById("timelineContent");tlContent.innerHTML="";
-    // Collect all major CD casts (defs + offs) with timestamps
-    const allCDSpells=new Set([...Object.keys(DEFS).map(Number),...Object.keys(OFFS).map(Number)]);
-    // Group by player
     const tlByPlayer={};
     casts.forEach(ev=>{
-      if(!allCDSpells.has(ev.abilityGameID))return;
       const p=P[ev.sourceID];if(!p)return;
-      const sName=aName[ev.abilityGameID]||DEFS[ev.abilityGameID]||OFFS[ev.abilityGameID];
+      const sName=aName[ev.abilityGameID]||DEFS[ev.abilityGameID]||OFFS[ev.abilityGameID]||`Spell#${ev.abilityGameID}`;
+      const kind=detectRaidCD(sName,ev.abilityGameID);
+      if(!kind)return;
       if(!tlByPlayer[p.name])tlByPlayer[p.name]={player:p,events:[]};
-      tlByPlayer[p.name].events.push({t:ev.timestamp-fight.startTime,name:sName,sid:ev.abilityGameID});
+      tlByPlayer[p.name].events.push({t:ev.timestamp-fight.startTime,name:sName,sid:ev.abilityGameID,kind});
     });
-    // Tick marks every 30s
     const ticksHtml=(()=>{let h="";for(let t=0;t<=fightMs;t+=30000){const pct=t/fightMs*100;h+=`<span class="timeline-tick" style="left:${pct}%">${Math.floor(t/1000)}s</span>`;}return h;})();
+    if(phaseInfo.length){
+      const band=document.createElement("div");
+      band.className="timeline-phase-band";
+      band.innerHTML=phaseInfo.map((ph,i)=>{
+        const width=Math.max(8,(ph.dur/fightMs)*100);
+        const bg=i%2===0?"#0d2a3a":"#153249";
+        return `<div class="timeline-phase-seg" style="width:${width}%;background:${bg}">${ph.name.replace("Phase ","P")}</div>`;
+      }).join("");
+      tlContent.appendChild(band);
+    }
+    bossTimelineRows.forEach(row=>{
+      const block=document.createElement("div");
+      block.className="timeline-boss-row";
+      block.dataset.tlPlayer="__boss";
+      block.dataset.tlFixed="1";
+      block.style="margin-bottom:14px";
+      const markers=row.clusters.map(cl=>{
+        const pct=(cl.t/fightMs*100).toFixed(2);
+        const tip=`${row.name} @ ${Math.floor(cl.t/1000)}s${row.kind==="damage"?` · ${fmtNum(row.damage)} raid dmg`:` · ${row.applications} apps`}`;
+        return `<div class="timeline-marker" data-kind="boss" data-tip="${tip}" style="left:${pct}%;background:${row.kind==="damage"?"#f85149":"#ffb86c"};width:5px" title="${tip}"></div>`;
+      }).join("");
+      block.innerHTML=`<div class="timeline-label"><span>${row.name}</span><span class="timeline-boss-pill">${row.targetsCount} players</span><span style="color:#8b949e;font-size:10px">${row.kind==="damage"?`${fmtNum(row.damage)} raid dmg`:`${row.applications} debuff apps`}</span></div><div class="timeline-track" style="position:relative">${markers}${tlContent.children.length===1?`<div style="position:absolute;bottom:-18px;left:0;right:0">${ticksHtml}</div>`:""}</div>`;
+      tlContent.appendChild(block);
+    });
     const colors=["#79c0ff","#3fb950","#ffd700","#f85149","#e3a008","#A330C9","#33937F","#FF7C0A"];
     let ci=0;
     Object.entries(tlByPlayer).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([name,{player,events}])=>{
       const clr=CC[player.cls]||colors[ci++%colors.length];
-      const markers=events.map(e=>{const pct=(e.t/fightMs*100).toFixed(2);const kind=BL_IDS[e.sid]?"lust":DEFS[e.sid]?"def":"off";return`<div class="timeline-marker" data-kind="${kind}" data-tip="${e.name} @ ${Math.floor(e.t/1000)}s" style="left:${pct}%;background:${clr}" title="${e.name} @ ${Math.floor(e.t/1000)}s"></div>`;}).join("");
+      const markers=events.map(e=>{
+        const pct=(e.t/fightMs*100).toFixed(2);
+        const mClr=e.kind==="raid"?"#3fb950":e.kind==="lust"?"#ff7b72":e.kind==="def"?"#79c0ff":"#ffd700";
+        return`<div class="timeline-marker" data-kind="${e.kind}" data-tip="${e.name} @ ${Math.floor(e.t/1000)}s" style="left:${pct}%;background:${mClr}" title="${e.name} @ ${Math.floor(e.t/1000)}s"></div>`;
+      }).join("");
       const block=document.createElement("div");block.style="margin-bottom:14px";block.dataset.tlPlayer=name;
       block.innerHTML=`<div class="timeline-label" style="color:${clr}">${name} <span style="color:#6e7681;font-size:10px">${player.spec||player.cls}</span></div><div class="timeline-track" style="position:relative">${markers}<div style="position:absolute;bottom:-18px;left:0;right:0">${ticksHtml}</div></div>`;
       tlContent.appendChild(block);
     });
-    if(!Object.keys(tlByPlayer).length){tlContent.innerHTML='<div style="color:#6e7681;text-align:center;padding:20px">No cooldown casts detected</div>';}
+    if(!Object.keys(tlByPlayer).length&&!bossTimelineRows.length){tlContent.innerHTML='<div style="color:#6e7681;text-align:center;padding:20px">No cooldown or boss-ability timeline data detected</div>';}
     const tlSel=document.getElementById("tlPlayerSel");
     if(tlSel){tlSel.innerHTML='<option value="all">All Players</option>';Object.keys(tlByPlayer).sort().forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;tlSel.appendChild(o);});}
     applyTLFilters();
@@ -2736,6 +3118,17 @@ async function analyze(){
       {val:fmtNum(raidHps),lbl:"Raid HPS",cls:""},
       {val:missedOffTotal,lbl:"Missed Offensive CDs",cls:missedOffTotal===0?"good":missedOffTotal<=3?"warn":"bad"},
     ];
+    const phaseSummaryHTML=phaseInfo.length?`<div class="phase-strip">${phaseInfo.map(ph=>{
+      const phaseDeaths=drows.filter(d=>d.dcount>0&&phaseForTime(d.time,phaseInfo)?.name===ph.name);
+      return `<div class="phase-chip"><div class="phase-chip-k">${ph.name}</div><div class="phase-chip-v">${Math.round(ph.dur/1000)}s</div><div class="phase-chip-sub">${phaseDeaths.length?`${phaseDeaths.length} death${phaseDeaths.length===1?"":"s"} · first ${phaseDeaths[0].timeStr}`:"No deaths recorded"}</div></div>`;
+    }).join("")}</div>`:"";
+    const readinessWatch=sorted.filter(p=>p.readyStatus!=="good").slice(0,4);
+    const summaryInsightsHTML=`<div class="summary-grid-2">
+      <div class="summary-note-card"><div class="summary-note-title">Ready Check+</div><div class="summary-note-body">${readinessWatch.length?readinessWatch.map(p=>`${p.name}: ${p.readyText}`).join(" · "):"Everybody with combatant data looked ready enough for this pull."}</div><div class="summary-note-sub">This uses Warcraft Logs combatant info snapshots, so it’s much safer than trying to guess readiness from in-fight buff events alone.</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Mechanic Watchlist</div><div class="summary-note-body">${mechanicRows.filter(r=>r.watch).slice(0,3).map(r=>`${r.name} · ${r.playersCount} players`).join(" · ")||"No repeated debuff mechanic stood out on this pull."}</div><div class="summary-note-sub">${bossTimelineRows.length?`Boss timeline is tracking ${bossTimelineRows.length} major ability lane${bossTimelineRows.length===1?"":"s"} for cooldown alignment.`:"Boss timeline did not find major repeated boss abilities this pull."}</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Cooldown Coverage</div><div class="summary-note-body">${coverageSummary.length?coverageSummary.map(r=>`${r.name}: ${r.covered}/${r.total}`).join(" · "):"No clear boss-event coverage windows were detected for this pull."}</div><div class="summary-note-sub">Use the timeline tab to line raid CDs and personals up against the boss-ability lane.</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Survivability Watch</div><div class="summary-note-body">${sorted.filter(p=>p.role!=="tanks").sort((a,b)=>b.dtaken-a.dtaken).slice(0,3).map(p=>`${p.name} ${fmt(p.dtaken)}`).join(" · ")||"No non-tank damage pressure spike found."}</div><div class="summary-note-sub">This is for quick coaching context, not a blame board. Start with deaths first, then use this to explain why the deaths happened.</div></div>
+    </div>`;
     // big duration at top of summary -- raid leaders think in terms of fight length
     // green = kill, red = wipe. obvious but useful at a glance
     const fightDurStr=fdur(runMs);
@@ -2817,7 +3210,7 @@ async function analyze(){
     </div>`;
     // band is rendered after pullHist is populated below -- dont call it here
     const _v5Band="";
-    const scoreHTML=`${_v5Band}${summaryHeader}<div class="scorecard">${cards.map(c=>`<div class="score-card ${c.cls}"><div class="sc-val" style="color:${c.cls==="good"?"#3fb950":c.cls==="bad"?"#f85149":c.cls==="warn"?"#e3a008":"#ffd700"}">${c.val}</div><div class="sc-lbl">${c.lbl}</div></div>`).join("")}</div>`;
+    const scoreHTML=`${_v5Band}${summaryHeader}${phaseSummaryHTML}<div class="scorecard">${cards.map(c=>`<div class="score-card ${c.cls}"><div class="sc-val" style="color:${c.cls==="good"?"#3fb950":c.cls==="bad"?"#f85149":c.cls==="warn"?"#e3a008":"#ffd700"}">${c.val}</div><div class="sc-lbl">${c.lbl}</div></div>`).join("")}</div>${summaryInsightsHTML}`;
 
     // Per-player summary table
     const perPlayerHtml=`<div style="font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.08em;margin:16px 0 8px">Per Player</div>
@@ -3175,7 +3568,7 @@ function showPKCEConnect(){
 const K_UI_V5='rl_ui_v5';const K_MEM_V5='rl_mem_v5';
 let _v5ctx=null,_watchInterval=null;
 let _v5UI={focusMode:false,copyMode:'short'};
-let _tlKind={off:true,def:true,lust:true};
+let _tlKind={off:true,def:true,raid:true,lust:true,boss:true};
 
 function loadV5UI(){try{const s=localStorage.getItem(K_UI_V5);if(s)_v5UI={..._v5UI,...JSON.parse(s)};}catch{}}
 function saveV5UI(){localStorage.setItem(K_UI_V5,JSON.stringify(_v5UI));}
@@ -3200,10 +3593,10 @@ function toggleTL(k){
 }
 function applyTLFilters(){
   const sel=document.getElementById('tlPlayerSel');const player=sel?sel.value:'all';
-  document.querySelectorAll('[data-tl-player]').forEach(row=>{row.style.display=(player==='all'||row.dataset.tlPlayer===player)?'':'none';});
+  document.querySelectorAll('[data-tl-player]').forEach(row=>{row.style.display=(row.dataset.tlFixed==='1'||player==='all'||row.dataset.tlPlayer===player)?'':'none';});
   document.querySelectorAll('[data-kind]').forEach(m=>{
     const k=m.dataset.kind;
-    const show=(k==='off'&&_tlKind.off)||(k==='def'&&_tlKind.def)||(k==='lust'&&_tlKind.lust)||!k;
+    const show=(k==='off'&&_tlKind.off)||(k==='def'&&_tlKind.def)||(k==='raid'&&_tlKind.raid)||(k==='lust'&&_tlKind.lust)||(k==='boss'&&_tlKind.boss)||!k;
     m.style.opacity=show?'1':'0.05';m.style.pointerEvents=show?'':'none';
   });
 }
@@ -3299,6 +3692,15 @@ function buildSummaryBand(ctx){
     const color=diff<0?'#3fb950':diff>0?'#e3a008':'#8b949e';
     trendLine='<div style="margin-top:6px;font-size:11px;color:#6e7681">Pull duration: <span style="color:#c9d1d9;font-weight:600">'+curr.duration+'</span> · Prev: '+prev.duration+' <span style="color:'+color+';font-weight:600">('+sign+diff+'s)</span>'+(curr.kill?' 🏆 Kill!':diff<0?' 📈 Trending right':'')+'</div>';
   }
+  const pullTrend=summarizePullTrends(pullHistory);
+  if(pullTrend){
+    const trendBits=[
+      'Deaths '+(pullTrend.deaths.flat?'±0':(pullTrend.deaths.diff>0?'+':'')+pullTrend.deaths.diff),
+      'Raid DPS '+(pullTrend.raidDps.flat?'±0':(pullTrend.raidDps.diff>0?'+':'')+fmtNum(Math.abs(pullTrend.raidDps.diff))),
+      'Missed CDs '+(pullTrend.missed.flat?'±0':(pullTrend.missed.diff>0?'+':'')+pullTrend.missed.diff),
+    ];
+    trendLine+='<div style="margin-top:6px;font-size:11px;color:#8b949e">Session trend: '+trendBits.join(' · ')+'</div>';
+  }
 
   // --- next pull focus: simple rule-based suggestion ---
   let focusLine='';
@@ -3312,7 +3714,7 @@ function buildSummaryBand(ctx){
   }
 
   const jumps=[
-    {l:'💀 Deaths',t:'deaths'},{l:'🎯 Mechanics',t:'mechdeaths'},
+    {l:'💀 Deaths',t:'deaths'},{l:'🧿 Mechanics',t:'mechanics'},
     {l:'⚔️ Off CDs',t:'offensive'},{l:'🔄 Timeline',t:'timeline'},
     {l:'⏱️ Downtime',t:'downtime'},{l:'⚠️ Summary',t:'wipe'},
   ].map(j=>'<button class="v5-chip jump" style="border:none;cursor:pointer;margin-right:4px" data-tab="'+j.t+'">'+j.l+'</button>').join('');
