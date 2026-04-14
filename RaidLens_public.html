@@ -1451,10 +1451,10 @@ function renderPullCompare(pullHistory,bossName){
   }
   const allPlayers=[...new Set(pullHistory.flatMap(ph=>ph.players.map(p=>p.name)))].sort();
   let html='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">'+
-    pullHistory.map(ph=>'<div style="background:#161b22;border:1px solid '+(ph.kill?"#3fb950":"#30363d")+';border-radius:6px;padding:8px 12px;font-size:12px"><span style="color:#ffd700;font-weight:600">Pull '+ph.pull+'</span><span class="kb '+(ph.kill?"kill":"wipe")+'" style="margin-left:6px">'+(ph.kill?"Kill":"Wipe")+'</span><span style="color:#8b949e;margin-left:6px">'+ph.duration+'</span><span style="color:'+(ph.deaths>0?"#f85149":"#3fb950")+';margin-left:6px">💀 '+ph.deaths+'</span></div>').join("")+
-    '</div><div class="tw"><table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr>'+
+    pullHistory.map(ph=>'<div style="background:#161b22;border:1px solid '+(ph.kill?"#3fb950":"#30363d")+';border-radius:8px;padding:10px 12px;font-size:12px;min-width:220px;flex:1 1 220px"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px"><span style="color:#ffd700;font-weight:700">Pull '+ph.pull+'</span><span class="kb '+(ph.kill?"kill":"wipe")+'">'+(ph.kill?"Kill":"Wipe")+'</span><span style="color:#8b949e">'+ph.duration+'</span></div><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px"><div><div style="font-size:10px;color:#8b949e;text-transform:uppercase;letter-spacing:.06em">Deaths</div><div style="color:'+(ph.deaths>0?"#f85149":"#3fb950")+';font-weight:700">'+ph.deaths+'</div></div><div><div style="font-size:10px;color:#8b949e;text-transform:uppercase;letter-spacing:.06em">Raid DPS</div><div style="color:#79c0ff;font-weight:700">'+fmtNum(ph.raidDps||0)+'</div></div><div><div style="font-size:10px;color:#8b949e;text-transform:uppercase;letter-spacing:.06em">Raid HPS</div><div style="color:#3fb950;font-weight:700">'+fmtNum(ph.raidHps||0)+'</div></div><div><div style="font-size:10px;color:#8b949e;text-transform:uppercase;letter-spacing:.06em">Missed Off CDs</div><div style="color:'+((ph.missedOffTotal||0)>0?"#f85149":"#3fb950")+';font-weight:700">'+((ph.missedOffTotal||0)||"✓")+'</div></div><div style="grid-column:1 / -1"><div style="font-size:10px;color:#8b949e;text-transform:uppercase;letter-spacing:.06em">No Potion DPS</div><div style="color:'+((ph.noPotDps||0)>0?"#e3a008":"#3fb950")+';font-weight:700">'+((ph.noPotDps||0)>0?(ph.noPotDps+" player"+((ph.noPotDps||0)===1?"":"s")):"None ✓")+'</div></div></div></div>').join("")+
+    '</div><div style="font-size:11px;color:#8b949e;margin:0 0 10px">Missed Off CDs = tracked offensive cooldowns that were expected for that spec on that pull but never cast.</div><div class="tw"><table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr>'+
     '<th style="background:#161b22;color:#ffd700;padding:8px 10px;border-bottom:2px solid #30363d">Player</th>'+
-    pullHistory.map(ph=>'<th style="background:#161b22;color:#ffd700;padding:8px 10px;border-bottom:2px solid #30363d;text-align:right">P'+ph.pull+' DPS</th><th style="background:#161b22;color:#ffd700;padding:8px 4px;border-bottom:2px solid #30363d;text-align:right">💀</th><th style="background:#161b22;color:#ffd700;padding:8px 4px;border-bottom:2px solid #30363d;text-align:right">Missed</th>').join("")+
+    pullHistory.map(ph=>'<th style="background:#161b22;color:#ffd700;padding:8px 10px;border-bottom:2px solid #30363d;text-align:right">P'+ph.pull+' DPS</th><th style="background:#161b22;color:#ffd700;padding:8px 4px;border-bottom:2px solid #30363d;text-align:right">💀</th><th title="Tracked offensive cooldowns not used on that pull" style="background:#161b22;color:#ffd700;padding:8px 4px;border-bottom:2px solid #30363d;text-align:right">Missed Off CDs</th>').join("")+
     '</tr></thead><tbody>';
   allPlayers.forEach(name=>{
     const rows=pullHistory.map(ph=>ph.players.find(p=>p.name===name));
@@ -1468,7 +1468,7 @@ function renderPullCompare(pullHistory,bossName){
         const arrow=diff===null?"":diff>0?"↑":diff<0?"↓":"→";
         return '<td style="padding:6px 10px;border-bottom:1px solid #21262d;text-align:right;color:'+dc+'">'+fmtNum(r.dps)+' '+arrow+'</td>'+
           '<td style="padding:6px 4px;border-bottom:1px solid #21262d;text-align:right;color:'+(r.deaths>0?"#f85149":"#3fb950")+'">'+( r.deaths||"✓")+'</td>'+
-          '<td style="padding:6px 4px;border-bottom:1px solid #21262d;text-align:right;color:'+(r.missed>0?"#f85149":"#3fb950")+'">'+( r.missed||"✓")+'</td>';
+          '<td style="padding:6px 4px;border-bottom:1px solid #21262d;text-align:right;color:'+(r.missed>0?"#f85149":"#3fb950")+'">'+( r.missed>0?(r.missed+" CD"+(r.missed===1?"":"s")):"✓")+'</td>';
       }).join("")+'</tr>';
   });
   html+='</tbody></table></div>';
@@ -1725,6 +1725,11 @@ function scrollToFightSection(){
   const el=document.getElementById("fightSection");
   if(!el)return;
   requestAnimationFrame(()=>setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),60));
+}
+function scrollToRosterSection(){
+  const el=document.getElementById("rosterSection");
+  if(!el)return;
+  requestAnimationFrame(()=>setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),80));
 }
 function renderReportPager(id,page,totalItems,onChange){
   const el=document.getElementById(id);if(!el)return;
@@ -2990,6 +2995,13 @@ async function analyze(){
     const pullKey="rl_pulls_"+reportCode+"_"+fight.name.replace(/\s+/g,"_");
     const thisPull={pull:fight.pull||1,duration:fdur(fight.endTime-fight.startTime),kill:fight.kill,
       deaths:sorted.reduce((s,p)=>s+p.deaths.length,0),
+      raidDps:sorted.reduce((s,p)=>s+Math.round((p.ddealt||0)/fSec),0),
+      raidHps:sorted.reduce((s,p)=>s+Math.round((p.healed||0)/fSec),0),
+      missedOffTotal:sorted.reduce((s,p)=>s+(()=>{const exp=SPEC_OFFS[(p.cls||"")+"|"+(p.spec||"")]||null;return exp?exp.filter(cd=>{
+          if(Array.isArray(cd)) return !cd.some(opt=>p.offs[opt]);
+          return !p.offs[cd];
+        }).length:0;})(),0),
+      noPotDps:sorted.filter(p=>p.role==="dps"&&!p.pots).length,
       players:sorted.map(p=>({name:p.name,cls:p.cls,dps:fSec>0?Math.round(p.ddealt/fSec):0,hps:fSec>0?Math.round(p.healed/fSec):0,deaths:p.deaths.length,missed:(()=>{const exp=SPEC_OFFS[(p.cls||"")+"|"+(p.spec||"")]||null;return exp?exp.filter(cd=>{
           if(Array.isArray(cd)) return !cd.some(opt=>p.offs[opt]);
           return !p.offs[cd];
@@ -3061,6 +3073,7 @@ async function analyze(){
     // always land on summary after analyze -- most useful tab
     activateRTab("summary");
     refreshWowheadTooltips();
+    scrollToRosterSection();
   }catch(e){showErr(e.message);}
   finally{btn.disabled=false;btn.innerHTML="Analyze Selected Fight";}
 }
