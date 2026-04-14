@@ -184,13 +184,18 @@ tr:hover td{background:#161b22}
 .affix-chip{background:#121923;border:1px solid #2c3745;color:#7f90a3;border-radius:999px;padding:4px 9px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
 .affix-chip.active{background:#102218;border-color:#3fb950;color:#5fdd8e;box-shadow:0 0 0 1px #3fb95020 inset}
 .timeline-wrap{position:relative;margin:8px 0 20px}
-.timeline-track{background:#21262d;border-radius:4px;height:28px;position:relative;overflow:visible}
-.timeline-label{font-size:11px;color:#8b949e;margin-bottom:4px}
-.timeline-marker{position:absolute;top:0;bottom:0;width:3px;border-radius:2px;cursor:pointer}
-.timeline-marker:hover::after{content:attr(data-tip);position:absolute;bottom:32px;left:50%;transform:translateX(-50%);background:#161b22;border:1px solid #30363d;border-radius:4px;padding:4px 8px;font-size:11px;white-space:nowrap;z-index:10;color:#c9d1d9}
-.timeline-tick{position:absolute;bottom:-16px;font-size:10px;color:#6e7681;transform:translateX(-50%)}
-.timeline-phase-band{display:flex;height:18px;border-radius:6px;overflow:hidden;border:1px solid #30363d;background:#111824;margin-bottom:10px}
-.timeline-phase-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#dce6f2;border-right:1px solid #0d1117}
+.timeline-scroll{overflow-x:auto;overflow-y:visible;padding-bottom:10px}
+.timeline-zoom{min-width:980px}
+.timeline-track{background:#21262d;border-radius:6px;height:30px;position:relative;overflow:visible}
+.timeline-ruler{margin-bottom:12px}
+.timeline-ruler .timeline-track{height:22px;background:#111824;border:1px solid #30363d}
+.timeline-label{font-size:11px;color:#8b949e;margin-bottom:5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.timeline-marker{position:absolute;top:3px;bottom:3px;width:4px;border-radius:3px;cursor:pointer}
+.timeline-marker:hover::after{content:attr(data-tip);position:absolute;bottom:34px;left:50%;transform:translateX(-50%);background:#161b22;border:1px solid #30363d;border-radius:4px;padding:4px 8px;font-size:11px;white-space:nowrap;z-index:10;color:#c9d1d9}
+.timeline-tick{position:absolute;bottom:-16px;font-size:10px;color:#8ea2b8;transform:translateX(-50%)}
+.timeline-phase-band{display:flex;height:22px;border-radius:8px;overflow:hidden;border:1px solid #30363d;background:#111824;margin-bottom:8px}
+.timeline-phase-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#dce6f2;border-right:1px solid #0d1117;padding:0 8px;white-space:nowrap}
+.timeline-phase-help{font-size:11px;color:#8b949e;margin:0 0 8px}
 .timeline-boss-row .timeline-track{background:#2a1c10;border:1px solid #5a3e18}
 .timeline-boss-row .timeline-label{display:flex;align-items:center;gap:8px;color:#ffdd75}
 .timeline-boss-pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 8px;font-size:10px;font-weight:700;background:#201a0b;border:1px solid #6b5513;color:#ffdd75}
@@ -215,6 +220,15 @@ tr:hover td{background:#161b22}
 .ready-pill.good{background:#102218;border:1px solid #225437;color:#5fdd8e}
 .ready-pill.warn{background:#201a0b;border:1px solid #6b5513;color:#ffdd75}
 .ready-pill.bad{background:#231416;border:1px solid #5a2323;color:#f87171}
+.build-card{background:#101722;border:1px solid #273243;border-radius:10px;padding:10px}
+.build-card.warn{border-color:#3a4659}
+.build-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:7px}
+.build-card-title{font-size:11px;font-weight:700;color:#f4f7fb;letter-spacing:.02em}
+.build-card-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:#0d1f33;border:1px solid #23415f;color:#8fd0ff;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.build-card-sub{font-size:11px;color:#8b949e;line-height:1.5}
+.build-chip-row{display:flex;gap:6px;flex-wrap:wrap}
+.build-code-line{margin-top:7px;font-size:10px;color:#8ea2b8;line-height:1.5;word-break:break-all}
+.issue-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:#231416;border:1px solid #5a2323;color:#f87171;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
 .clickable-row{cursor:pointer}
 .clickable-row:hover td{background:#1c2333!important}
 .clickable-row td:first-child::after{content:" 🔍";font-size:10px;opacity:.5}
@@ -1008,38 +1022,38 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
     <!-- Overview -->
     <div class="rtab active" onclick="switchRTab('summary',this)">📈 Summary</div>
     <div class="tab-sep">·</div>
-    <!-- Execution -->
+    <!-- Start Here -->
     <div class="rtab" onclick="switchRTab('deaths',this)">💀 Deaths</div>
+    <div class="rtab" onclick="switchRTab('damage',this)">💥 Dmg Taken</div>
+    <div class="rtab" onclick="switchRTab('mechanics',this)">🧿 Mechanics</div>
     <div class="rtab" onclick="switchRTab('mechdeaths',this)">🎯 Mechanic Deaths</div>
+    <div class="rtab" onclick="switchRTab('wipe',this)">⚠️ Wipe Summary</div>
+    <div class="rtab" onclick="switchRTab('pullcompare',this)">🔁 Pull Compare</div>
+    <div class="tab-sep">·</div>
+    <!-- Cooldowns / Prep -->
     <div class="rtab" onclick="switchRTab('defensives',this)">🛡️ Defensives</div>
     <div class="rtab" onclick="switchRTab('offensive',this)">⚔️ Offensive CDs</div>
     <div class="rtab" onclick="switchRTab('consumables',this)">🧪 Consumables</div>
     <div class="rtab" onclick="switchRTab('builds',this)">🧬 Build + Ready</div>
     <div class="rtab" onclick="switchRTab('bloodlust',this)">⚡ Bloodlust</div>
+    <div class="rtab" onclick="switchRTab('timeline',this)">🔄 CD Timeline</div>
     <div class="tab-sep">·</div>
     <!-- Utility -->
     <div class="rtab" onclick="switchRTab('interrupts',this)">⚡ Interrupts</div>
     <div class="rtab" onclick="switchRTab('dispels',this)">✨ Dispels</div>
     <div class="rtab" onclick="switchRTab('cc',this)">🛑 CC</div>
-    <div class="rtab" onclick="switchRTab('mechanics',this)">🧿 Mechanics</div>
+    <div class="rtab" onclick="switchRTab('downtime',this)">⏱️ Downtime</div>
     <div class="tab-sep">·</div>
     <!-- Performance -->
-    <div class="rtab" onclick="switchRTab('damage',this)">💥 Dmg Taken</div>
     <div class="rtab" onclick="switchRTab('dps',this)">⚔️ DPS</div>
     <div class="rtab" onclick="switchRTab('dpsbreak',this)">📊 DPS Breakdown</div>
     <div class="rtab" onclick="switchRTab('hps',this)">💚 HPS</div>
     <div class="rtab" onclick="switchRTab('healbreak',this)">💊 Heal Breakdown</div>
-    <div class="rtab" onclick="switchRTab('timeline',this)">🔄 CD Timeline</div>
-    <div class="rtab" onclick="switchRTab('downtime',this)">⏱️ Downtime</div>
     <div class="rtab" onclick="switchRTab('bossvsadds',this)">🎯 Boss vs Adds</div>
-    <div class="tab-sep">·</div>
-    <!-- Tools -->
-    <div class="rtab" onclick="switchRTab('wipe',this)">⚠️ Wipe Summary</div>
-    <div class="rtab" onclick="switchRTab('pullcompare',this)">🔁 Pull Compare</div>
   </div>
   <div class="rtab-panel active" id="rtab-defensives"><div class="tw"><table id="tDef"><thead><tr><th onclick="srt('tDef',0)">Player ↕</th><th onclick="srt('tDef',1)">Class/Spec ↕</th><th title="Personal defensive cooldowns cast during the fight — tracked from combat log cast events.">Def CDs ⓘ</th><th onclick="srt('tDef',3)" class="num">Total ↕</th></tr></thead><tbody id="bDef"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-consumables"><div class="sn">Potion and Healthstone usage per player during the fight.</div><div class="tw"><table id="tCons"><thead><tr><th onclick="srt('tCons',0)">Player ↕</th><th onclick="srt('tCons',1)">Class/Spec ↕</th><th style="text-align:center">Potion</th><th style="text-align:center">Healthstone</th></tr></thead><tbody id="bCons"></tbody></table></div></div>
-  <div class="rtab-panel" id="rtab-builds"><div class="sn">Build snapshot and Ready Check+ pulled from Warcraft Logs combatant info. Kept short on purpose so raid leads can spot setup issues fast.</div><div class="tw"><table id="tBuilds"><thead><tr><th onclick="srt('tBuilds',0)">Player ↕</th><th onclick="srt('tBuilds',1)">Class/Spec ↕</th><th onclick="srt('tBuilds',2)" class="num">iLvl ↕</th><th>Build Snapshot</th><th>Ready Check+</th><th>Copy</th></tr></thead><tbody id="bBuilds"></tbody></table></div></div>
+  <div class="rtab-panel" id="rtab-builds"><div class="sn">Build snapshot and Ready Check+ pulled from Warcraft Logs combatant info. If Warcraft Logs only gives the import string, RaidLens now shows that cleanly instead of pretending the build is missing.</div><div class="tw"><table id="tBuilds"><thead><tr><th onclick="srt('tBuilds',0)">Player ↕</th><th onclick="srt('tBuilds',1)">Class/Spec ↕</th><th onclick="srt('tBuilds',2)" class="num">iLvl ↕</th><th>Build Snapshot</th><th>Ready Check+</th><th>Copy</th></tr></thead><tbody id="bBuilds"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-deaths"><div class="sn">All player deaths ordered by time. Killing blow shown where available.</div><div id="cleanPullBanner" style="display:none"></div><div id="topKillersBox" style="display:none;margin-bottom:12px"></div><div class="tw"><table id="tDeath"><thead><tr><th onclick="srt('tDeath',0)">Player ↕</th><th onclick="srt('tDeath',1)">Class/Spec ↕</th><th onclick="srt('tDeath',2)">Time ↕</th><th>Killing Blow</th><th onclick="srt('tDeath',4)" class="num">Deaths ↕</th><th></th></tr></thead><tbody id="bDeath"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-interrupts"><div class="sn">Who interrupted what and how many times.</div><div class="tw"><table id="tInt"><thead><tr><th onclick="srt('tInt',0)">Player ↕</th><th onclick="srt('tInt',1)">Class/Spec ↕</th><th>Spells Interrupted</th><th onclick="srt('tInt',3)" class="num">Total ↕</th></tr></thead><tbody id="bInt"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dispels"><div class="sn">Who dispelled what.</div><div class="tw"><table id="tDisp"><thead><tr><th onclick="srt('tDisp',0)">Player ↕</th><th onclick="srt('tDisp',1)">Class/Spec ↕</th><th>Spells Dispelled</th><th onclick="srt('tDisp',3)" class="num">Total ↕</th></tr></thead><tbody id="bDisp"></tbody></table></div></div>
@@ -1096,7 +1110,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   </div>
   <!-- CD TIMELINE -->
   <div class="rtab-panel" id="rtab-timeline">
-    <div class="sn">Visual timeline of major cooldowns used during the fight, plus boss-ability lanes so you can see whether personals and raid CDs lined up with the dangerous moments.</div>
+    <div class="sn">Visual timeline of major cooldowns used during the fight, plus boss-ability lanes so you can see whether personals and raid CDs lined up with the dangerous moments. P1 / P2 / P3 are the boss phases Warcraft Logs exposed for that pull.</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
       <span style="font-size:11px;color:#8b949e;font-weight:600">Show:</span>
       <span class="v5-chip on" id="tlChip-off"  onclick="toggleTL('off')" >⚔️ Offensive</span>
@@ -1104,6 +1118,13 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
       <span class="v5-chip on" id="tlChip-raid" onclick="toggleTL('raid')">💚 Raid CDs</span>
       <span class="v5-chip on" id="tlChip-lust" onclick="toggleTL('lust')">⚡ Lust</span>
       <span class="v5-chip on" id="tlChip-boss" onclick="toggleTL('boss')">👹 Boss Abilities</span>
+      <span style="margin-left:8px;font-size:11px;color:#8b949e;font-weight:600">Zoom:</span>
+      <select id="tlZoomSel" onchange="setTLZoom(this.value)" style="background:#161b22;border:1px solid #30363d;color:#c9d1d9;padding:3px 8px;border-radius:6px;font-size:11px">
+        <option value="1">100%</option>
+        <option value="1.35">135%</option>
+        <option value="1.7">170%</option>
+        <option value="2.1">210%</option>
+      </select>
       <span style="margin-left:8px;font-size:11px;color:#8b949e;font-weight:600">Player:</span>
       <select id="tlPlayerSel" onchange="applyTLFilters()" style="background:#161b22;border:1px solid #30363d;color:#c9d1d9;padding:3px 8px;border-radius:6px;font-size:11px">
         <option value="all">All Players</option>
@@ -1478,6 +1499,35 @@ function copyTiny(btn,text,done){
     setTimeout(()=>btn.textContent=prev,1500);
   }).catch(()=>{});
 }
+function fmtPhaseLabel(name,short){
+  const raw=String(name||"Phase 1");
+  const match=raw.match(/(\d+)/);
+  if(!match)return raw;
+  return short?`P${match[1]}`:`Phase ${match[1]}`;
+}
+function renderBuildSnapshotCard(p,mode){
+  const compact=mode==="compact";
+  const title=escAttr(p.spec||p.cls||"Build");
+  const codePreview=p.buildCode?`${escAttr(p.buildCode.slice(0,compact?32:72))}${p.buildCode.length>(compact?32:72)?"…":""}`:"";
+  if(p.talentNames?.length){
+    return `<div class="build-card"><div class="build-card-head"><div class="build-card-title">${title} talents</div>${p.buildCode?'<span class="build-card-pill">Import string</span>':''}</div><div class="build-chip-row">${p.talentNames.slice(0,compact?3:6).map(n=>spellChip(n,null,null,"cool","talent snapshot")).join("")}</div>${p.buildCode?`<div class="build-code-line">${codePreview}</div>`:""}</div>`;
+  }
+  if(p.buildCode){
+    return `<div class="build-card warn"><div class="build-card-head"><div class="build-card-title">${title} build</div><span class="build-card-pill">Import string</span></div><div class="build-card-sub">Warcraft Logs gave the build code for this pull, but not the node-by-node talent names in the response we received.</div><div class="build-code-line">${codePreview}</div></div>`;
+  }
+  return `<div class="build-card warn"><div class="build-card-head"><div class="build-card-title">${title} build</div></div><div class="build-card-sub">Warcraft Logs did not expose a build snapshot for this player on this pull.</div></div>`;
+}
+function setTLZoom(v){
+  const n=Math.max(1,Number(v)||1);
+  _v5UI.timelineZoom=n;saveV5UI();
+  const sel=document.getElementById("tlZoomSel");
+  if(sel&&String(sel.value)!==String(n))sel.value=String(n);
+  const canvas=document.getElementById("timelineZoomCanvas");
+  if(canvas){
+    canvas.style.width=`${Math.round(n*100)}%`;
+    canvas.style.minWidth=`${Math.max(980,Math.round(980*n))}px`;
+  }
+}
 function detectRaidCD(name,sid){
   const lower=(name||"").toLowerCase();
   if(BL_IDS[sid])return"lust";
@@ -1649,6 +1699,15 @@ function buildMechanicRows(debuffs,P,fightStart,fightEnd,aName){
     row.watch=row.playersCount>=4||row.longestMs>=8000||row.applications>=6;
     return row;
   }).filter(row=>row.playersCount>0).sort((a,b)=>b.playersCount-a.playersCount||b.applications-a.applications||b.totalMs-a.totalMs);
+}
+function getIssueReasonLabel(reason){
+  return({
+    deaths:"Deaths",
+    missedOff:"Missed offensive CDs",
+    mechanics:"Mechanic handling",
+    ready:"Ready Check+",
+    avoidable:"Heavy avoidable pressure"
+  })[reason]||reason;
 }
 function buildCoverageSummary(bossRows,casts,aName,fightStart){
   if(!bossRows.length)return [];
@@ -2555,7 +2614,7 @@ function openPlayerModal(p,fSec){
     <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("Potion",p.pots?`✓ ${p.potName||"Used"} (${p.pots})`:"✗ None detected",p.pots?"#3fb950":"#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#e3a008")}${p.ilvl?statRow("Snapshot iLvl",p.ilvl,"#c9d1d9"):""}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
     <div>${statRow("Damage Taken",fmtNum(p.dtaken))}${statRow("Interrupts",Object.values(p.ints).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Dispels",Object.values(p.disps).reduce((s,c)=>s+c,0),"#3fb950")}${statRow("CC Used",Object.values(p.cc).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Def CDs Used",Object.values(p.defs).reduce((s,c)=>s+c,0),"#ffd700")}${statRow("Off CDs Used",Object.values(p.offs).reduce((s,c)=>s+c,0),"#ffd700")}${p.weaponBuffs?.length?statRow("Weapon Buff",p.weaponBuffs.join(", "),"#ffdd75"):""}${p.pets?.length?statRow("Pets Counted",p.pets.length,"#8b949e"):""}</div></div>`;
   if(p.talentNames?.length||p.buildCode||p.readyIssues?.length||p.passiveBuffs?.length){
-    html+=`<div class="modal-section"><h4>Build Snapshot</h4><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">${p.talentNames?.length?p.talentNames.map(n=>spellChip(n,null,null,"cool","talent snapshot")).join(""):"<span style='color:#6e7681'>No talent names surfaced by Warcraft Logs for this pull.</span>"}</div>${p.buildCode?`<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px"><span style="font-size:12px;color:#8b949e">Talent import string:</span><code style="background:#111824;border:1px solid #30363d;border-radius:6px;padding:4px 8px;font-size:11px;color:#79c0ff;max-width:100%;overflow:auto">${p.buildCode}</code><button class="mini-link" onclick="copyTiny(this,'${escJs(p.buildCode)}','✓')">Copy Build</button></div>`:""}${p.readyIssues?.length?`<div style="margin-top:8px;color:#ffdd75;font-size:12px">${p.readyIssues.join(" · ")}</div>`:`<div style="margin-top:8px;color:#3fb950;font-size:12px">Ready snapshot looked clean.</div>`}${p.passiveBuffs?.length?`<div style="margin-top:8px;color:#8b949e;font-size:11px">Buff snapshot: ${p.passiveBuffs.join(", ")}</div>`:""}</div>`;
+    html+=`<div class="modal-section"><h4>Build Snapshot</h4>${renderBuildSnapshotCard(p,"full")}${p.buildCode?`<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px"><span style="font-size:12px;color:#8b949e">Talent import string:</span><code style="background:#111824;border:1px solid #30363d;border-radius:6px;padding:4px 8px;font-size:11px;color:#79c0ff;max-width:100%;overflow:auto">${p.buildCode}</code><button class="mini-link" onclick="copyTiny(this,'${escJs(p.buildCode)}','✓')">Copy Build</button></div>`:""}${p.readyIssues?.length?`<div style="margin-top:8px;color:#ffdd75;font-size:12px">${p.readyIssues.join(" · ")}</div>`:`<div style="margin-top:8px;color:#3fb950;font-size:12px">Ready snapshot looked clean.</div>`}${p.passiveBuffs?.length?`<div style="margin-top:8px;color:#8b949e;font-size:11px">Buff snapshot: ${p.passiveBuffs.join(", ")}</div>`:""}</div>`;
   }
   if(p.deaths.length){html+=`<div class="modal-section"><h4>Deaths</h4><div class="spell-grid">${p.deaths.map(d=>spellChip(`${d.timeStr||"?"} — ${d.killer}`,null,d.killerId||findAbilityIdByName(d.killer),"danger","death cause")).join("")}</div></div>`;}
   if(Object.keys(p.dmgBySpell||{}).length){html+=`<div class="modal-section"><h4>Damage Done Breakdown</h4>${renderSpellBreakdown(p.dmgBySpell,p.ddealt,"cool","damage done")}</div>`;}
@@ -2813,11 +2872,11 @@ async function analyze(){
       bBuilds.innerHTML="";
       sorted.forEach(p=>{
         const tr=document.createElement("tr");
-        const buildPreview=p.talentNames?.length?p.talentNames.slice(0,3).map(n=>spellChip(n,null,null,"cool","talent snapshot")).join(""):'<span class="none-t">Talent snapshot unavailable</span>';
+        const buildPreview=renderBuildSnapshotCard(p,"compact");
         const readyClass=p.readyStatus||"warn";
         const readyHtml=`<span class="ready-pill ${readyClass}">${readyClass==="good"?"Ready":readyClass==="warn"?"Watch":"Fix"}</span><div style="margin-top:6px;color:${readyClass==="bad"?"#f87171":readyClass==="warn"?"#ffdd75":"#8b949e"};font-size:11px;line-height:1.6">${escAttr(p.readyText||"No readiness snapshot")}</div>`;
         const copyBtn=p.buildCode?`<button class="mini-link" onclick="event.stopPropagation();copyTiny(this,'${escJs(p.buildCode)}','✓')">Copy Build</button>`:'<span class="none-t">—</span>';
-        tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td class="num" data-val="${p.ilvl||0}" style="color:${p.ilvl? "#c9d1d9":"#6e7681"}">${p.ilvl||"—"}</td><td>${buildPreview}${p.buildCode?`<div style="margin-top:6px;font-size:10px;color:#8b949e">${escAttr(p.buildCode.slice(0,28))}${p.buildCode.length>28?"…":""}</div>`:""}</td><td>${readyHtml}</td><td style="text-align:center">${copyBtn}</td>`;
+        tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td class="num" data-val="${p.ilvl||0}" style="color:${p.ilvl? "#c9d1d9":"#6e7681"}">${p.ilvl||"—"}</td><td>${buildPreview}</td><td>${readyHtml}</td><td style="text-align:center">${copyBtn}</td>`;
         bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
         bBuilds.appendChild(tr);
       });
@@ -3017,6 +3076,9 @@ async function analyze(){
 
     // CD timeline -- player cooldowns + raid CDs + boss ability lane for alignment checks
     const tlContent=document.getElementById("timelineContent");tlContent.innerHTML="";
+    const tlScroller=document.createElement("div");tlScroller.className="timeline-scroll";
+    const tlCanvas=document.createElement("div");tlCanvas.className="timeline-zoom";tlCanvas.id="timelineZoomCanvas";
+    tlScroller.appendChild(tlCanvas);tlContent.appendChild(tlScroller);
     const tlByPlayer={};
     casts.forEach(ev=>{
       const p=P[ev.sourceID];if(!p)return;
@@ -3033,10 +3095,19 @@ async function analyze(){
       band.innerHTML=phaseInfo.map((ph,i)=>{
         const width=Math.max(8,(ph.dur/fightMs)*100);
         const bg=i%2===0?"#0d2a3a":"#153249";
-        return `<div class="timeline-phase-seg" style="width:${width}%;background:${bg}">${ph.name.replace("Phase ","P")}</div>`;
+        const label=phaseInfo.length<=4?fmtPhaseLabel(ph.name,false):fmtPhaseLabel(ph.name,true);
+        return `<div class="timeline-phase-seg" title="${fmtPhaseLabel(ph.name,false)} · ${Math.round(ph.dur/1000)}s" style="width:${width}%;background:${bg}">${label}</div>`;
       }).join("");
-      tlContent.appendChild(band);
+      tlCanvas.appendChild(band);
+      const phaseHelp=document.createElement("div");
+      phaseHelp.className="timeline-phase-help";
+      phaseHelp.textContent="P1 / P2 / P3 are the boss phases Warcraft Logs exposed for this pull.";
+      tlCanvas.appendChild(phaseHelp);
     }
+    const ruler=document.createElement("div");
+    ruler.className="timeline-ruler";
+    ruler.innerHTML=`<div class="timeline-track" style="position:relative">${ticksHtml}</div>`;
+    tlCanvas.appendChild(ruler);
     bossTimelineRows.forEach(row=>{
       const block=document.createElement("div");
       block.className="timeline-boss-row";
@@ -3048,8 +3119,8 @@ async function analyze(){
         const tip=`${row.name} @ ${Math.floor(cl.t/1000)}s${row.kind==="damage"?` · ${fmtNum(row.damage)} raid dmg`:` · ${row.applications} apps`}`;
         return `<div class="timeline-marker" data-kind="boss" data-tip="${tip}" style="left:${pct}%;background:${row.kind==="damage"?"#f85149":"#ffb86c"};width:5px" title="${tip}"></div>`;
       }).join("");
-      block.innerHTML=`<div class="timeline-label"><span>${row.name}</span><span class="timeline-boss-pill">${row.targetsCount} players</span><span style="color:#8b949e;font-size:10px">${row.kind==="damage"?`${fmtNum(row.damage)} raid dmg`:`${row.applications} debuff apps`}</span></div><div class="timeline-track" style="position:relative">${markers}${tlContent.children.length===1?`<div style="position:absolute;bottom:-18px;left:0;right:0">${ticksHtml}</div>`:""}</div>`;
-      tlContent.appendChild(block);
+      block.innerHTML=`<div class="timeline-label"><span>${row.name}</span><span class="timeline-boss-pill">${row.targetsCount} players</span><span style="color:#8b949e;font-size:10px">${row.kind==="damage"?`${fmtNum(row.damage)} raid dmg`:`${row.applications} debuff apps`}</span></div><div class="timeline-track" style="position:relative">${markers}</div>`;
+      tlCanvas.appendChild(block);
     });
     const colors=["#79c0ff","#3fb950","#ffd700","#f85149","#e3a008","#A330C9","#33937F","#FF7C0A"];
     let ci=0;
@@ -3061,12 +3132,15 @@ async function analyze(){
         return`<div class="timeline-marker" data-kind="${e.kind}" data-tip="${e.name} @ ${Math.floor(e.t/1000)}s" style="left:${pct}%;background:${mClr}" title="${e.name} @ ${Math.floor(e.t/1000)}s"></div>`;
       }).join("");
       const block=document.createElement("div");block.style="margin-bottom:14px";block.dataset.tlPlayer=name;
-      block.innerHTML=`<div class="timeline-label" style="color:${clr}">${name} <span style="color:#6e7681;font-size:10px">${player.spec||player.cls}</span></div><div class="timeline-track" style="position:relative">${markers}<div style="position:absolute;bottom:-18px;left:0;right:0">${ticksHtml}</div></div>`;
-      tlContent.appendChild(block);
+      block.innerHTML=`<div class="timeline-label" style="color:${clr}">${name} <span style="color:#6e7681;font-size:10px">${player.spec||player.cls}</span></div><div class="timeline-track" style="position:relative">${markers}</div>`;
+      tlCanvas.appendChild(block);
     });
     if(!Object.keys(tlByPlayer).length&&!bossTimelineRows.length){tlContent.innerHTML='<div style="color:#6e7681;text-align:center;padding:20px">No cooldown or boss-ability timeline data detected</div>';}
     const tlSel=document.getElementById("tlPlayerSel");
     if(tlSel){tlSel.innerHTML='<option value="all">All Players</option>';Object.keys(tlByPlayer).sort().forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;tlSel.appendChild(o);});}
+    const tlZoomSel=document.getElementById("tlZoomSel");
+    if(tlZoomSel)tlZoomSel.value=String(_v5UI.timelineZoom||1.35);
+    setTLZoom(_v5UI.timelineZoom||1.35);
     applyTLFilters();
 
     // summary scorecard
@@ -3120,7 +3194,7 @@ async function analyze(){
     ];
     const phaseSummaryHTML=phaseInfo.length?`<div class="phase-strip">${phaseInfo.map(ph=>{
       const phaseDeaths=drows.filter(d=>d.dcount>0&&phaseForTime(d.time,phaseInfo)?.name===ph.name);
-      return `<div class="phase-chip"><div class="phase-chip-k">${ph.name}</div><div class="phase-chip-v">${Math.round(ph.dur/1000)}s</div><div class="phase-chip-sub">${phaseDeaths.length?`${phaseDeaths.length} death${phaseDeaths.length===1?"":"s"} · first ${phaseDeaths[0].timeStr}`:"No deaths recorded"}</div></div>`;
+      return `<div class="phase-chip" title="${fmtPhaseLabel(ph.name,false)}"><div class="phase-chip-k">${fmtPhaseLabel(ph.name,false)}</div><div class="phase-chip-v">${Math.round(ph.dur/1000)}s</div><div class="phase-chip-sub">${phaseDeaths.length?`${phaseDeaths.length} death${phaseDeaths.length===1?"":"s"} · first ${phaseDeaths[0].timeStr}`:"No deaths recorded"}</div></div>`;
     }).join("")}</div>`:"";
     const readinessWatch=sorted.filter(p=>p.readyStatus!=="good").slice(0,4);
     const summaryInsightsHTML=`<div class="summary-grid-2">
@@ -3227,6 +3301,7 @@ async function analyze(){
     summaryDiv.innerHTML=scoreHTML+perPlayerHtml;
 
     const tSumBody=document.getElementById("tSumBody");
+    const avgNonTankDT=sorted.filter(p=>p.role!=="tanks").length?sorted.filter(p=>p.role!=="tanks").reduce((s,p)=>s+p.dtaken,0)/sorted.filter(p=>p.role!=="tanks").length:0;
     sorted.forEach(p=>{
       const deaths=p.deaths.length;
       const ints=Object.values(p.ints).reduce((s,c)=>s+c,0);
@@ -3238,12 +3313,12 @@ async function analyze(){
       // letter grade -- S/A/B/C/F based on deaths, pots, missed CDs
       const grade=score>=90?"S":score>=75?"A":score>=60?"B":score>=45?"C":"D";
       const gc=grade==="S"?"#ffd700":grade==="A"?"#3fb950":grade==="B"?"#79c0ff":grade==="C"?"#e3a008":"#f85149";
-      const _sev=getV5Sev(p,shortPull);
+      const _sev=getV5Sev(p,shortPull,{avgNonTankDT});
       const _badge=getRepeatBadge(p.name);
       const tr=document.createElement("tr");tr.className="clickable-row";
       tr.dataset.role=p.role;tr.dataset.hasIssue=_sev.issues.length?"1":"0";tr.dataset.player=p.name;
-      tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td style="text-align:center;padding:0 4px"><a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" onclick="event.stopPropagation()" style="color:#79c0ff;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:#0d1a2e;border:1px solid #4a9eff30;padding:2px 7px;border-radius:4px;display:inline-flex;align-items:center;gap:3px" title="Open in WoWAnalyzer">🔬 WoWAnalyzer</a></td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num" title="${p.pots?'Potion used in-fight or detected as a prepot':'No potion detected during the tracked window'}"><span style="color:${p.pots?'#3fb950':'#6e7681'}">${p.pots?(p.potName?`✓ ${p.potName}`:"✓ Yes"):"— n/a"}</span></td><td style="text-align:center"><span class="sev-${_sev.sev}">${grade}</span></td>`;
-      bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
+      tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}${_sev.issues.length?` <span class="issue-chip" title="${escAttr(_sev.issueText)}">Issue</span>`:""}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td style="text-align:center;padding:0 4px"><a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" onclick="event.stopPropagation()" style="color:#79c0ff;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:#0d1a2e;border:1px solid #4a9eff30;padding:2px 7px;border-radius:4px;display:inline-flex;align-items:center;gap:3px" title="Open in WoWAnalyzer">🔬 WoWAnalyzer</a></td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num" title="${p.pots?'Potion used in-fight or detected as a prepot':'No potion detected during the tracked window'}"><span style="color:${p.pots?'#3fb950':'#6e7681'}">${p.pots?(p.potName?`✓ ${p.potName}`:"✓ Yes"):"— n/a"}</span></td><td style="text-align:center"><span class="sev-${_sev.sev}" title="${escAttr(_sev.issueText||'No flagged issues')}">${grade}</span></td>`;
+      bindRowAction(tr,()=>openPlayerModal(p,fSec),_sev.issues.length?`Open player details · ${_sev.issueText}`:"Open player details");
       tSumBody.appendChild(tr);
     });
     tSumBody.onclick=e=>{
@@ -3567,7 +3642,7 @@ function showPKCEConnect(){
 // ═══════════════════════════════════════════════════════
 const K_UI_V5='rl_ui_v5';const K_MEM_V5='rl_mem_v5';
 let _v5ctx=null,_watchInterval=null;
-let _v5UI={focusMode:false,copyMode:'short'};
+let _v5UI={focusMode:false,copyMode:'short',timelineZoom:1.35};
 let _tlKind={off:true,def:true,raid:true,lust:true,boss:true};
 
 function loadV5UI(){try{const s=localStorage.getItem(K_UI_V5);if(s)_v5UI={..._v5UI,...JSON.parse(s)};}catch{}}
@@ -3593,8 +3668,8 @@ function toggleTL(k){
 }
 function applyTLFilters(){
   const sel=document.getElementById('tlPlayerSel');const player=sel?sel.value:'all';
-  document.querySelectorAll('[data-tl-player]').forEach(row=>{row.style.display=(row.dataset.tlFixed==='1'||player==='all'||row.dataset.tlPlayer===player)?'':'none';});
-  document.querySelectorAll('[data-kind]').forEach(m=>{
+  document.querySelectorAll('#timelineContent [data-tl-player]').forEach(row=>{row.style.display=(row.dataset.tlFixed==='1'||player==='all'||row.dataset.tlPlayer===player)?'':'none';});
+  document.querySelectorAll('#timelineContent [data-kind]').forEach(m=>{
     const k=m.dataset.kind;
     const show=(k==='off'&&_tlKind.off)||(k==='def'&&_tlKind.def)||(k==='raid'&&_tlKind.raid)||(k==='lust'&&_tlKind.lust)||(k==='boss'&&_tlKind.boss)||!k;
     m.style.opacity=show?'1':'0.05';m.style.pointerEvents=show?'':'none';
@@ -3626,13 +3701,21 @@ function getRepeatBadge(name){
   return '';
 }
 
-function getV5Sev(p,shortPull){
+function getV5Sev(p,shortPull,meta){
   const issues=[];
   if(p.deaths.length)issues.push('deaths');
-  // removed noPot from severity -- potion visibility can vary, so false positives were common
   const exp=SPEC_OFFS[(p.cls||'')+'|'+(p.spec||'')]||null;
-  if(exp&&!shortPull){const mc=exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]);if(mc.length)issues.push('missedOff');}
-  return{issues,sev:p.deaths.length>=2?'crit':issues.length?'warn':'ok'};
+  if(exp&&!shortPull){
+    const mc=exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]);
+    if(mc.length)issues.push('missedOff');
+  }
+  const mechProblems=Object.values(p.debuffs||{}).filter(v=>(v.applications||0)>=2||(v.longestMs||0)>=8000||(v.totalMs||0)>=12000);
+  if(mechProblems.length)issues.push('mechanics');
+  if(p.readyStatus==='bad')issues.push('ready');
+  const avgNonTankDT=meta?.avgNonTankDT||0;
+  if(p.role!=="tanks"&&avgNonTankDT>0&&p.dtaken>(avgNonTankDT*1.7)&&p.deaths.length)issues.push('avoidable');
+  const sev=p.deaths.length>=2||issues.includes('avoidable')?'crit':issues.length?'warn':'ok';
+  return{issues,issueText:issues.length?issues.map(getIssueReasonLabel).join(' · '):'No flagged issues',sev};
 }
 
 function buildDeathCtx(p,deathTs,casts){
@@ -3718,7 +3801,7 @@ function buildSummaryBand(ctx){
     {l:'⚔️ Off CDs',t:'offensive'},{l:'🔄 Timeline',t:'timeline'},
     {l:'⏱️ Downtime',t:'downtime'},{l:'⚠️ Summary',t:'wipe'},
   ].map(j=>'<button class="v5-chip jump" style="border:none;cursor:pointer;margin-right:4px" data-tab="'+j.t+'">'+j.l+'</button>').join('');
-  const filters=['all','tanks','healers','dps','issues'].map((f,i)=>'<span class="v5-chip'+(i===0?' on':'')+'" data-filter="'+f+'" id="v5f-'+f+'">'+(f==='all'?'All':f==='tanks'?'🛡 Tanks':f==='healers'?'💚 Healers':f==='dps'?'⚔ DPS':'⚠️ Issues')+'</span>').join('');
+  const filters=['all','tanks','healers','dps','issues'].map((f,i)=>'<span class="v5-chip'+(i===0?' on':'')+'" data-filter="'+f+'" id="v5f-'+f+'" title="'+(f==='issues'?'Shows players flagged for deaths, missed offensive CDs, repeated mechanic debuffs, failed readiness, or very heavy avoidable pressure.':'')+'">'+(f==='all'?'All':f==='tanks'?'🛡 Tanks':f==='healers'?'💚 Healers':f==='dps'?'⚔ DPS':'⚠️ Issues')+'</span>').join('');
   return '<div class="v5-band">'
     +'<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">'
     +'<div style="flex:1;min-width:200px">'
