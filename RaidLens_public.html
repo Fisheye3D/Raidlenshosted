@@ -186,11 +186,11 @@ tr:hover td{background:#161b22}
 .timeline-wrap{position:relative;margin:8px 0 20px}
 .timeline-scroll{overflow-x:auto;overflow-y:visible;padding-bottom:10px}
 .timeline-zoom{min-width:980px}
-.timeline-track{background:#21262d;border-radius:6px;height:30px;position:relative;overflow:visible}
-.timeline-ruler{margin-bottom:12px}
-.timeline-ruler .timeline-track{height:22px;background:#111824;border:1px solid #30363d}
-.timeline-label{font-size:11px;color:#8b949e;margin-bottom:5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.timeline-marker{position:absolute;top:3px;bottom:3px;width:4px;border-radius:3px;cursor:pointer}
+.timeline-track{background:#21262d;border-radius:6px;height:42px;position:relative;overflow:visible}
+.timeline-ruler{margin-bottom:14px}
+.timeline-ruler .timeline-track{height:26px;background:#111824;border:1px solid #30363d}
+.timeline-label{font-size:12px;color:#8b949e;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.timeline-marker{position:absolute;top:3px;bottom:3px;width:8px;border-radius:4px;cursor:pointer}
 .timeline-marker:hover::after{content:attr(data-tip);position:absolute;bottom:34px;left:50%;transform:translateX(-50%);background:#161b22;border:1px solid #30363d;border-radius:4px;padding:4px 8px;font-size:11px;white-space:nowrap;z-index:10;color:#c9d1d9}
 .timeline-tick{position:absolute;bottom:-16px;font-size:10px;color:#8ea2b8;transform:translateX(-50%)}
 .timeline-phase-band{display:flex;height:22px;border-radius:8px;overflow:hidden;border:1px solid #30363d;background:#111824;margin-bottom:8px}
@@ -228,7 +228,10 @@ tr:hover td{background:#161b22}
 .build-card-sub{font-size:11px;color:#8b949e;line-height:1.5}
 .build-chip-row{display:flex;gap:6px;flex-wrap:wrap}
 .build-code-line{margin-top:7px;font-size:10px;color:#8ea2b8;line-height:1.5;word-break:break-all}
+.build-card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.build-card-actions .mini-link{margin-left:0}
 .issue-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:#231416;border:1px solid #5a2323;color:#f87171;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.issue-reasons{display:block;color:#8b949e;font-size:11px;font-weight:400;line-height:1.45;margin-top:4px}
 .clickable-row{cursor:pointer}
 .clickable-row:hover td{background:#1c2333!important}
 .clickable-row td:first-child::after{content:" 🔍";font-size:10px;opacity:.5}
@@ -1053,12 +1056,12 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   </div>
   <div class="rtab-panel active" id="rtab-defensives"><div class="tw"><table id="tDef"><thead><tr><th onclick="srt('tDef',0)">Player ↕</th><th onclick="srt('tDef',1)">Class/Spec ↕</th><th title="Personal defensive cooldowns cast during the fight — tracked from combat log cast events.">Def CDs ⓘ</th><th onclick="srt('tDef',3)" class="num">Total ↕</th></tr></thead><tbody id="bDef"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-consumables"><div class="sn">Potion and Healthstone usage per player during the fight.</div><div class="tw"><table id="tCons"><thead><tr><th onclick="srt('tCons',0)">Player ↕</th><th onclick="srt('tCons',1)">Class/Spec ↕</th><th style="text-align:center">Potion</th><th style="text-align:center">Healthstone</th></tr></thead><tbody id="bCons"></tbody></table></div></div>
-  <div class="rtab-panel" id="rtab-builds"><div class="sn">Build snapshot and Ready Check+ pulled from Warcraft Logs combatant info. If Warcraft Logs only gives the import string, RaidLens now shows that cleanly instead of pretending the build is missing.</div><div class="tw"><table id="tBuilds"><thead><tr><th onclick="srt('tBuilds',0)">Player ↕</th><th onclick="srt('tBuilds',1)">Class/Spec ↕</th><th onclick="srt('tBuilds',2)" class="num">iLvl ↕</th><th>Build Snapshot</th><th>Ready Check+</th><th>Copy</th></tr></thead><tbody id="bBuilds"></tbody></table></div></div>
+  <div class="rtab-panel" id="rtab-builds"><div class="sn">Build snapshot and Ready Check+ pulled from Warcraft Logs combatant info, with quick links for copying builds or opening the matching Wowhead talent calculator.</div><div class="tw"><table id="tBuilds"><thead><tr><th onclick="srt('tBuilds',0)">Player ↕</th><th onclick="srt('tBuilds',1)">Class/Spec ↕</th><th onclick="srt('tBuilds',2)" class="num">iLvl ↕</th><th>Build Snapshot</th><th>Ready Check+</th><th>Links</th></tr></thead><tbody id="bBuilds"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-deaths"><div class="sn">All player deaths ordered by time. Killing blow shown where available.</div><div id="cleanPullBanner" style="display:none"></div><div id="topKillersBox" style="display:none;margin-bottom:12px"></div><div class="tw"><table id="tDeath"><thead><tr><th onclick="srt('tDeath',0)">Player ↕</th><th onclick="srt('tDeath',1)">Class/Spec ↕</th><th onclick="srt('tDeath',2)">Time ↕</th><th>Killing Blow</th><th onclick="srt('tDeath',4)" class="num">Deaths ↕</th><th></th></tr></thead><tbody id="bDeath"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-interrupts"><div class="sn">Who interrupted what and how many times.</div><div class="tw"><table id="tInt"><thead><tr><th onclick="srt('tInt',0)">Player ↕</th><th onclick="srt('tInt',1)">Class/Spec ↕</th><th>Spells Interrupted</th><th onclick="srt('tInt',3)" class="num">Total ↕</th></tr></thead><tbody id="bInt"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dispels"><div class="sn">Who dispelled what.</div><div class="tw"><table id="tDisp"><thead><tr><th onclick="srt('tDisp',0)">Player ↕</th><th onclick="srt('tDisp',1)">Class/Spec ↕</th><th>Spells Dispelled</th><th onclick="srt('tDisp',3)" class="num">Total ↕</th></tr></thead><tbody id="bDisp"></tbody></table></div></div>
-  <div class="rtab-panel" id="rtab-damage"><div class="sn">Total damage taken per player. 🟡 Tank · 🟢 Healer · 🔵 DPS. Click a player for full breakdown.</div><div class="tw"><table id="tDmg"><thead><tr><th onclick="srt('tDmg',0)">Player ↕</th><th onclick="srt('tDmg',1)">Class/Spec ↕</th><th onclick="srt('tDmg',2)">Role ↕</th><th>Bar</th><th onclick="srt('tDmg',4)" class="num">Total Taken ↕</th><th onclick="srt('tDmg',5)" class="num">DTPS ↕</th><th onclick="srt('tDmg',6)" class="num">% of Raid ↕</th></tr></thead><tbody id="bDmg"></tbody></table></div></div>
-  <div class="rtab-panel" id="rtab-dps"><div class="sn">DPS for the fight. Click any player to see their full breakdown.</div><div class="tw"><table id="tDps"><thead><tr><th onclick="srt('tDps',0)">Player ↕</th><th onclick="srt('tDps',1)">Class/Spec ↕</th><th>Bar</th><th onclick="srt('tDps',3)" class="num">Total Damage ↕</th><th onclick="srt('tDps',4)" class="num">DPS ↕</th></tr></thead><tbody id="bDps"></tbody></table></div></div>
+  <div class="rtab-panel" id="rtab-damage"><div class="sn">Total damage taken per player. 🟡 Tank · 🟢 Healer · 🔵 DPS. Click a player for full breakdown.</div><div class="tw"><table id="tDmg"><thead><tr><th onclick="srt('tDmg',0)">Player ↕</th><th onclick="srt('tDmg',1)">Class/Spec ↕</th><th onclick="srt('tDmg',2)">Role ↕</th><th>Visual</th><th onclick="srt('tDmg',4)" class="num">Total Taken ↕</th><th onclick="srt('tDmg',5)" class="num">DTPS ↕</th><th onclick="srt('tDmg',6)" class="num">% of Raid ↕</th></tr></thead><tbody id="bDmg"></tbody></table></div></div>
+  <div class="rtab-panel" id="rtab-dps"><div class="sn">DPS for the fight. Click any player to see their full breakdown.</div><div class="tw"><table id="tDps"><thead><tr><th onclick="srt('tDps',0)">Player ↕</th><th onclick="srt('tDps',1)">Class/Spec ↕</th><th>Visual</th><th onclick="srt('tDps',3)" class="num">Total Damage ↕</th><th onclick="srt('tDps',4)" class="num">DPS ↕</th></tr></thead><tbody id="bDps"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dpsbreak">
     <div class="sn">Detailed damage breakdown per DPS player — total damage, DPS, damage taken, and key CDs at a glance.</div>
     <div class="tw"><table id="tDpsBreak"><thead><tr>
@@ -1073,7 +1076,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
       <th onclick="srt('tDpsBreak',8)">Pot</th><th>Sim</th>
     </tr></thead><tbody id="bDpsBreak"></tbody></table></div>
   </div>
-  <div class="rtab-panel" id="rtab-hps"><div class="sn">Healer HPS for the fight.</div><div class="tw"><table id="tHps"><thead><tr><th onclick="srt('tHps',0)">Player ↕</th><th onclick="srt('tHps',1)">Class/Spec ↕</th><th>Bar</th><th onclick="srt('tHps',3)" class="num">Total Healing ↕</th><th onclick="srt('tHps',4)" class="num">HPS ↕</th></tr></thead><tbody id="bHps"></tbody></table></div></div>
+  <div class="rtab-panel" id="rtab-hps"><div class="sn">Healer HPS for the fight.</div><div class="tw"><table id="tHps"><thead><tr><th onclick="srt('tHps',0)">Player ↕</th><th onclick="srt('tHps',1)">Class/Spec ↕</th><th>Visual</th><th onclick="srt('tHps',3)" class="num">Total Healing ↕</th><th onclick="srt('tHps',4)" class="num">HPS ↕</th></tr></thead><tbody id="bHps"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-offensive"><div class="sn">✓ = used · ✗ = missed · Expected CDs shown per spec. Players with no expected CDs for their spec are shown as N/A.</div><div class="tw"><table id="tOff"><thead><tr><th onclick="srt('tOff',0)">Player ↕</th><th onclick="srt('tOff',1)">Class/Spec ↕</th><th>Offensive CDs</th><th onclick="srt('tOff',3)" class="num">Used ↕</th><th onclick="srt('tOff',4)" class="num">Missed ↕</th></tr></thead><tbody id="bOff"></tbody></table></div></div>
   <!-- SUMMARY -->
   <div class="rtab-panel active" id="rtab-summary">
@@ -1093,7 +1096,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   <div class="rtab-panel" id="rtab-mechanics">
     <div class="sn">Wipefest-style mechanic clarity: dangerous debuffs, repeat offenders, and raid damage pressure without burying you in raw log spam.</div>
     <div id="mechanicSummaryGrid" class="summary-grid-2"></div>
-    <div class="tw"><table id="tMechDebuffs"><thead><tr><th onclick="srt('tMechDebuffs',0)">Mechanic ↕</th><th onclick="srt('tMechDebuffs',1)" class="num">Players ↕</th><th onclick="srt('tMechDebuffs',2)" class="num">Applications ↕</th><th onclick="srt('tMechDebuffs',3)">Longest Hold ↕</th><th>Who / Why it matters</th></tr></thead><tbody id="bMechDebuffs"></tbody></table></div>
+  <div class="tw"><table id="tMechDebuffs"><thead><tr><th onclick="srt('tMechDebuffs',0)">Mechanic ↕</th><th onclick="srt('tMechDebuffs',1)" class="num">Players ↕</th><th onclick="srt('tMechDebuffs',2)" class="num">Applications ↕</th><th onclick="srt('tMechDebuffs',3)">Longest Hold ↕</th><th>Who Got Hit / Why It Matters</th></tr></thead><tbody id="bMechDebuffs"></tbody></table></div>
   </div>
   <!-- HEALING BREAKDOWN -->
   <div class="rtab-panel" id="rtab-healbreak">
@@ -1110,7 +1113,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   </div>
   <!-- CD TIMELINE -->
   <div class="rtab-panel" id="rtab-timeline">
-    <div class="sn">Visual timeline of major cooldowns used during the fight, plus boss-ability lanes so you can see whether personals and raid CDs lined up with the dangerous moments. P1 / P2 / P3 are the boss phases Warcraft Logs exposed for that pull.</div>
+    <div class="sn">Visual timeline of major cooldowns used during the fight, plus boss-ability lanes so you can see whether personals and raid CDs lined up with the dangerous moments.</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
       <span style="font-size:11px;color:#8b949e;font-weight:600">Show:</span>
       <span class="v5-chip on" id="tlChip-off"  onclick="toggleTL('off')" >⚔️ Offensive</span>
@@ -1118,13 +1121,6 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
       <span class="v5-chip on" id="tlChip-raid" onclick="toggleTL('raid')">💚 Raid CDs</span>
       <span class="v5-chip on" id="tlChip-lust" onclick="toggleTL('lust')">⚡ Lust</span>
       <span class="v5-chip on" id="tlChip-boss" onclick="toggleTL('boss')">👹 Boss Abilities</span>
-      <span style="margin-left:8px;font-size:11px;color:#8b949e;font-weight:600">Zoom:</span>
-      <select id="tlZoomSel" onchange="setTLZoom(this.value)" style="background:#161b22;border:1px solid #30363d;color:#c9d1d9;padding:3px 8px;border-radius:6px;font-size:11px">
-        <option value="1">100%</option>
-        <option value="1.35">135%</option>
-        <option value="1.7">170%</option>
-        <option value="2.1">210%</option>
-      </select>
       <span style="margin-left:8px;font-size:11px;color:#8b949e;font-weight:600">Player:</span>
       <select id="tlPlayerSel" onchange="applyTLFilters()" style="background:#161b22;border:1px solid #30363d;color:#c9d1d9;padding:3px 8px;border-radius:6px;font-size:11px">
         <option value="all">All Players</option>
@@ -1168,13 +1164,13 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
 
   <!-- DOWNTIME TRACKER -->
   <div class="rtab-panel" id="rtab-bossvsadds">
-    <div class="sn">Damage dealt to boss vs adds per player. Useful for checking if DPS are staying on boss or tunnel visioning adds.</div>
+    <div class="sn">Estimated main-target vs other NPC damage per player. Good for a fast read on boss focus, but treat it as an encounter-level estimate rather than a perfect enemy-name split.</div>
     <div class="tw"><table id="tBossAdds"><thead><tr>
       <th onclick="srt('tBossAdds',0)">Player ↕</th>
       <th onclick="srt('tBossAdds',1)">Class/Spec ↕</th>
-      <th>Boss Damage</th>
-      <th onclick="srt('tBossAdds',3)" class="num">Boss DPS ↕</th>
-      <th onclick="srt('tBossAdds',4)" class="num">Boss% ↕</th>
+      <th>Main Target Damage</th>
+      <th onclick="srt('tBossAdds',3)" class="num">Main Target DPS ↕</th>
+      <th onclick="srt('tBossAdds',4)" class="num">Main Target % ↕</th>
       <th>Add Damage</th>
       <th onclick="srt('tBossAdds',6)" class="num">Add DPS ↕</th>
     </tr></thead><tbody id="bBossAdds"></tbody></table></div>
@@ -1505,17 +1501,33 @@ function fmtPhaseLabel(name,short){
   if(!match)return raw;
   return short?`P${match[1]}`:`Phase ${match[1]}`;
 }
+const WOWHEAD_CLASS_SLUG={
+  "DeathKnight":"death-knight","Death Knight":"death-knight",
+  "DemonHunter":"demon-hunter","Demon Hunter":"demon-hunter"
+};
+const WOWHEAD_SPEC_SLUG={
+  "BeastMastery":"beast-mastery","Beast Mastery":"beast-mastery"
+};
+function wowheadTalentCalcUrl(p){
+  const clsRaw=String(p?.cls||"").trim();
+  const specRaw=String(p?.spec||"").trim();
+  const cls=WOWHEAD_CLASS_SLUG[clsRaw]||clsRaw.toLowerCase().replace(/[^a-z0-9]+/g,"-");
+  const spec=WOWHEAD_SPEC_SLUG[specRaw]||specRaw.toLowerCase().replace(/[^a-z0-9]+/g,"-");
+  if(!cls||!spec)return "https://www.wowhead.com/talent-calc";
+  return `https://www.wowhead.com/talent-calc/${cls}/${spec}`;
+}
 function renderBuildSnapshotCard(p,mode){
   const compact=mode==="compact";
   const title=escAttr(p.spec||p.cls||"Build");
-  const codePreview=p.buildCode?`${escAttr(p.buildCode.slice(0,compact?32:72))}${p.buildCode.length>(compact?32:72)?"…":""}`:"";
+  const calcUrl=escAttr(wowheadTalentCalcUrl(p));
+  const actions=!compact?`<div class="build-card-actions">${p.buildCode?`<button class="mini-link" onclick="event.stopPropagation();copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:""}<a href="${calcUrl}" target="_blank" class="mini-link" onclick="event.stopPropagation()">Wowhead Calc ↗</a></div>`:"";
   if(p.talentNames?.length){
-    return `<div class="build-card"><div class="build-card-head"><div class="build-card-title">${title} talents</div>${p.buildCode?'<span class="build-card-pill">Import string</span>':''}</div><div class="build-chip-row">${p.talentNames.slice(0,compact?3:6).map(n=>spellChip(n,null,null,"cool","talent snapshot")).join("")}</div>${p.buildCode?`<div class="build-code-line">${codePreview}</div>`:""}</div>`;
+    return `<div class="build-card"><div class="build-card-head"><div class="build-card-title">${title} talents</div>${p.buildCode?'<span class="build-card-pill">Import string</span>':''}</div><div class="build-chip-row">${p.talentNames.slice(0,compact?3:6).map(n=>spellChip(n,null,null,"cool","talent snapshot")).join("")}</div>${actions}</div>`;
   }
   if(p.buildCode){
-    return `<div class="build-card warn"><div class="build-card-head"><div class="build-card-title">${title} build</div><span class="build-card-pill">Import string</span></div><div class="build-card-sub">Warcraft Logs gave the build code for this pull, but not the node-by-node talent names in the response we received.</div><div class="build-code-line">${codePreview}</div></div>`;
+    return `<div class="build-card warn"><div class="build-card-head"><div class="build-card-title">${title} build</div><span class="build-card-pill">Import string</span></div><div class="build-card-sub">${compact?"Build code available for copy.":"Build code is available for copy, and the calculator link opens the matching class/spec tree."}</div>${actions}</div>`;
   }
-  return `<div class="build-card warn"><div class="build-card-head"><div class="build-card-title">${title} build</div></div><div class="build-card-sub">Warcraft Logs did not expose a build snapshot for this player on this pull.</div></div>`;
+  return `<div class="build-card warn"><div class="build-card-head"><div class="build-card-title">${title} build</div></div><div class="build-card-sub">No build snapshot exposed for this pull.</div>${actions}</div>`;
 }
 function setTLZoom(v){
   const n=Math.max(1,Number(v)||1);
@@ -2614,7 +2626,7 @@ function openPlayerModal(p,fSec){
     <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("Potion",p.pots?`✓ ${p.potName||"Used"} (${p.pots})`:"✗ None detected",p.pots?"#3fb950":"#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#e3a008")}${p.ilvl?statRow("Snapshot iLvl",p.ilvl,"#c9d1d9"):""}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
     <div>${statRow("Damage Taken",fmtNum(p.dtaken))}${statRow("Interrupts",Object.values(p.ints).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Dispels",Object.values(p.disps).reduce((s,c)=>s+c,0),"#3fb950")}${statRow("CC Used",Object.values(p.cc).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Def CDs Used",Object.values(p.defs).reduce((s,c)=>s+c,0),"#ffd700")}${statRow("Off CDs Used",Object.values(p.offs).reduce((s,c)=>s+c,0),"#ffd700")}${p.weaponBuffs?.length?statRow("Weapon Buff",p.weaponBuffs.join(", "),"#ffdd75"):""}${p.pets?.length?statRow("Pets Counted",p.pets.length,"#8b949e"):""}</div></div>`;
   if(p.talentNames?.length||p.buildCode||p.readyIssues?.length||p.passiveBuffs?.length){
-    html+=`<div class="modal-section"><h4>Build Snapshot</h4>${renderBuildSnapshotCard(p,"full")}${p.buildCode?`<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px"><span style="font-size:12px;color:#8b949e">Talent import string:</span><code style="background:#111824;border:1px solid #30363d;border-radius:6px;padding:4px 8px;font-size:11px;color:#79c0ff;max-width:100%;overflow:auto">${p.buildCode}</code><button class="mini-link" onclick="copyTiny(this,'${escJs(p.buildCode)}','✓')">Copy Build</button></div>`:""}${p.readyIssues?.length?`<div style="margin-top:8px;color:#ffdd75;font-size:12px">${p.readyIssues.join(" · ")}</div>`:`<div style="margin-top:8px;color:#3fb950;font-size:12px">Ready snapshot looked clean.</div>`}${p.passiveBuffs?.length?`<div style="margin-top:8px;color:#8b949e;font-size:11px">Buff snapshot: ${p.passiveBuffs.join(", ")}</div>`:""}</div>`;
+    html+=`<div class="modal-section"><h4>Build Snapshot</h4>${renderBuildSnapshotCard(p,"full")}${p.readyIssues?.length?`<div style="margin-top:8px;color:#ffdd75;font-size:12px">${p.readyIssues.join(" · ")}</div>`:`<div style="margin-top:8px;color:#3fb950;font-size:12px">Ready snapshot looked clean.</div>`}${p.passiveBuffs?.length?`<div style="margin-top:8px;color:#8b949e;font-size:11px">Buff snapshot: ${p.passiveBuffs.join(", ")}</div>`:""}</div>`;
   }
   if(p.deaths.length){html+=`<div class="modal-section"><h4>Deaths</h4><div class="spell-grid">${p.deaths.map(d=>spellChip(`${d.timeStr||"?"} — ${d.killer}`,null,d.killerId||findAbilityIdByName(d.killer),"danger","death cause")).join("")}</div></div>`;}
   if(Object.keys(p.dmgBySpell||{}).length){html+=`<div class="modal-section"><h4>Damage Done Breakdown</h4>${renderSpellBreakdown(p.dmgBySpell,p.ddealt,"cool","damage done")}</div>`;}
@@ -2875,8 +2887,12 @@ async function analyze(){
         const buildPreview=renderBuildSnapshotCard(p,"compact");
         const readyClass=p.readyStatus||"warn";
         const readyHtml=`<span class="ready-pill ${readyClass}">${readyClass==="good"?"Ready":readyClass==="warn"?"Watch":"Fix"}</span><div style="margin-top:6px;color:${readyClass==="bad"?"#f87171":readyClass==="warn"?"#ffdd75":"#8b949e"};font-size:11px;line-height:1.6">${escAttr(p.readyText||"No readiness snapshot")}</div>`;
-        const copyBtn=p.buildCode?`<button class="mini-link" onclick="event.stopPropagation();copyTiny(this,'${escJs(p.buildCode)}','✓')">Copy Build</button>`:'<span class="none-t">—</span>';
-        tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td class="num" data-val="${p.ilvl||0}" style="color:${p.ilvl? "#c9d1d9":"#6e7681"}">${p.ilvl||"—"}</td><td>${buildPreview}</td><td>${readyHtml}</td><td style="text-align:center">${copyBtn}</td>`;
+        const calcUrl=wowheadTalentCalcUrl(p);
+        const links=[
+          p.buildCode?`<button class="mini-link" onclick="event.stopPropagation();copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:"",
+          `<a href="${escAttr(calcUrl)}" target="_blank" class="mini-link" onclick="event.stopPropagation()">Calc ↗</a>`
+        ].filter(Boolean).join("");
+        tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td class="num" data-val="${p.ilvl||0}" style="color:${p.ilvl? "#c9d1d9":"#6e7681"}">${p.ilvl||"—"}</td><td>${buildPreview}</td><td>${readyHtml}</td><td style="text-align:center">${links||'<span class="none-t">—</span>'}</td>`;
         bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
         bBuilds.appendChild(tr);
       });
@@ -3039,8 +3055,12 @@ async function analyze(){
       ].join("");
       bMechDebuffs.innerHTML="";
       mechanicRows.slice(0,16).forEach(row=>{
+        const touchedDeaths=[...row.players].filter(name=>(Object.values(P).find(px=>px.name===name)?.deaths?.length||0)>0).length;
         const tr=document.createElement("tr");
-        const why=row.watch?`Watch this mechanic. ${row.playersCount} players touched it and ${row.longestPlayer} held it ${Math.round(row.longestMs/1000)}s.`:`Lower-volume mechanic. Still useful if it lines up with deaths.`;
+        const whyParts=[`${row.playersCount} players got it`,`${row.applications} total apps`];
+        if(row.longestMs>=4000)whyParts.push(`longest hold ${row.longestPlayer} ${Math.round(row.longestMs/1000)}s`);
+        if(touchedDeaths)whyParts.push(`${touchedDeaths} affected player${touchedDeaths===1?"":"s"} died later`);
+        const why=`Why it matters: ${whyParts.join(" · ")}.`;
         tr.innerHTML=`<td>${spellChip(row.name,null,row.id,"danger","mechanic debuff")}</td><td class="num" data-val="${row.playersCount}" style="color:${row.playersCount>=4?"#f85149":row.playersCount>=2?"#ffdd75":"#8b949e"};font-weight:700">${row.playersCount}</td><td class="num" data-val="${row.applications}" style="color:#79c0ff">${row.applications}</td><td data-val="${row.longestMs}" style="color:${row.longestMs>=8000?"#f85149":row.longestMs>=5000?"#ffdd75":"#8b949e"}">${row.longestPlayer} · ${Math.round(row.longestMs/1000)}s</td><td style="font-size:12px;line-height:1.7">${row.topPlayers.join(" · ")||"—"}<div style="color:#8b949e;font-size:11px;margin-top:4px">${why}</div></td>`;
         bMechDebuffs.appendChild(tr);
       });
@@ -3089,21 +3109,6 @@ async function analyze(){
       tlByPlayer[p.name].events.push({t:ev.timestamp-fight.startTime,name:sName,sid:ev.abilityGameID,kind});
     });
     const ticksHtml=(()=>{let h="";for(let t=0;t<=fightMs;t+=30000){const pct=t/fightMs*100;h+=`<span class="timeline-tick" style="left:${pct}%">${Math.floor(t/1000)}s</span>`;}return h;})();
-    if(phaseInfo.length){
-      const band=document.createElement("div");
-      band.className="timeline-phase-band";
-      band.innerHTML=phaseInfo.map((ph,i)=>{
-        const width=Math.max(8,(ph.dur/fightMs)*100);
-        const bg=i%2===0?"#0d2a3a":"#153249";
-        const label=phaseInfo.length<=4?fmtPhaseLabel(ph.name,false):fmtPhaseLabel(ph.name,true);
-        return `<div class="timeline-phase-seg" title="${fmtPhaseLabel(ph.name,false)} · ${Math.round(ph.dur/1000)}s" style="width:${width}%;background:${bg}">${label}</div>`;
-      }).join("");
-      tlCanvas.appendChild(band);
-      const phaseHelp=document.createElement("div");
-      phaseHelp.className="timeline-phase-help";
-      phaseHelp.textContent="P1 / P2 / P3 are the boss phases Warcraft Logs exposed for this pull.";
-      tlCanvas.appendChild(phaseHelp);
-    }
     const ruler=document.createElement("div");
     ruler.className="timeline-ruler";
     ruler.innerHTML=`<div class="timeline-track" style="position:relative">${ticksHtml}</div>`;
@@ -3117,9 +3122,9 @@ async function analyze(){
       const markers=row.clusters.map(cl=>{
         const pct=(cl.t/fightMs*100).toFixed(2);
         const tip=`${row.name} @ ${Math.floor(cl.t/1000)}s${row.kind==="damage"?` · ${fmtNum(row.damage)} raid dmg`:` · ${row.applications} apps`}`;
-        return `<div class="timeline-marker" data-kind="boss" data-tip="${tip}" style="left:${pct}%;background:${row.kind==="damage"?"#f85149":"#ffb86c"};width:5px" title="${tip}"></div>`;
+        return `<div class="timeline-marker" data-kind="boss" data-tip="${tip}" style="left:${pct}%;background:${row.kind==="damage"?"#f85149":"#ffb86c"};width:8px" title="${tip}"></div>`;
       }).join("");
-      block.innerHTML=`<div class="timeline-label"><span>${row.name}</span><span class="timeline-boss-pill">${row.targetsCount} players</span><span style="color:#8b949e;font-size:10px">${row.kind==="damage"?`${fmtNum(row.damage)} raid dmg`:`${row.applications} debuff apps`}</span></div><div class="timeline-track" style="position:relative">${markers}</div>`;
+      block.innerHTML=`<div class="timeline-label"><span>${spellChip(row.name,null,row.id,"danger","boss ability")}</span><span class="timeline-boss-pill">${row.targetsCount} players</span><span style="color:#8b949e;font-size:10px">${row.kind==="damage"?`${fmtNum(row.damage)} raid dmg`:`${row.applications} debuff apps`}</span></div><div class="timeline-track" style="position:relative">${markers}</div>`;
       tlCanvas.appendChild(block);
     });
     const colors=["#79c0ff","#3fb950","#ffd700","#f85149","#e3a008","#A330C9","#33937F","#FF7C0A"];
@@ -3138,10 +3143,9 @@ async function analyze(){
     if(!Object.keys(tlByPlayer).length&&!bossTimelineRows.length){tlContent.innerHTML='<div style="color:#6e7681;text-align:center;padding:20px">No cooldown or boss-ability timeline data detected</div>';}
     const tlSel=document.getElementById("tlPlayerSel");
     if(tlSel){tlSel.innerHTML='<option value="all">All Players</option>';Object.keys(tlByPlayer).sort().forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;tlSel.appendChild(o);});}
-    const tlZoomSel=document.getElementById("tlZoomSel");
-    if(tlZoomSel)tlZoomSel.value=String(_v5UI.timelineZoom||1.35);
-    setTLZoom(_v5UI.timelineZoom||1.35);
+    setTLZoom(_v5UI.timelineZoom||1.6);
     applyTLFilters();
+    refreshWowheadTooltips();
 
     // summary scorecard
     const summaryDiv=document.getElementById("summaryContent");summaryDiv.innerHTML="";
@@ -3192,13 +3196,11 @@ async function analyze(){
       {val:fmtNum(raidHps),lbl:"Raid HPS",cls:""},
       {val:missedOffTotal,lbl:"Missed Offensive CDs",cls:missedOffTotal===0?"good":missedOffTotal<=3?"warn":"bad"},
     ];
-    const phaseSummaryHTML=phaseInfo.length?`<div class="phase-strip">${phaseInfo.map(ph=>{
-      const phaseDeaths=drows.filter(d=>d.dcount>0&&phaseForTime(d.time,phaseInfo)?.name===ph.name);
-      return `<div class="phase-chip" title="${fmtPhaseLabel(ph.name,false)}"><div class="phase-chip-k">${fmtPhaseLabel(ph.name,false)}</div><div class="phase-chip-v">${Math.round(ph.dur/1000)}s</div><div class="phase-chip-sub">${phaseDeaths.length?`${phaseDeaths.length} death${phaseDeaths.length===1?"":"s"} · first ${phaseDeaths[0].timeStr}`:"No deaths recorded"}</div></div>`;
-    }).join("")}</div>`:"";
+    const phaseSummaryHTML="";
     const readinessWatch=sorted.filter(p=>p.readyStatus!=="good").slice(0,4);
     const summaryInsightsHTML=`<div class="summary-grid-2">
       <div class="summary-note-card"><div class="summary-note-title">Ready Check+</div><div class="summary-note-body">${readinessWatch.length?readinessWatch.map(p=>`${p.name}: ${p.readyText}`).join(" · "):"Everybody with combatant data looked ready enough for this pull."}</div><div class="summary-note-sub">This uses Warcraft Logs combatant info snapshots, so it’s much safer than trying to guess readiness from in-fight buff events alone.</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Throughput Leaders</div><div class="summary-note-body">${sorted.filter(p=>p.ddealt>0).sort((a,b)=>b.ddealt-a.ddealt).slice(0,3).map(p=>`${p.name} ${fmtNum(Math.round(p.ddealt/fSec||0))} DPS`).join(" · ")||"No DPS data for this pull."}</div><div class="summary-note-sub">${sorted.filter(p=>p.healed>0).sort((a,b)=>b.healed-a.healed).slice(0,2).map(p=>`${p.name} ${fmtNum(Math.round(p.healed/fSec||0))} HPS`).join(" · ")||"No HPS data for this pull."}</div></div>
       <div class="summary-note-card"><div class="summary-note-title">Mechanic Watchlist</div><div class="summary-note-body">${mechanicRows.filter(r=>r.watch).slice(0,3).map(r=>`${r.name} · ${r.playersCount} players`).join(" · ")||"No repeated debuff mechanic stood out on this pull."}</div><div class="summary-note-sub">${bossTimelineRows.length?`Boss timeline is tracking ${bossTimelineRows.length} major ability lane${bossTimelineRows.length===1?"":"s"} for cooldown alignment.`:"Boss timeline did not find major repeated boss abilities this pull."}</div></div>
       <div class="summary-note-card"><div class="summary-note-title">Cooldown Coverage</div><div class="summary-note-body">${coverageSummary.length?coverageSummary.map(r=>`${r.name}: ${r.covered}/${r.total}`).join(" · "):"No clear boss-event coverage windows were detected for this pull."}</div><div class="summary-note-sub">Use the timeline tab to line raid CDs and personals up against the boss-ability lane.</div></div>
       <div class="summary-note-card"><div class="summary-note-title">Survivability Watch</div><div class="summary-note-body">${sorted.filter(p=>p.role!=="tanks").sort((a,b)=>b.dtaken-a.dtaken).slice(0,3).map(p=>`${p.name} ${fmt(p.dtaken)}`).join(" · ")||"No non-tank damage pressure spike found."}</div><div class="summary-note-sub">This is for quick coaching context, not a blame board. Start with deaths first, then use this to explain why the deaths happened.</div></div>
@@ -3295,8 +3297,10 @@ async function analyze(){
       <th onclick="srt('tSum',3)" class="num">Ints</th>
       <th onclick="srt('tSum',4)" class="num">Disps</th>
       <th onclick="srt('tSum',5)" class="num">Def CDs</th>
-        <th onclick="srt('tSum',6)" class="num" title="Counts an in-fight potion, and also credits a prepot when Warcraft Logs exposes it">Pot ⓘ</th>
-      <th onclick="srt('tSum',7)">Grade</th>
+      <th onclick="srt('tSum',6)" class="num">DPS</th>
+      <th onclick="srt('tSum',7)" class="num">HPS</th>
+      <th onclick="srt('tSum',8)" class="num" title="Counts an in-fight potion, and also credits a prepot when Warcraft Logs exposes it">Pot ⓘ</th>
+      <th onclick="srt('tSum',9)">Grade</th>
     </tr></thead><tbody id="tSumBody"></tbody></table></div>`;
     summaryDiv.innerHTML=scoreHTML+perPlayerHtml;
 
@@ -3307,6 +3311,8 @@ async function analyze(){
       const ints=Object.values(p.ints).reduce((s,c)=>s+c,0);
       const disps=Object.values(p.disps).reduce((s,c)=>s+c,0);
       const defTotal=Object.values(p.defs).reduce((s,c)=>s+c,0);
+      const dpsNum=fSec>0&&p.ddealt>0?Math.round(p.ddealt/fSec):0;
+      const hpsNum=fSec>0&&p.healed>0?Math.round(p.healed/fSec):0;
       let score=100;
       score-=deaths*15;
       // removed pot penalty from score -- potion visibility can vary, so penalizing it is noisy
@@ -3315,9 +3321,10 @@ async function analyze(){
       const gc=grade==="S"?"#ffd700":grade==="A"?"#3fb950":grade==="B"?"#79c0ff":grade==="C"?"#e3a008":"#f85149";
       const _sev=getV5Sev(p,shortPull,{avgNonTankDT});
       const _badge=getRepeatBadge(p.name);
+      const issueLine=_sev.issues.length?`<div class="issue-reasons">${_sev.issueText}</div>`:"";
       const tr=document.createElement("tr");tr.className="clickable-row";
       tr.dataset.role=p.role;tr.dataset.hasIssue=_sev.issues.length?"1":"0";tr.dataset.player=p.name;
-      tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}${_sev.issues.length?` <span class="issue-chip" title="${escAttr(_sev.issueText)}">Issue</span>`:""}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td style="text-align:center;padding:0 4px"><a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" onclick="event.stopPropagation()" style="color:#79c0ff;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:#0d1a2e;border:1px solid #4a9eff30;padding:2px 7px;border-radius:4px;display:inline-flex;align-items:center;gap:3px" title="Open in WoWAnalyzer">🔬 WoWAnalyzer</a></td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num" title="${p.pots?'Potion used in-fight or detected as a prepot':'No potion detected during the tracked window'}"><span style="color:${p.pots?'#3fb950':'#6e7681'}">${p.pots?(p.potName?`✓ ${p.potName}`:"✓ Yes"):"— n/a"}</span></td><td style="text-align:center"><span class="sev-${_sev.sev}" title="${escAttr(_sev.issueText||'No flagged issues')}">${grade}</span></td>`;
+      tr.innerHTML=`<td style="font-weight:600;color:${CC[p.cls]||"#c9d1d9"}">${p.name}${_badge}${_sev.issues.length?` <span class="issue-chip" title="${escAttr(_sev.issueText)}">Issue</span>`:""}${issueLine}</td><td style="font-size:12px">${roleDisplay(p.role)}</td><td style="text-align:center;padding:0 4px"><a href="https://wowanalyzer.com/report/${reportCode}/${fightId}/${encodeURIComponent(p.name)}" target="_blank" onclick="event.stopPropagation()" style="color:#79c0ff;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:#0d1a2e;border:1px solid #4a9eff30;padding:2px 7px;border-radius:4px;display:inline-flex;align-items:center;gap:3px" title="Open in WoWAnalyzer">🔬 WoWAnalyzer</a></td><td class="num" style="color:${deaths>0?"#f85149":"#3fb950"}">${deaths}</td><td class="num">${ints}</td><td class="num">${disps}</td><td class="num">${defTotal}</td><td class="num" style="color:#79c0ff">${dpsNum?fmtNum(dpsNum):"—"}</td><td class="num" style="color:#3fb950">${hpsNum?fmtNum(hpsNum):"—"}</td><td class="num" title="${p.pots?'Potion used in-fight or detected as a prepot':'No potion detected during the tracked window'}"><span style="color:${p.pots?'#3fb950':'#6e7681'}">${p.pots?(p.potName?`✓ ${p.potName}`:"✓ Yes"):"— n/a"}</span></td><td style="text-align:center"><span class="sev-${_sev.sev}" title="${escAttr(_sev.issueText||'No flagged issues')}">${grade}</span></td>`;
       bindRowAction(tr,()=>openPlayerModal(p,fSec),_sev.issues.length?`Open player details · ${_sev.issueText}`:"Open player details");
       tSumBody.appendChild(tr);
     });
@@ -3709,8 +3716,6 @@ function getV5Sev(p,shortPull,meta){
     const mc=exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]);
     if(mc.length)issues.push('missedOff');
   }
-  const mechProblems=Object.values(p.debuffs||{}).filter(v=>(v.applications||0)>=2||(v.longestMs||0)>=8000||(v.totalMs||0)>=12000);
-  if(mechProblems.length)issues.push('mechanics');
   if(p.readyStatus==='bad')issues.push('ready');
   const avgNonTankDT=meta?.avgNonTankDT||0;
   if(p.role!=="tanks"&&avgNonTankDT>0&&p.dtaken>(avgNonTankDT*1.7)&&p.deaths.length)issues.push('avoidable');
@@ -3801,7 +3806,7 @@ function buildSummaryBand(ctx){
     {l:'⚔️ Off CDs',t:'offensive'},{l:'🔄 Timeline',t:'timeline'},
     {l:'⏱️ Downtime',t:'downtime'},{l:'⚠️ Summary',t:'wipe'},
   ].map(j=>'<button class="v5-chip jump" style="border:none;cursor:pointer;margin-right:4px" data-tab="'+j.t+'">'+j.l+'</button>').join('');
-  const filters=['all','tanks','healers','dps','issues'].map((f,i)=>'<span class="v5-chip'+(i===0?' on':'')+'" data-filter="'+f+'" id="v5f-'+f+'" title="'+(f==='issues'?'Shows players flagged for deaths, missed offensive CDs, repeated mechanic debuffs, failed readiness, or very heavy avoidable pressure.':'')+'">'+(f==='all'?'All':f==='tanks'?'🛡 Tanks':f==='healers'?'💚 Healers':f==='dps'?'⚔ DPS':'⚠️ Issues')+'</span>').join('');
+  const filters=['all','tanks','healers','dps','issues'].map((f,i)=>'<span class="v5-chip'+(i===0?' on':'')+'" data-filter="'+f+'" id="v5f-'+f+'" title="'+(f==='issues'?'Shows players flagged for deaths, missed offensive CDs, bad readiness snapshots, or very heavy avoidable damage that ended in a death.':'')+'">'+(f==='all'?'All':f==='tanks'?'🛡 Tanks':f==='healers'?'💚 Healers':f==='dps'?'⚔ DPS':'⚠️ Issues')+'</span>').join('');
   return '<div class="v5-band">'
     +'<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">'
     +'<div style="flex:1;min-width:200px">'
