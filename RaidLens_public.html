@@ -1721,6 +1721,11 @@ function clrErr(){document.getElementById("errorBox").style.display="none";}
 function showSErr(m){const b=document.getElementById("setupErrBox");b.style.display="block";b.textContent="❌ "+m;}
 function hideFights(){document.getElementById("fightSection").style.display="none";document.getElementById("fightList").innerHTML="";fightId=null;document.getElementById("analyzeBtn").disabled=true;}
 function hideResults(){document.getElementById("results").style.display="none";document.getElementById("resultsDivider").style.display="none";}
+function scrollToFightSection(){
+  const el=document.getElementById("fightSection");
+  if(!el)return;
+  requestAnimationFrame(()=>setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),60));
+}
 function renderReportPager(id,page,totalItems,onChange){
   const el=document.getElementById(id);if(!el)return;
   const totalPages=Math.max(1,Math.ceil(totalItems/REPORTS_PER_PAGE));
@@ -2113,6 +2118,7 @@ async function searchGuild(){
   document.getElementById("fightSection").style.display="block";
   document.getElementById("rosterSection").style.display="block";
   document.getElementById("rosterGrid").innerHTML=""; // cleared here, populated after analyze()
+  scrollToFightSection();
 }
 
 // click column header to sort. SS tracks asc/desc state per table
