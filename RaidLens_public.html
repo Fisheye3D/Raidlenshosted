@@ -1028,6 +1028,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   <div class="rtabs">
     <!-- Overview -->
     <div class="rtab active" onclick="switchRTab('summary',this)">📈 Summary</div>
+    <div class="rtab" onclick="switchRTab('builds',this)">🧬 Build + Ready</div>
     <div class="tab-sep">·</div>
     <!-- Start Here -->
     <div class="rtab" onclick="switchRTab('deaths',this)">💀 Deaths</div>
@@ -1041,7 +1042,6 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
     <div class="rtab" onclick="switchRTab('defensives',this)">🛡️ Defensives</div>
     <div class="rtab" onclick="switchRTab('offensive',this)">⚔️ Offensive CDs</div>
     <div class="rtab" onclick="switchRTab('consumables',this)">🧪 Consumables</div>
-    <div class="rtab" onclick="switchRTab('builds',this)">🧬 Build + Ready</div>
     <div class="rtab" onclick="switchRTab('bloodlust',this)">⚡ Bloodlust</div>
     <div class="rtab" onclick="switchRTab('timeline',this)">🔄 CD Timeline</div>
     <div class="tab-sep">·</div>
@@ -1060,7 +1060,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   </div>
   <div class="rtab-panel active" id="rtab-defensives"><div class="tw"><table id="tDef"><thead><tr><th onclick="srt('tDef',0)">Player ↕</th><th onclick="srt('tDef',1)">Class/Spec ↕</th><th title="Personal defensive cooldowns cast during the fight — tracked from combat log cast events.">Def CDs ⓘ</th><th onclick="srt('tDef',3)" class="num">Total ↕</th></tr></thead><tbody id="bDef"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-consumables"><div class="sn">Potion and Healthstone usage per player during the fight.</div><div class="tw"><table id="tCons"><thead><tr><th onclick="srt('tCons',0)">Player ↕</th><th onclick="srt('tCons',1)">Class/Spec ↕</th><th style="text-align:center">Potion</th><th style="text-align:center">Healthstone</th></tr></thead><tbody id="bCons"></tbody></table></div></div>
-<div class="rtab-panel" id="rtab-builds"><div class="sn">Readiness snapshot from Warcraft Logs combatant info. Use this for fast prep checks: item level, enchants, gems, weapon buffs, food/phial, and clean build links.</div><div class="table-tools"><div class="table-tools-note">Quick prep review for raid leads.</div><div class="table-sort"><span>Sort:</span><select id="buildSort"><option value="ready">Ready Check+</option><option value="missing">Missing Prep</option><option value="ilvl">iLvl</option><option value="gems">Gems</option><option value="enchants">Enchants</option><option value="player">Player</option></select></div></div><div class="tw"><table id="tBuilds"><thead><tr><th onclick="srt('tBuilds',0)">Player ↕</th><th onclick="srt('tBuilds',1)">Class/Spec ↕</th><th onclick="srt('tBuilds',2)" class="num">iLvl ↕</th><th onclick="srt('tBuilds',3)" class="num">Enchants ↕</th><th onclick="srt('tBuilds',4)" class="num">Gems ↕</th><th onclick="srt('tBuilds',5)">Weapon Buff ↕</th><th onclick="srt('tBuilds',6)">Food / Phial ↕</th><th onclick="srt('tBuilds',7)">Missing Prep ↕</th><th onclick="srt('tBuilds',8)">Ready Check+ ↕</th><th>Links</th></tr></thead><tbody id="bBuilds"></tbody></table></div></div>
+<div class="rtab-panel" id="rtab-builds"><div class="sn">Readiness snapshot from Warcraft Logs combatant info. This tab only shows prep data RaidLens can read reliably from the snapshot: item level, enchants seen, gems seen, readiness notes, and clean build links.</div><div class="table-tools"><div class="table-tools-note">Counts are “seen in the snapshot,” not “out of every possible slot.”</div><div class="table-sort"><span>Sort:</span><select id="buildSort"><option value="ready">Ready Check+</option><option value="missing">Missing Prep</option><option value="ilvl">iLvl</option><option value="gems">Gems Seen</option><option value="enchants">Enchants Seen</option><option value="player">Player</option></select></div></div><div class="tw"><table id="tBuilds"><thead><tr><th onclick="srt('tBuilds',0)">Player ↕</th><th onclick="srt('tBuilds',1)">Class/Spec ↕</th><th onclick="srt('tBuilds',2)" class="num">iLvl ↕</th><th onclick="srt('tBuilds',3)" class="num">Enchants Seen ↕</th><th onclick="srt('tBuilds',4)" class="num">Gems Seen ↕</th><th onclick="srt('tBuilds',5)">Missing Prep ↕</th><th onclick="srt('tBuilds',6)">Ready Check+ ↕</th><th>Build Links</th></tr></thead><tbody id="bBuilds"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-deaths"><div class="sn">All player deaths ordered by time. Killing blow shown where available.</div><div id="cleanPullBanner" style="display:none"></div><div id="topKillersBox" style="display:none;margin-bottom:12px"></div><div class="tw"><table id="tDeath"><thead><tr><th onclick="srt('tDeath',0)">Player ↕</th><th onclick="srt('tDeath',1)">Class/Spec ↕</th><th onclick="srt('tDeath',2)">Time ↕</th><th>Killing Blow</th><th onclick="srt('tDeath',4)" class="num">Deaths ↕</th><th></th></tr></thead><tbody id="bDeath"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-interrupts"><div class="sn">Who interrupted what and how many times.</div><div class="tw"><table id="tInt"><thead><tr><th onclick="srt('tInt',0)">Player ↕</th><th onclick="srt('tInt',1)">Class/Spec ↕</th><th>Spells Interrupted</th><th onclick="srt('tInt',3)" class="num">Total ↕</th></tr></thead><tbody id="bInt"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dispels"><div class="sn">Who dispelled what.</div><div class="tw"><table id="tDisp"><thead><tr><th onclick="srt('tDisp',0)">Player ↕</th><th onclick="srt('tDisp',1)">Class/Spec ↕</th><th>Spells Dispelled</th><th onclick="srt('tDisp',3)" class="num">Total ↕</th></tr></thead><tbody id="bDisp"></tbody></table></div></div>
@@ -1602,9 +1602,8 @@ function extractCombatantInfo(entry){
   const passiveBuffs=uniq(auras.map(a=>a?.name).filter(n=>PASSIVE_AURA_HINTS.some(h=>(n||"").toLowerCase().includes(h))));
   const issues=[];
   if(gear.length&&enchants===0)issues.push("No enchants seen");
-  else if(gear.length&&enchants<Math.max(2,Math.floor(gear.length*0.35)))issues.push("Light enchants");
+  else if(gear.length&&enchants<Math.max(2,Math.floor(gear.length*0.35)))issues.push("Few enchants seen");
   if(gear.length&&gems===0)issues.push("No gems seen");
-  if(weaponBuffs.length===0)issues.push("No weapon buff seen");
   const readyStatus=issues.length===0?"good":issues.length===1?"warn":"bad";
   return{
     ilvl:ilvl||0,enchants,gems,weaponBuffs,passiveBuffs,talentNames:talents,
@@ -2527,9 +2526,7 @@ function fmtIlvl(n){
   return Number.isInteger(v)?String(v):v.toFixed(1);
 }
 function buildPrepIssues(p){
-  const issues=[...(p.readyIssues||[])];
-  if(!(p.passiveBuffs||[]).length)issues.push("No food/phial seen");
-  return uniq(issues);
+  return uniq([...(p.readyIssues||[])]);
 }
 function passiveBuffSummary(p){
   return p.passiveBuffs?.length?p.passiveBuffs.join(", "):"None seen";
@@ -2672,14 +2669,13 @@ function openPlayerModal(p,fSec){
   let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
     <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("Potion",p.pots?`✓ ${p.potName||"Used"} (${p.pots})`:"✗ None detected",p.pots?"#3fb950":"#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#e3a008")}${p.ilvl?statRow("Snapshot iLvl",fmtIlvl(p.ilvl),"#c9d1d9"):""}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
     <div>${statRow("Damage Taken",fmtNum(p.dtaken))}${statRow("Interrupts",Object.values(p.ints).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Dispels",Object.values(p.disps).reduce((s,c)=>s+c,0),"#3fb950")}${statRow("CC Used",Object.values(p.cc).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Def CDs Used",Object.values(p.defs).reduce((s,c)=>s+c,0),"#ffd700")}${statRow("Off CDs Used",Object.values(p.offs).reduce((s,c)=>s+c,0),"#ffd700")}${p.weaponBuffs?.length?statRow("Weapon Buff",p.weaponBuffs.join(", "),"#ffdd75"):""}${p.pets?.length?statRow("Pets Counted",p.pets.length,"#8b949e"):""}</div></div>`;
-  if(p.buildCode||p.readyIssues?.length||p.passiveBuffs?.length||p.weaponBuffs?.length||p.enchantCount||p.gemCount){
+  if(p.buildCode||p.readyIssues?.length||p.enchantCount||p.gemCount){
     const calcUrl=escAttr(wowheadTalentCalcUrl(p));
-    const buildLinks=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">${p.buildCode?`<button class="mini-link" onclick="copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:""}<a href="${calcUrl}" target="_blank" class="mini-link">Wowhead Calc ↗</a></div>`;
+    const buildLinks=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">${p.buildCode?`<button class="mini-link" onclick="copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:""}<a href="${calcUrl}" target="_blank" class="mini-link">Calc ↗</a></div>`;
     const prepRows=[
-      statRow("Enchants Seen",p.enchantCount||0,(p.enchantCount||0)===0?"#f85149":(p.enchantCount||0)<2?"#ffdd75":"#3fb950"),
-      statRow("Gems Seen",p.gemCount||0,(p.gemCount||0)===0?"#f85149":"#3fb950"),
-      statRow("Weapon Buff",p.weaponBuffs?.length?p.weaponBuffs.join(", "):"None seen",p.weaponBuffs?.length?"#ffdd75":"#f85149"),
-      statRow("Food / Phial",passiveBuffSummary(p),p.passiveBuffs?.length?"#8b949e":"#6e7681")
+      statRow("Enchants Seen",`${p.enchantCount||0} seen`,(p.enchantCount||0)===0?"#f85149":(p.enchantCount||0)<2?"#ffdd75":"#3fb950"),
+      statRow("Gems Seen",`${p.gemCount||0} seen`,(p.gemCount||0)===0?"#f85149":"#3fb950"),
+      statRow("Missing Prep",buildPrepIssues(p).length?buildPrepIssues(p).join(" · "):"No reliable prep gaps seen",buildPrepIssues(p).length?"#ffdd75":"#3fb950")
     ].join("");
     html+=`<div class="modal-section"><h4>Build + Ready</h4>${buildLinks}<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><div>${prepRows}</div><div>${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#ffdd75")}${p.readyIssues?.length?`<div style="margin-top:8px;color:#ffdd75;font-size:12px">${p.readyIssues.join(" · ")}</div>`:`<div style="margin-top:8px;color:#3fb950;font-size:12px">Ready snapshot looked clean.</div>`}</div></div></div>`;
   }
@@ -2959,13 +2955,13 @@ async function analyze(){
           p.buildCode?`<button class="mini-link" onclick="event.stopPropagation();copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:"",
           `<a href="${escAttr(calcUrl)}" target="_blank" class="mini-link" onclick="event.stopPropagation()">Calc ↗</a>`
         ].filter(Boolean).join("");
-        tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td class="num build-ilvl-cell" data-val="${p.ilvl||0}" style="color:${p.ilvl? "#c9d1d9":"#6e7681"}">${fmtIlvl(p.ilvl)}</td><td class="num" data-val="${p.enchantCount||0}" style="color:${(p.enchantCount||0)===0?"#f85149":(p.enchantCount||0)<2?"#ffdd75":"#3fb950"};font-weight:600">${p.enchantCount||0}</td><td class="num" data-val="${p.gemCount||0}" style="color:${(p.gemCount||0)===0?"#f85149":"#3fb950"};font-weight:600">${p.gemCount||0}</td><td data-val="${p.weaponBuffs?.length?1:0}" style="color:${p.weaponBuffs?.length?"#ffdd75":"#f87171"};font-size:12px">${p.weaponBuffs?.length?escAttr(p.weaponBuffs.join(", ")):"None seen"}</td><td data-val="${p.passiveBuffs?.length?1:0}" style="color:${p.passiveBuffs?.length?"#8b949e":"#f87171"};font-size:12px">${escAttr(passiveBuffSummary(p))}</td><td data-val="${prepIssues.length}" style="font-size:12px;color:${prepIssues.length?"#ffdd75":"#8b949e"}">${prepIssues.length?escAttr(prepIssues.slice(0,2).join(" · ")):"Ready"}</td><td data-val="${readySortVal}">${readyHtml}</td><td style="text-align:center">${links||'<span class="none-t">—</span>'}</td>`;
+        tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td class="num build-ilvl-cell" data-val="${p.ilvl||0}" style="color:${p.ilvl? "#c9d1d9":"#6e7681"}">${fmtIlvl(p.ilvl)}</td><td class="num" data-val="${p.enchantCount||0}" style="color:${(p.enchantCount||0)===0?"#f85149":(p.enchantCount||0)<2?"#ffdd75":"#3fb950"};font-weight:600">${p.enchantCount||0} seen</td><td class="num" data-val="${p.gemCount||0}" style="color:${(p.gemCount||0)===0?"#f85149":"#3fb950"};font-weight:600">${p.gemCount||0} seen</td><td data-val="${prepIssues.length}" style="font-size:12px;color:${prepIssues.length?"#ffdd75":"#8b949e"}">${prepIssues.length?escAttr(prepIssues.slice(0,2).join(" · ")):"No reliable gaps"}</td><td data-val="${readySortVal}">${readyHtml}</td><td style="text-align:center">${links||'<span class="none-t">—</span>'}</td>`;
         bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
         bBuilds.appendChild(tr);
       });
       bindSortSelect("buildSort","tBuilds",{
-        ready:{col:8,desc:true},
-        missing:{col:7,desc:true},
+        ready:{col:6,desc:true},
+        missing:{col:5,desc:true},
         ilvl:{col:2,desc:true},
         gems:{col:4,desc:true},
         enchants:{col:3,desc:true},
@@ -3366,7 +3362,7 @@ async function analyze(){
     // Per-player summary table
     const perPlayerHtml=`<div style="font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.08em;margin:16px 0 8px">Per Player</div>
     <div class="table-tools"><div class="table-tools-note">Quick sort for the scorecard.</div><div class="table-sort"><span>Sort:</span><select id="summarySort"><option value="deaths">Deaths</option><option value="grade">Grade</option><option value="dps">DPS</option><option value="hps">HPS</option><option value="def">Def CDs</option><option value="ints">Interrupts</option><option value="player">Player</option></select></div></div>
-    <div class="tw"><table><thead><tr>
+    <div class="tw"><table id="tSum"><thead><tr>
       <th onclick="srt('tSum',0)">Player ↕</th><th onclick="srt('tSum',1)">Role ↕</th>
       <th style="width:110px"></th>
       <th onclick="srt('tSum',2)" class="num">Deaths ↕</th>
