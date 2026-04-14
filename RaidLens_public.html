@@ -190,11 +190,11 @@ tr:hover td{background:#161b22}
 .timeline-wrap{position:relative;margin:8px 0 20px}
 .timeline-scroll{overflow-x:auto;overflow-y:visible;padding-bottom:10px}
 .timeline-zoom{min-width:980px}
-.timeline-track{background:#21262d;border-radius:6px;height:42px;position:relative;overflow:visible}
+.timeline-track{background:#21262d;border-radius:6px;height:46px;position:relative;overflow:visible}
 .timeline-ruler{margin-bottom:14px}
 .timeline-ruler .timeline-track{height:26px;background:#111824;border:1px solid #30363d}
 .timeline-label{font-size:12px;color:#8b949e;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.timeline-marker{position:absolute;top:3px;bottom:3px;width:8px;border-radius:4px;cursor:pointer}
+.timeline-marker{position:absolute;top:2px;bottom:2px;width:10px;border-radius:4px;cursor:pointer}
 .timeline-marker:hover::after{content:attr(data-tip);position:absolute;bottom:34px;left:50%;transform:translateX(-50%);background:#161b22;border:1px solid #30363d;border-radius:4px;padding:4px 8px;font-size:11px;white-space:nowrap;z-index:10;color:#c9d1d9}
 .timeline-tick{position:absolute;bottom:-16px;font-size:10px;color:#8ea2b8;transform:translateX(-50%)}
 .timeline-phase-band{display:flex;height:22px;border-radius:8px;overflow:hidden;border:1px solid #30363d;background:#111824;margin-bottom:8px}
@@ -1037,19 +1037,19 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
     <div class="rtab" onclick="switchRTab('mechdeaths',this)">🎯 Mechanic Deaths</div>
     <div class="rtab" onclick="switchRTab('wipe',this)">⚠️ Wipe Summary</div>
     <div class="rtab" onclick="switchRTab('pullcompare',this)">🔁 Pull Compare</div>
+    <div class="rtab" onclick="switchRTab('timeline',this)">🔄 CD Timeline</div>
     <div class="tab-sep">·</div>
     <!-- Cooldowns / Prep -->
     <div class="rtab" onclick="switchRTab('defensives',this)">🛡️ Defensives</div>
     <div class="rtab" onclick="switchRTab('offensive',this)">⚔️ Offensive CDs</div>
-    <div class="rtab" onclick="switchRTab('consumables',this)">🧪 Consumables</div>
     <div class="rtab" onclick="switchRTab('bloodlust',this)">⚡ Bloodlust</div>
-    <div class="rtab" onclick="switchRTab('timeline',this)">🔄 CD Timeline</div>
     <div class="tab-sep">·</div>
     <!-- Utility -->
     <div class="rtab" onclick="switchRTab('interrupts',this)">⚡ Interrupts</div>
     <div class="rtab" onclick="switchRTab('dispels',this)">✨ Dispels</div>
     <div class="rtab" onclick="switchRTab('cc',this)">🛑 CC</div>
     <div class="rtab" onclick="switchRTab('downtime',this)">⏱️ Downtime</div>
+    <div class="rtab" onclick="switchRTab('consumables',this)">🧪 Consumables</div>
     <div class="tab-sep">·</div>
     <!-- Performance -->
     <div class="rtab" onclick="switchRTab('dps',this)">⚔️ DPS</div>
@@ -1060,11 +1060,11 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   </div>
   <div class="rtab-panel active" id="rtab-defensives"><div class="tw"><table id="tDef"><thead><tr><th onclick="srt('tDef',0)">Player ↕</th><th onclick="srt('tDef',1)">Class/Spec ↕</th><th title="Personal defensive cooldowns cast during the fight — tracked from combat log cast events.">Def CDs ⓘ</th><th onclick="srt('tDef',3)" class="num">Total ↕</th></tr></thead><tbody id="bDef"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-consumables"><div class="sn">Potion and Healthstone usage per player during the fight.</div><div class="tw"><table id="tCons"><thead><tr><th onclick="srt('tCons',0)">Player ↕</th><th onclick="srt('tCons',1)">Class/Spec ↕</th><th style="text-align:center">Potion</th><th style="text-align:center">Healthstone</th></tr></thead><tbody id="bCons"></tbody></table></div></div>
-<div class="rtab-panel" id="rtab-builds"><div class="sn">Readiness snapshot from Warcraft Logs combatant info. This tab focuses on reliable prep checks only: item level, enchant count, socketed gems, readiness notes, and quick build links.</div><div class="table-tools"><div class="table-tools-note">Counts are what Warcraft Logs surfaced in the snapshot, not guaranteed maximum possible slots.</div><div class="table-sort"><span>Sort:</span><select id="buildSort"><option value="ready">Ready Check+</option><option value="missing">Missing Prep</option><option value="ilvl">iLvl</option><option value="gems">Socketed Gems</option><option value="enchants">Enchant Count</option><option value="player">Player</option></select></div></div><div class="tw"><table id="tBuilds"><thead><tr><th onclick="srt('tBuilds',0)">Player ↕</th><th onclick="srt('tBuilds',1)">Class/Spec ↕</th><th onclick="srt('tBuilds',2)" class="num">iLvl ↕</th><th onclick="srt('tBuilds',3)" class="num">Enchant Count ↕</th><th onclick="srt('tBuilds',4)" class="num">Socketed Gems ↕</th><th onclick="srt('tBuilds',5)">Missing Prep ↕</th><th onclick="srt('tBuilds',6)">Ready Check+ ↕</th><th>Build Links</th></tr></thead><tbody id="bBuilds"></tbody></table></div></div>
+<div class="rtab-panel" id="rtab-builds"><div class="sn">Readiness snapshot from Warcraft Logs combatant info. This tab focuses on reliable prep checks only: item level, enchant count, socketed gems, readiness notes, and quick build links.</div><div class="table-tools"><div class="table-tools-note">Counts are what Warcraft Logs reported in the snapshot, not guaranteed maximum possible slots.</div><div class="table-sort"><span>Sort:</span><select id="buildSort"><option value="ready">Ready Check+</option><option value="missing">Missing Prep</option><option value="ilvl">iLvl</option><option value="gems">Socketed Gems</option><option value="enchants">Enchant Count</option><option value="player">Player</option></select></div></div><div class="tw"><table id="tBuilds"><thead><tr><th onclick="srt('tBuilds',0)">Player ↕</th><th onclick="srt('tBuilds',1)">Class/Spec ↕</th><th onclick="srt('tBuilds',2)" class="num">iLvl ↕</th><th onclick="srt('tBuilds',3)" class="num">Enchant Count ↕</th><th onclick="srt('tBuilds',4)" class="num">Socketed Gems ↕</th><th onclick="srt('tBuilds',5)">Missing Prep ↕</th><th onclick="srt('tBuilds',6)">Ready Check+ ↕</th><th>Build Links</th></tr></thead><tbody id="bBuilds"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-deaths"><div class="sn">All player deaths ordered by time. Killing blow shown where available.</div><div id="cleanPullBanner" style="display:none"></div><div id="topKillersBox" style="display:none;margin-bottom:12px"></div><div class="tw"><table id="tDeath"><thead><tr><th onclick="srt('tDeath',0)">Player ↕</th><th onclick="srt('tDeath',1)">Class/Spec ↕</th><th onclick="srt('tDeath',2)">Time ↕</th><th>Killing Blow</th><th onclick="srt('tDeath',4)" class="num">Deaths ↕</th><th></th></tr></thead><tbody id="bDeath"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-interrupts"><div class="sn">Who interrupted what and how many times.</div><div class="tw"><table id="tInt"><thead><tr><th onclick="srt('tInt',0)">Player ↕</th><th onclick="srt('tInt',1)">Class/Spec ↕</th><th>Spells Interrupted</th><th onclick="srt('tInt',3)" class="num">Total ↕</th></tr></thead><tbody id="bInt"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dispels"><div class="sn">Who dispelled what.</div><div class="tw"><table id="tDisp"><thead><tr><th onclick="srt('tDisp',0)">Player ↕</th><th onclick="srt('tDisp',1)">Class/Spec ↕</th><th>Spells Dispelled</th><th onclick="srt('tDisp',3)" class="num">Total ↕</th></tr></thead><tbody id="bDisp"></tbody></table></div></div>
-  <div class="rtab-panel" id="rtab-damage"><div class="sn">Total damage taken per player. 🟡 Tank · 🟢 Healer · 🔵 DPS. Click a player for full breakdown.</div><div class="tw"><table id="tDmg"><thead><tr><th onclick="srt('tDmg',0)">Player ↕</th><th onclick="srt('tDmg',1)">Class/Spec ↕</th><th onclick="srt('tDmg',2)">Role ↕</th><th>Visual</th><th onclick="srt('tDmg',4)" class="num">Total Taken ↕</th><th onclick="srt('tDmg',5)" class="num">DTPS ↕</th><th onclick="srt('tDmg',6)" class="num">% of Raid ↕</th></tr></thead><tbody id="bDmg"></tbody></table></div></div>
+  <div class="rtab-panel" id="rtab-damage"><div class="sn">Total damage taken per player. 🟡 Tank · 🟢 Healer · 🔵 DPS. Avoidable tracks likely avoidable boss-pressure windows so raid leads can separate wipe-causing mistakes from unavoidable raid damage. Click a player for full breakdown.</div><div class="tw"><table id="tDmg"><thead><tr><th onclick="srt('tDmg',0)">Player ↕</th><th onclick="srt('tDmg',1)">Class/Spec ↕</th><th onclick="srt('tDmg',2)">Role ↕</th><th>Visual</th><th onclick="srt('tDmg',4)" class="num">Total Taken ↕</th><th onclick="srt('tDmg',5)" class="num">DTPS ↕</th><th onclick="srt('tDmg',6)" class="num">Avoidable ↕</th><th onclick="srt('tDmg',7)" class="num">% of Raid ↕</th><th>Watch</th></tr></thead><tbody id="bDmg"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dps"><div class="sn">DPS for the fight. Click any player to see their full breakdown.</div><div class="tw"><table id="tDps"><thead><tr><th onclick="srt('tDps',0)">Player ↕</th><th onclick="srt('tDps',1)">Class/Spec ↕</th><th>Visual</th><th onclick="srt('tDps',3)" class="num">Total Damage ↕</th><th onclick="srt('tDps',4)" class="num">DPS ↕</th></tr></thead><tbody id="bDps"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dpsbreak">
     <div class="sn">Detailed damage breakdown per DPS player — total damage, DPS, damage taken, and key CDs at a glance.</div>
@@ -1100,7 +1100,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   <div class="rtab-panel" id="rtab-mechanics">
     <div class="sn">Wipefest-style mechanic clarity: dangerous debuffs, repeat offenders, and raid damage pressure without burying you in raw log spam.</div>
     <div id="mechanicSummaryGrid" class="summary-grid-2"></div>
-  <div class="tw"><table id="tMechDebuffs"><thead><tr><th onclick="srt('tMechDebuffs',0)">Mechanic ↕</th><th onclick="srt('tMechDebuffs',1)" class="num">Players ↕</th><th onclick="srt('tMechDebuffs',2)" class="num">Applications ↕</th><th onclick="srt('tMechDebuffs',3)">Longest Hold ↕</th><th>Who Got Hit / Why It Matters</th></tr></thead><tbody id="bMechDebuffs"></tbody></table></div>
+  <div class="tw"><table id="tMechDebuffs"><thead><tr><th onclick="srt('tMechDebuffs',0)">Mechanic ↕</th><th onclick="srt('tMechDebuffs',1)" class="num">Players ↕</th><th onclick="srt('tMechDebuffs',2)" class="num">Applications ↕</th><th onclick="srt('tMechDebuffs',3)">Longest Hold ↕</th><th>Fix Next Pull / Why It Matters</th></tr></thead><tbody id="bMechDebuffs"></tbody></table></div>
   </div>
   <!-- HEALING BREAKDOWN -->
   <div class="rtab-panel" id="rtab-healbreak">
@@ -1608,7 +1608,7 @@ function extractCombatantInfo(entry){
   return{
     ilvl:ilvl||0,enchants,gems,weaponBuffs,passiveBuffs,talentNames:talents,
     readyIssues:issues,readyStatus,
-    readyText:issues.length?issues.slice(0,2).join(" · "):"Ready",
+    readyText:issues.length?issues.slice(0,2).join(" · "):"Ready to Raid!",
     stats:ci?.stats||null
   };
 }
@@ -1753,6 +1753,58 @@ function buildCoverageSummary(bossRows,casts,aName,fightStart){
       note:uncovered===0?"Covered every shown hit":uncovered>=windows.length?"No coverage lined up":"Some gaps in coverage"
     };
   });
+}
+function inferAvoidablePressure(P,bossRows){
+  const raidSize=Object.keys(P||{}).length||0;
+  const targetLimit=Math.max(4,Math.ceil(raidSize*0.45));
+  const watchRows={};
+  safeArr(bossRows).forEach(row=>{
+    if(!row?.name)return;
+    if((row.targetsCount||0)<=targetLimit||row.kind==="hybrid")watchRows[row.name]=row;
+  });
+  Object.values(P||{}).forEach(p=>{
+    p.avoidableTaken=0;
+    p.avoidableHits=0;
+    p.avoidableSpells=[];
+    Object.entries(p.takenBySpell||{}).forEach(([name,v])=>{
+      const row=watchRows[name];
+      if(!row)return;
+      const amount=Number(v?.amount||0);
+      const hits=Number(v?.hits||0);
+      p.avoidableTaken+=amount;
+      p.avoidableHits+=hits;
+      p.avoidableSpells.push({name,id:v?.id||row.id||null,amount,hits,targets:row.targetsCount||0});
+    });
+    p.avoidableSpells.sort((a,b)=>(b.amount||0)-(a.amount||0));
+  });
+  return watchRows;
+}
+function mechanicFixText(row){
+  if(!row)return"Review this mechanic on the next pull.";
+  const tips=[];
+  if((row.longestMs||0)>=10000)tips.push("clear or pass it faster");
+  if((row.playersCount||0)>=8)tips.push("tighten raid positioning");
+  else if((row.playersCount||0)>=4)tips.push("clean up targeted assignments");
+  if((row.applications||0)>=10)tips.push("reduce repeat touches");
+  if(!tips.length)tips.push("review who handled it and when");
+  return tips[0].charAt(0).toUpperCase()+tips[0].slice(1)+(tips[1]?` · ${tips[1]}`:"");
+}
+function buildOfficerNotes(ctx){
+  const notes=[];
+  const {fight,drows,missedOffTotal,noPotDps,coverageSummary,mechanicRows,readinessWatch,avoidableWatch}=ctx;
+  const cause=ctx.cause||pickWipeCause(drows||[]);
+  const tankDeaths=ctx.tankDeaths||(safeArr(drows).filter(d=>d.dcount>0&&d.role==="tanks"));
+  if(!fight.kill&&cause?.topKiller)notes.push(`Cover ${cause.topKiller.name} better before the next wipe point.`);
+  if(tankDeaths?.length)notes.push(`Review tank defensive coverage first — tank deaths are ending pulls.`);
+  const gap=coverageSummary?.find(r=>r.uncovered>0);
+  if(gap)notes.push(`Assign coverage for ${gap.name}; ${gap.uncovered}/${gap.total} boss windows were uncovered.`);
+  const mech=mechanicRows?.find(r=>r.watch);
+  if(mech)notes.push(`${mech.name}: ${mechanicFixText(mech)}.`);
+  if(missedOffTotal>=3)notes.push(`Enforce offensive cooldown usage — ${missedOffTotal} tracked CDs were missed.`);
+  if(noPotDps?.length>=3)notes.push(`Potions are slipping: ${noPotDps.length} DPS missed one.`);
+  if(avoidableWatch?.[0]?.avoidableTaken)notes.push(`Reduce avoidable damage on ${avoidableWatch[0].name}; they ate ${fmt(avoidableWatch[0].avoidableTaken)} of likely avoidable pressure.`);
+  if(readinessWatch?.length)notes.push(`Prep check still matters: ${readinessWatch[0].name} is flagged for ${readinessWatch[0].readyText.toLowerCase()}.`);
+  return uniq(notes).slice(0,3);
 }
 function summarizePullTrends(pullHistory){
   if(!pullHistory||pullHistory.length<2)return null;
@@ -2672,7 +2724,7 @@ function openPlayerModal(p,fSec){
   const statRow=(label,val,color="#c9d1d9")=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #21262d;font-size:13px"><span style="color:#8b949e">${label}</span><span style="font-weight:600;color:${color}">${val}</span></div>`;
   let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
     <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("Potion",p.pots?`✓ ${p.potName||"Used"} (${p.pots})`:"✗ None detected",p.pots?"#3fb950":"#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#e3a008")}${p.ilvl?statRow("Snapshot iLvl",fmtIlvl(p.ilvl),"#c9d1d9"):""}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
-    <div>${statRow("Damage Taken",fmtNum(p.dtaken))}${statRow("Interrupts",Object.values(p.ints).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Dispels",Object.values(p.disps).reduce((s,c)=>s+c,0),"#3fb950")}${statRow("CC Used",Object.values(p.cc).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Def CDs Used",Object.values(p.defs).reduce((s,c)=>s+c,0),"#ffd700")}${statRow("Off CDs Used",Object.values(p.offs).reduce((s,c)=>s+c,0),"#ffd700")}${p.weaponBuffs?.length?statRow("Weapon Buff",p.weaponBuffs.join(", "),"#ffdd75"):""}${p.pets?.length?statRow("Pets Counted",p.pets.length,"#8b949e"):""}</div></div>`;
+    <div>${statRow("Damage Taken",fmtNum(p.dtaken))}${statRow("Interrupts",Object.values(p.ints).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Dispels",Object.values(p.disps).reduce((s,c)=>s+c,0),"#3fb950")}${statRow("CC Used",Object.values(p.cc).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Def CDs Used",Object.values(p.defs).reduce((s,c)=>s+c,0),"#ffd700")}${statRow("Off CDs Used",Object.values(p.offs).reduce((s,c)=>s+c,0),"#ffd700")}${(p.avoidableTaken||0)?statRow("Avoidable Pressure",fmtNum(p.avoidableTaken),(p.avoidableTaken||0)>1500000?"#f85149":"#ffdd75"):""}${p.pets?.length?statRow("Pets Counted",p.pets.length,"#8b949e"):""}</div></div>`;
   if(p.buildCode||p.readyIssues?.length||p.enchantCount||p.gemCount){
     const calcUrl=escAttr(wowheadTalentCalcUrl(p));
     const buildLinks=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">${p.buildCode?`<button class="mini-link" onclick="copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:""}<a href="${calcUrl}" target="_blank" class="mini-link">Calc ↗</a></div>`;
@@ -2681,7 +2733,7 @@ function openPlayerModal(p,fSec){
       statRow("Socketed Gems",countLabel(p.gemCount,"gem","gems"),(p.gemCount||0)===0?"#f85149":"#3fb950"),
       statRow("Missing Prep",buildPrepIssues(p).length?buildPrepIssues(p).join(" · "):"Ready to Raid!",buildPrepIssues(p).length?"#ffdd75":"#3fb950")
     ].join("");
-    html+=`<div class="modal-section"><h4>Build + Ready</h4>${buildLinks}<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><div>${prepRows}</div><div>${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#ffdd75")}${p.readyIssues?.length?`<div style="margin-top:8px;color:#ffdd75;font-size:12px">${p.readyIssues.join(" · ")}</div>`:`<div style="margin-top:8px;color:#3fb950;font-size:12px">Ready snapshot looked clean.</div>`}</div></div></div>`;
+    html+=`<div class="modal-section"><h4>Build + Ready</h4>${buildLinks}<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><div>${prepRows}</div><div>${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#ffdd75")}</div></div></div>`;
   }
   if(p.deaths.length){html+=`<div class="modal-section"><h4>Deaths</h4><div class="spell-grid">${p.deaths.map(d=>spellChip(`${d.timeStr||"?"} — ${d.killer}`,null,d.killerId||findAbilityIdByName(d.killer),"danger","death cause")).join("")}</div></div>`;}
   if(Object.keys(p.dmgBySpell||{}).length){html+=`<div class="modal-section"><h4>Damage Done Breakdown</h4>${renderSpellBreakdown(p.dmgBySpell,p.ddealt,"cool","damage done")}</div>`;}
@@ -2892,6 +2944,7 @@ async function analyze(){
     const mechanicRows=buildMechanicRows(debuffs,P,fight.startTime,fight.endTime,aName);
     bossTimelineRows=buildBossAbilityRows(dmgT,debuffs,P,petOwnerMap,fight.startTime,fight.endTime,aName);
     coverageSummary=buildCoverageSummary(bossTimelineRows,casts,aName,fight.startTime);
+    inferAvoidablePressure(P,bossTimelineRows);
     const sorted=Object.values(P).sort((a,b)=>a.name.localeCompare(b.name));
     const shortPull=(fight.endTime-fight.startTime)<45000;
     // killing blow: WCL death events dont actually say what killed you
@@ -2904,7 +2957,7 @@ async function analyze(){
       const lh=lastHit[ev.targetID];
       const killer=aName[lh?.abilityGameID]||aName[ev.abilityGameID]||"Unknown";
       const t=ev.timestamp-fight.startTime;
-      p.deaths.push({time:t,timeStr:ftime(t),killer,killerId:lh?.abilityGameID||ev.abilityGameID||null,ctx:buildDeathCtx(p,ev.timestamp,casts)});
+      p.deaths.push({time:t,timeStr:ftime(t),killer,killerId:lh?.abilityGameID||ev.abilityGameID||null,ctx:buildDeathCtx(p,ev.timestamp,casts,dmgT,aName,fight.startTime,bossTimelineRows)});
     });
     window._raidLensPlayers=sorted;
     window._raidLensFightSec=fSec;
@@ -2953,7 +3006,7 @@ async function analyze(){
         const readyClass=p.readyStatus||"warn";
         const readySortVal=readyClass==="bad"?3:readyClass==="warn"?2:1;
         const prepIssues=buildPrepIssues(p);
-        const readyHtml=`<span class="ready-pill ${readyClass}">${readyClass==="good"?"Ready":readyClass==="warn"?"Watch":"Fix"}</span><div style="margin-top:6px;color:${readyClass==="bad"?"#f87171":readyClass==="warn"?"#ffdd75":"#3fb950"};font-size:11px;line-height:1.6">${escAttr(p.readyText||"No readiness snapshot")}</div>`;
+        const readyHtml=`<span class="ready-pill ${readyClass}">${readyClass==="good"?"Ready to Raid":readyClass==="warn"?"Watch":"Fix"}</span><div style="margin-top:6px;color:${readyClass==="bad"?"#f87171":readyClass==="warn"?"#ffdd75":"#3fb950"};font-size:11px;line-height:1.6">${escAttr(p.readyText||"No readiness snapshot")}</div>`;
         const calcUrl=wowheadTalentCalcUrl(p);
         const links=[
           p.buildCode?`<button class="mini-link" onclick="event.stopPropagation();copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:"",
@@ -3024,6 +3077,8 @@ async function analyze(){
       const dtps=fSec>0?Math.round(p.dtaken/fSec):0;
       const barPct=Math.round(p.dtaken/maxDT*100);
       const raidPct=(p.dtaken/totalRaidDmg*100).toFixed(1);
+      const avoidable=p.avoidableTaken||0;
+      const avoidableWatch=avoidable>0?(p.avoidableSpells?.[0]?`${p.avoidableSpells[0].name} · ${p.avoidableHits||0} hits`:`${p.avoidableHits||0} avoidable hits`):"Clean";
       const bc=p.role==="tanks"?"#e3a008":p.role==="healers"?"#3fb950":"#79c0ff";
       const tr=document.createElement("tr");
       tr.innerHTML=`<td ${cs(p)}>${compactNameCell(p,"expand")}</td><td ${cs2(p)}>${spec(p)}</td>
@@ -3031,8 +3086,10 @@ async function analyze(){
         <td><div class="bw"><div class="bf" style="width:${barPct}%;background:${bc}"></div></div></td>
         <td class="num" data-val="${p.dtaken}">${fmt(p.dtaken)}</td>
         <td class="num" data-val="${dtps}" style="color:#8b949e">${fmt(dtps)}</td>
-        <td class="num" data-val="${raidPct}" style="color:${parseFloat(raidPct)>20?"#f85149":parseFloat(raidPct)>12?"#e3a008":"#8b949e"}">${raidPct}%</td>`;
-      bindRowAction(tr,()=>toggleBreakdownRow(tr,p,"taken",7),"Expand spell breakdown");
+        <td class="num" data-val="${avoidable}" style="color:${avoidable>1500000?"#f85149":avoidable>0?"#ffdd75":"#8b949e"}">${avoidable?fmt(avoidable):"—"}</td>
+        <td class="num" data-val="${raidPct}" style="color:${parseFloat(raidPct)>20?"#f85149":parseFloat(raidPct)>12?"#e3a008":"#8b949e"}">${raidPct}%</td>
+        <td data-val="${avoidable}" style="font-size:11px;color:${avoidable>1500000?"#f87171":avoidable>0?"#ffdd75":"#6e7681"}">${avoidableWatch}</td>`;
+      bindRowAction(tr,()=>toggleBreakdownRow(tr,p,"taken",9),"Expand spell breakdown");
       bDmg.appendChild(tr);
     });
     // DPS
@@ -3121,11 +3178,11 @@ async function analyze(){
       const mechCause=pickWipeCause(drows);
       const deathLead=realDeaths?`${realDeaths} death${realDeaths===1?"":"s"}. First: ${mechCause?.firstDeath?.name||"—"} @ ${mechCause?.firstDeath?.timeStr||"—"}.`:"Clean pull — nobody died.";
       const debuffOffenders=mechanicRows.filter(r=>r.watch).slice(0,3);
-      const nonTankPressure=sorted.filter(p=>p.role!=="tanks").sort((a,b)=>b.dtaken-a.dtaken).slice(0,3);
+      const nonTankPressure=sorted.filter(p=>p.role!=="tanks").sort((a,b)=>(b.avoidableTaken||0)-(a.avoidableTaken||0)).slice(0,3);
       mechanicSummaryGrid.innerHTML=[
         `<div class="summary-note-card"><div class="summary-note-title">Start With Deaths</div><div class="summary-note-body">${deathLead}</div><div class="summary-note-sub">${mechCause&&mechCause.topKiller?`Main killer: ${mechCause.topKiller.name} ×${mechCause.topKiller.count}`:"No repeat killer identified yet."}</div></div>`,
-        `<div class="summary-note-card"><div class="summary-note-title">Mechanic Failures</div><div class="summary-note-body">${debuffOffenders.length?debuffOffenders.map(r=>`${r.name} hit ${r.playersCount} players`).join(" · "):"No repeated debuff failure pattern jumped out on this pull."}</div><div class="summary-note-sub">${debuffOffenders.length?`Longest hold: ${debuffOffenders[0].longestPlayer} ${Math.round(debuffOffenders[0].longestMs/1000)}s`:"Raid debuff handling looked clean."}</div></div>`,
-        `<div class="summary-note-card"><div class="summary-note-title">Damage Pressure Watchlist</div><div class="summary-note-body">${nonTankPressure.length?nonTankPressure.map(p=>`${p.name} ${fmt(p.dtaken)}`).join(" · "):"No non-tank pressure spike data."}</div><div class="summary-note-sub">Use this with deaths and boss-ability timeline, not as a raw blame chart.</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Mechanic Failures</div><div class="summary-note-body">${debuffOffenders.length?debuffOffenders.map(r=>`${r.name} hit ${r.playersCount} players`).join(" · "):"No repeated debuff failure pattern jumped out on this pull."}</div><div class="summary-note-sub">${debuffOffenders.length?`Fix next pull: ${mechanicFixText(debuffOffenders[0])}.`:"Raid debuff handling looked clean."}</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Avoidable Pressure Watch</div><div class="summary-note-body">${nonTankPressure.filter(p=>(p.avoidableTaken||0)>0).length?nonTankPressure.filter(p=>(p.avoidableTaken||0)>0).map(p=>`${p.name} ${fmt(p.avoidableTaken)}`).join(" · "):"No non-tank avoidable pressure spike data."}</div><div class="summary-note-sub">Use this with deaths and boss-ability timeline, not as a raw blame chart.</div></div>`,
         `<div class="summary-note-card"><div class="summary-note-title">Cooldown Coverage</div><div class="summary-note-body">${coverageSummary.length?coverageSummary.map(r=>`${r.name}: ${r.covered}/${r.total} covered`).join(" · "):"No major boss-event windows were detected for a coverage pass."}</div><div class="summary-note-sub">${coverageSummary.find(r=>r.uncovered>0)?.note||"Raid and personal CDs were lining up with the shown boss hits."}</div></div>`
       ].join("");
       bMechDebuffs.innerHTML="";
@@ -3136,7 +3193,8 @@ async function analyze(){
         if(row.longestMs>=4000)whyParts.push(`longest hold ${row.longestPlayer} ${Math.round(row.longestMs/1000)}s`);
         if(touchedDeaths)whyParts.push(`${touchedDeaths} affected player${touchedDeaths===1?"":"s"} died later`);
         const why=`Why it matters: ${whyParts.join(" · ")}.`;
-        tr.innerHTML=`<td>${spellChip(row.name,null,row.id,"danger","mechanic debuff")}</td><td class="num" data-val="${row.playersCount}" style="color:${row.playersCount>=4?"#f85149":row.playersCount>=2?"#ffdd75":"#8b949e"};font-weight:700">${row.playersCount}</td><td class="num" data-val="${row.applications}" style="color:#79c0ff">${row.applications}</td><td data-val="${row.longestMs}" style="color:${row.longestMs>=8000?"#f85149":row.longestMs>=5000?"#ffdd75":"#8b949e"}">${row.longestPlayer} · ${Math.round(row.longestMs/1000)}s</td><td style="font-size:12px;line-height:1.7">${row.topPlayers.join(" · ")||"—"}<div style="color:#8b949e;font-size:11px;margin-top:4px">${why}</div></td>`;
+        const fixLine=`Fix next pull: ${mechanicFixText(row)}.`;
+        tr.innerHTML=`<td>${spellChip(row.name,null,row.id,"danger","mechanic debuff")}</td><td class="num" data-val="${row.playersCount}" style="color:${row.playersCount>=4?"#f85149":row.playersCount>=2?"#ffdd75":"#8b949e"};font-weight:700">${row.playersCount}</td><td class="num" data-val="${row.applications}" style="color:#79c0ff">${row.applications}</td><td data-val="${row.longestMs}" style="color:${row.longestMs>=8000?"#f85149":row.longestMs>=5000?"#ffdd75":"#8b949e"}">${row.longestPlayer} · ${Math.round(row.longestMs/1000)}s</td><td style="font-size:12px;line-height:1.7">${row.topPlayers.join(" · ")||"—"}<div style="color:#ffdd75;font-size:11px;margin-top:4px">${fixLine}</div><div style="color:#8b949e;font-size:11px;margin-top:4px">${why}</div></td>`;
         bMechDebuffs.appendChild(tr);
       });
       if(!mechanicRows.length)bMechDebuffs.innerHTML="<tr><td colspan='5' style='color:#6e7681;text-align:center;padding:20px'>No meaningful debuff mechanics were found for this pull.</td></tr>";
@@ -3197,7 +3255,7 @@ async function analyze(){
       const markers=row.clusters.map(cl=>{
         const pct=(cl.t/fightMs*100).toFixed(2);
         const tip=`${row.name} @ ${Math.floor(cl.t/1000)}s${row.kind==="damage"?` · ${fmtNum(row.damage)} raid dmg`:` · ${row.applications} apps`}`;
-        return `<div class="timeline-marker" data-kind="boss" data-tip="${tip}" style="left:${pct}%;background:${row.kind==="damage"?"#f85149":"#ffb86c"};width:8px" title="${tip}"></div>`;
+        return `<div class="timeline-marker" data-kind="boss" data-tip="${tip}" style="left:${pct}%;background:${row.kind==="damage"?"#f85149":"#ffb86c"};width:10px" title="${tip}"></div>`;
       }).join("");
       block.innerHTML=`<div class="timeline-label"><span>${spellChip(row.name,null,row.id,"danger","boss ability")}</span><span class="timeline-boss-pill">${row.targetsCount} players</span><span style="color:#8b949e;font-size:10px">${row.kind==="damage"?`${fmtNum(row.damage)} raid dmg`:`${row.applications} debuff apps`}</span></div><div class="timeline-track" style="position:relative">${markers}</div>`;
       tlCanvas.appendChild(block);
@@ -3221,6 +3279,24 @@ async function analyze(){
     setTLZoom(_v5UI.timelineZoom||1.6);
     applyTLFilters();
     refreshWowheadTooltips();
+
+    const _summaryPullKey="rl_pulls_"+reportCode+"_"+fight.name.replace(/\s+/g,"_");
+    const _summaryThisPull={pull:fight.pull||1,duration:fdur(fight.endTime-fight.startTime),kill:fight.kill,
+      deaths:sorted.reduce((s,p)=>s+p.deaths.length,0),
+      raidDps:sorted.reduce((s,p)=>s+Math.round((p.ddealt||0)/fSec),0),
+      raidHps:sorted.reduce((s,p)=>s+Math.round((p.healed||0)/fSec),0),
+      missedOffTotal:sorted.reduce((s,p)=>s+(()=>{const exp=SPEC_OFFS[(p.cls||"")+"|"+(p.spec||"")]||null;return exp?exp.filter(cd=>{
+          if(Array.isArray(cd)) return !cd.some(opt=>p.offs[opt]);
+          return !p.offs[cd];
+        }).length:0;})(),0),
+      noPotDps:sorted.filter(p=>p.role==="dps"&&!p.pots).length,
+      players:sorted.map(p=>({name:p.name,cls:p.cls,dps:fSec>0?Math.round(p.ddealt/fSec):0,hps:fSec>0?Math.round(p.healed/fSec):0,deaths:p.deaths.length,missed:(()=>{const exp=SPEC_OFFS[(p.cls||"")+"|"+(p.spec||"")]||null;return exp?exp.filter(cd=>{
+          if(Array.isArray(cd)) return !cd.some(opt=>p.offs[opt]);
+          return !p.offs[cd];
+        }).length:0;})()}))};
+    let _summaryPullHist=[];try{_summaryPullHist=JSON.parse(sessionStorage.getItem(_summaryPullKey)||"[]");}catch{}
+    _summaryPullHist=_summaryPullHist.filter(ph=>ph.pull!==_summaryThisPull.pull);
+    _summaryPullHist.push(_summaryThisPull);_summaryPullHist.sort((a,b)=>a.pull-b.pull);
 
     // summary scorecard
     const summaryDiv=document.getElementById("summaryContent");summaryDiv.innerHTML="";
@@ -3273,12 +3349,24 @@ async function analyze(){
     ];
     const phaseSummaryHTML="";
     const readinessWatch=sorted.filter(p=>p.readyStatus!=="good").slice(0,4);
+    const avoidableWatch=sorted.filter(p=>p.role!=="tanks"&&(p.avoidableTaken||0)>0).sort((a,b)=>(b.avoidableTaken||0)-(a.avoidableTaken||0)).slice(0,3);
+    const officerNotes=buildOfficerNotes({
+      fight,sorted,coverageSummary,mechanicRows,
+      missedOffTotal,
+      noPotDps:_noPotDps,
+      readinessWatch,
+      drows,
+      avoidableWatch
+    });
+    const pullTrend=summarizePullTrends(_summaryPullHist);
     const summaryInsightsHTML=`<div class="summary-grid-2">
+      <div class="summary-note-card"><div class="summary-note-title">Officer Notes</div><div class="summary-note-body">${officerNotes.length?officerNotes.map((n,i)=>`${i+1}. ${n}`).join(" · "):"No obvious raid-lead action items surfaced on this pull."}</div><div class="summary-note-sub">This is the short list to talk through before diving into raw tables.</div></div>
       <div class="summary-note-card"><div class="summary-note-title">Ready Check+</div><div class="summary-note-body">${readinessWatch.length?readinessWatch.map(p=>`${p.name}: ${p.readyText}`).join(" · "):"Everybody with combatant data looked ready enough for this pull."}</div><div class="summary-note-sub">This uses Warcraft Logs combatant info snapshots, so it’s much safer than trying to guess readiness from in-fight buff events alone.</div></div>
       <div class="summary-note-card"><div class="summary-note-title">Throughput Leaders</div><div class="summary-note-body">${sorted.filter(p=>p.ddealt>0).sort((a,b)=>b.ddealt-a.ddealt).slice(0,3).map(p=>`${p.name} ${fmtNum(Math.round(p.ddealt/fSec||0))} DPS`).join(" · ")||"No DPS data for this pull."}</div><div class="summary-note-sub">${sorted.filter(p=>p.healed>0).sort((a,b)=>b.healed-a.healed).slice(0,2).map(p=>`${p.name} ${fmtNum(Math.round(p.healed/fSec||0))} HPS`).join(" · ")||"No HPS data for this pull."}</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Mechanic Watchlist</div><div class="summary-note-body">${mechanicRows.filter(r=>r.watch).slice(0,3).map(r=>`${r.name} · ${r.playersCount} players`).join(" · ")||"No repeated debuff mechanic stood out on this pull."}</div><div class="summary-note-sub">${bossTimelineRows.length?`Boss timeline is tracking ${bossTimelineRows.length} major ability lane${bossTimelineRows.length===1?"":"s"} for cooldown alignment.`:"Boss timeline did not find major repeated boss abilities this pull."}</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Cooldown Coverage</div><div class="summary-note-body">${coverageSummary.length?coverageSummary.map(r=>`${r.name}: ${r.covered}/${r.total}`).join(" · "):"No clear boss-event coverage windows were detected for this pull."}</div><div class="summary-note-sub">Use the timeline tab to line raid CDs and personals up against the boss-ability lane.</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Survivability Watch</div><div class="summary-note-body">${sorted.filter(p=>p.role!=="tanks").sort((a,b)=>b.dtaken-a.dtaken).slice(0,3).map(p=>`${p.name} ${fmt(p.dtaken)}`).join(" · ")||"No non-tank damage pressure spike found."}</div><div class="summary-note-sub">This is for quick coaching context, not a blame board. Start with deaths first, then use this to explain why the deaths happened.</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Mechanic Watchlist</div><div class="summary-note-body">${mechanicRows.filter(r=>r.watch).slice(0,3).map(r=>`${r.name} · ${r.playersCount} players`).join(" · ")||"No repeated debuff mechanic stood out on this pull."}</div><div class="summary-note-sub">${mechanicRows.filter(r=>r.watch).length?mechanicFixText(mechanicRows.filter(r=>r.watch)[0]):(bossTimelineRows.length?`Boss timeline is tracking ${bossTimelineRows.length} major ability lane${bossTimelineRows.length===1?"":"s"} for cooldown alignment.`:"Boss timeline did not find major repeated boss abilities this pull.")}</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Cooldown Coverage</div><div class="summary-note-body">${coverageSummary.length?coverageSummary.map(r=>`${r.name}: ${r.covered}/${r.total}`).join(" · "):"No clear boss-event coverage windows were detected for this pull."}</div><div class="summary-note-sub">${coverageSummary.find(r=>r.uncovered>0)?.note||"Use the timeline tab to line raid CDs and personals up against the boss-ability lane."}</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Avoidable Pressure</div><div class="summary-note-body">${avoidableWatch.length?avoidableWatch.map(p=>`${p.name} ${fmt(p.avoidableTaken)} · ${p.avoidableHits} hit${p.avoidableHits===1?"":"s"}`).join(" · "):"No repeated avoidable pressure stood out on this pull."}</div><div class="summary-note-sub">This only tracks likely avoidable boss windows, so start with deaths first and use this as coaching context.</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Pull Trend Summary</div><div class="summary-note-body">${pullTrend?`Deaths ${pullTrend.deaths.flat?"±0":(pullTrend.deaths.diff>0?"+":"")+pullTrend.deaths.diff} · Raid DPS ${pullTrend.raidDps.flat?"±0":(pullTrend.raidDps.diff>0?"+":"")+fmtNum(Math.abs(pullTrend.raidDps.diff))} · Missed CDs ${pullTrend.missed.flat?"±0":(pullTrend.missed.diff>0?"+":"")+pullTrend.missed.diff}`:"Analyze at least two pulls of this boss to unlock trend context."}</div><div class="summary-note-sub">${pullTrend?(pullTrend.deaths.good||pullTrend.missed.good||pullTrend.pots.good?"You’re trending in the right direction. Keep the improvements that stuck.":"No obvious trend improvement yet — look at deaths and mechanic failures first."):"Trends stay scoped to this boss within the current report/session."}</div></div>
     </div>`;
     // big duration at top of summary -- raid leaders think in terms of fight length
     // green = kill, red = wipe. obvious but useful at a glance
@@ -3381,7 +3469,7 @@ async function analyze(){
     summaryDiv.innerHTML=scoreHTML+perPlayerHtml;
 
     const tSumBody=document.getElementById("tSumBody");
-    const avgNonTankDT=sorted.filter(p=>p.role!=="tanks").length?sorted.filter(p=>p.role!=="tanks").reduce((s,p)=>s+p.dtaken,0)/sorted.filter(p=>p.role!=="tanks").length:0;
+    const avgAvoidableNonTank=sorted.filter(p=>p.role!=="tanks").length?sorted.filter(p=>p.role!=="tanks").reduce((s,p)=>s+(p.avoidableTaken||0),0)/sorted.filter(p=>p.role!=="tanks").length:0;
     sorted.forEach(p=>{
       const deaths=p.deaths.length;
       const ints=Object.values(p.ints).reduce((s,c)=>s+c,0);
@@ -3389,7 +3477,7 @@ async function analyze(){
       const defTotal=Object.values(p.defs).reduce((s,c)=>s+c,0);
       const dpsNum=fSec>0&&p.ddealt>0?Math.round(p.ddealt/fSec):0;
       const hpsNum=fSec>0&&p.healed>0?Math.round(p.healed/fSec):0;
-      const _sev=getV5Sev(p,shortPull,{avgNonTankDT});
+      const _sev=getV5Sev(p,shortPull,{avgAvoidableNonTank});
       const exp=SPEC_OFFS[(p.cls||"")+"|"+(p.spec||"")]||SPEC_OFFS[(p.cls||"").replace(/ /g,"")+"|"+(p.spec||"")]||null;
       const missedOff=exp?exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]).length:0;
       let score=100;
@@ -3810,16 +3898,35 @@ function getV5Sev(p,shortPull,meta){
     if(mc.length)issues.push('missedOff');
   }
   if(p.readyStatus==='bad')issues.push('ready');
-  const avgNonTankDT=meta?.avgNonTankDT||0;
-  if(p.role!=="tanks"&&avgNonTankDT>0&&p.dtaken>(avgNonTankDT*1.7)&&p.deaths.length)issues.push('avoidable');
+  const avgAvoidableNonTank=meta?.avgAvoidableNonTank||0;
+  if(p.role!=="tanks"&&p.deaths.length&&((p.avoidableTaken||0)>Math.max(avgAvoidableNonTank*1.5,1500000)||(p.avoidableHits||0)>=3))issues.push('avoidable');
   const sev=p.deaths.length>=2||issues.includes('avoidable')?'crit':issues.length?'warn':'ok';
   return{issues,issueText:issues.length?issues.map(getIssueReasonLabel).join(' · '):'No flagged issues',sev};
 }
 
-function buildDeathCtx(p,deathTs,casts){
+function buildDeathCtx(p,deathTs,casts,dmgT,aName,fightStart,bossRows){
   const rd=casts.filter(ev=>ev.sourceID===p.id&&DEFS[ev.abilityGameID]&&ev.timestamp<=deathTs).sort((a,b)=>b.timestamp-a.timestamp)[0];
-  const ds=rd?'Last def: '+DEFS[rd.abilityGameID]+' (-'+Math.round((deathTs-rd.timestamp)/1000)+'s)':'No defensive used';
-  return ds+' · '+(p.pots?'Pot ✓':'No in-fight pot')+' · '+(p.hs?'HS ✓':'No HS');
+  const ds=rd&&((deathTs-rd.timestamp)<=15000)?'Last def: '+DEFS[rd.abilityGameID]+' (-'+Math.round((deathTs-rd.timestamp)/1000)+'s)':'No recent defensive';
+  const recentHits=safeArr(dmgT).filter(ev=>ev.targetID===p.id&&ev.timestamp<=deathTs&&ev.timestamp>=deathTs-8000).sort((a,b)=>b.timestamp-a.timestamp).slice(0,2).map(ev=>{
+    const amt=(ev.amount||0)+(ev.absorbed||0);
+    const name=aName[ev.abilityGameID]||`Spell#${ev.abilityGameID}`;
+    return `${name} ${fmtNum(amt)}`;
+  });
+  const fightOffset=deathTs-fightStart;
+  const flatBoss=safeArr(bossRows).flatMap(row=>safeArr(row.clusters).map(cl=>({name:row.name,t:cl.t})));
+  const nearBoss=flatBoss.filter(x=>Math.abs(x.t-fightOffset)<=6000).sort((a,b)=>Math.abs(a.t-fightOffset)-Math.abs(b.t-fightOffset))[0];
+  let cov="";
+  if(nearBoss){
+    const nearby=casts.filter(ev=>{
+      const sid=ev.abilityGameID;
+      const nm=aName[sid]||DEFS[sid]||OFFS[sid]||`Spell#${sid}`;
+      const kind=detectRaidCD(nm,sid);
+      return (kind==="def"||kind==="raid")&&Math.abs((ev.timestamp-fightStart)-nearBoss.t)<=6000;
+    });
+    cov=nearby.length?`Boss window: ${nearBoss.name} had coverage`:`Coverage gap near ${nearBoss.name}`;
+  }
+  const bits=[ds,recentHits.length?`Recent hits: ${recentHits.join(' · ')}`:"No recent hit context",p.hs?'HS ✓':'No HS',p.pots?'Pot ✓':'No in-fight pot',cov];
+  return bits.filter(Boolean).join(' · ');
 }
 
 function pickWipeCause(drows){
