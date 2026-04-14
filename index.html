@@ -5,9 +5,13 @@
 </head>
 <body>
 <script>
-  // meta refresh silently drops ?code= query params -- WCL OAuth never completes
-  // JS redirect preserves everything WCL sends back
-  window.location.replace('RaidLens_public.html' + window.location.search + window.location.hash);
+  const path = window.location.pathname.toLowerCase();
+
+  if (path.endsWith('/raidlens_public_v4.html')) {
+    window.location.replace('RaidLens_public.html' + window.location.search + window.location.hash);
+  } else {
+    window.location.replace('RaidLens_public.html' + window.location.search + window.location.hash);
+  }
 </script>
 </body>
 </html>
