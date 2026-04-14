@@ -2525,6 +2525,10 @@ function fmtIlvl(n){
   if(!v)return "—";
   return Number.isInteger(v)?String(v):v.toFixed(1);
 }
+function countLabel(n,singular,plural){
+  const v=Number(n||0);
+  return `${v} ${v===1?singular:plural}`;
+}
 function buildPrepIssues(p){
   return uniq([...(p.readyIssues||[])]);
 }
@@ -2673,9 +2677,9 @@ function openPlayerModal(p,fSec){
     const calcUrl=escAttr(wowheadTalentCalcUrl(p));
     const buildLinks=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">${p.buildCode?`<button class="mini-link" onclick="copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:""}<a href="${calcUrl}" target="_blank" class="mini-link">Calc ↗</a></div>`;
     const prepRows=[
-      statRow("Enchant Count",`${p.enchantCount||0} surfaced`,(p.enchantCount||0)===0?"#f85149":(p.enchantCount||0)<2?"#ffdd75":"#3fb950"),
-      statRow("Socketed Gems",`${p.gemCount||0} surfaced`,(p.gemCount||0)===0?"#f85149":"#3fb950"),
-      statRow("Missing Prep",buildPrepIssues(p).length?buildPrepIssues(p).join(" · "):"No reliable prep gaps surfaced",buildPrepIssues(p).length?"#ffdd75":"#3fb950")
+      statRow("Enchant Count",countLabel(p.enchantCount,"enchant","enchants"),(p.enchantCount||0)===0?"#f85149":(p.enchantCount||0)<2?"#ffdd75":"#3fb950"),
+      statRow("Socketed Gems",countLabel(p.gemCount,"gem","gems"),(p.gemCount||0)===0?"#f85149":"#3fb950"),
+      statRow("Missing Prep",buildPrepIssues(p).length?buildPrepIssues(p).join(" · "):"Ready to Raid!",buildPrepIssues(p).length?"#ffdd75":"#3fb950")
     ].join("");
     html+=`<div class="modal-section"><h4>Build + Ready</h4>${buildLinks}<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><div>${prepRows}</div><div>${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#ffdd75")}${p.readyIssues?.length?`<div style="margin-top:8px;color:#ffdd75;font-size:12px">${p.readyIssues.join(" · ")}</div>`:`<div style="margin-top:8px;color:#3fb950;font-size:12px">Ready snapshot looked clean.</div>`}</div></div></div>`;
   }
@@ -2949,13 +2953,13 @@ async function analyze(){
         const readyClass=p.readyStatus||"warn";
         const readySortVal=readyClass==="bad"?3:readyClass==="warn"?2:1;
         const prepIssues=buildPrepIssues(p);
-        const readyHtml=`<span class="ready-pill ${readyClass}">${readyClass==="good"?"Ready":readyClass==="warn"?"Watch":"Fix"}</span><div style="margin-top:6px;color:${readyClass==="bad"?"#f87171":readyClass==="warn"?"#ffdd75":"#8b949e"};font-size:11px;line-height:1.6">${escAttr(p.readyText||"No readiness snapshot")}${prepIssues.length?`<div style="margin-top:4px;color:#8b949e">${escAttr(prepIssues.slice(0,2).join(" · "))}${prepIssues.length>2?" · ...":""}</div>`:""}</div>`;
+        const readyHtml=`<span class="ready-pill ${readyClass}">${readyClass==="good"?"Ready":readyClass==="warn"?"Watch":"Fix"}</span><div style="margin-top:6px;color:${readyClass==="bad"?"#f87171":readyClass==="warn"?"#ffdd75":"#3fb950"};font-size:11px;line-height:1.6">${escAttr(p.readyText||"No readiness snapshot")}</div>`;
         const calcUrl=wowheadTalentCalcUrl(p);
         const links=[
           p.buildCode?`<button class="mini-link" onclick="event.stopPropagation();copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:"",
           `<a href="${escAttr(calcUrl)}" target="_blank" class="mini-link" onclick="event.stopPropagation()">Calc ↗</a>`
         ].filter(Boolean).join("");
-        tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td class="num build-ilvl-cell" data-val="${p.ilvl||0}" style="color:${p.ilvl? "#c9d1d9":"#6e7681"}">${fmtIlvl(p.ilvl)}</td><td class="num" data-val="${p.enchantCount||0}" style="color:${(p.enchantCount||0)===0?"#f85149":(p.enchantCount||0)<2?"#ffdd75":"#3fb950"};font-weight:600">${p.enchantCount||0} surfaced</td><td class="num" data-val="${p.gemCount||0}" style="color:${(p.gemCount||0)===0?"#f85149":"#3fb950"};font-weight:600">${p.gemCount||0} surfaced</td><td data-val="${prepIssues.length}" style="font-size:12px;color:${prepIssues.length?"#ffdd75":"#8b949e"}">${prepIssues.length?escAttr(prepIssues.slice(0,2).join(" · ")):"No reliable gaps surfaced"}</td><td data-val="${readySortVal}">${readyHtml}</td><td style="text-align:center">${links||'<span class="none-t">—</span>'}</td>`;
+        tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td class="num build-ilvl-cell" data-val="${p.ilvl||0}" style="color:${p.ilvl? "#c9d1d9":"#6e7681"}">${fmtIlvl(p.ilvl)}</td><td class="num" data-val="${p.enchantCount||0}" style="color:${(p.enchantCount||0)===0?"#f85149":(p.enchantCount||0)<2?"#ffdd75":"#3fb950"};font-weight:600">${countLabel(p.enchantCount,"enchant","enchants")}</td><td class="num" data-val="${p.gemCount||0}" style="color:${(p.gemCount||0)===0?"#f85149":"#3fb950"};font-weight:600">${countLabel(p.gemCount,"gem","gems")}</td><td data-val="${prepIssues.length}" style="font-size:12px;color:${prepIssues.length?"#ffdd75":"#3fb950"}">${prepIssues.length?escAttr(prepIssues.slice(0,2).join(" · ")):"Ready to Raid!"}</td><td data-val="${readySortVal}">${readyHtml}</td><td style="text-align:center">${links||'<span class="none-t">—</span>'}</td>`;
         bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
         bBuilds.appendChild(tr);
       });
