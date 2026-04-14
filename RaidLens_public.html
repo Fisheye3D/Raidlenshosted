@@ -124,6 +124,10 @@ tr:hover td{background:#161b22}
 .rt{color:#ffd700;font-weight:600;font-size:15px}
 .rm{font-size:12px;color:#8b949e}
 .sn{font-size:12px;color:#6e7681;margin-bottom:10px;font-style:italic}
+.table-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 0 10px}
+.table-tools-note{font-size:11px;color:#8b949e}
+.table-sort{display:flex;align-items:center;gap:8px;font-size:11px;color:#8b949e}
+.table-sort select{padding:5px 10px;font-size:11px;border-radius:999px}
 
 /* ── Roster panel ── */
 .roster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin-bottom:14px}
@@ -1056,7 +1060,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   </div>
   <div class="rtab-panel active" id="rtab-defensives"><div class="tw"><table id="tDef"><thead><tr><th onclick="srt('tDef',0)">Player ↕</th><th onclick="srt('tDef',1)">Class/Spec ↕</th><th title="Personal defensive cooldowns cast during the fight — tracked from combat log cast events.">Def CDs ⓘ</th><th onclick="srt('tDef',3)" class="num">Total ↕</th></tr></thead><tbody id="bDef"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-consumables"><div class="sn">Potion and Healthstone usage per player during the fight.</div><div class="tw"><table id="tCons"><thead><tr><th onclick="srt('tCons',0)">Player ↕</th><th onclick="srt('tCons',1)">Class/Spec ↕</th><th style="text-align:center">Potion</th><th style="text-align:center">Healthstone</th></tr></thead><tbody id="bCons"></tbody></table></div></div>
-  <div class="rtab-panel" id="rtab-builds"><div class="sn">Build snapshot and Ready Check+ pulled from Warcraft Logs combatant info, with quick links for copying builds or opening the matching Wowhead talent calculator.</div><div class="tw"><table id="tBuilds"><thead><tr><th onclick="srt('tBuilds',0)">Player ↕</th><th onclick="srt('tBuilds',1)">Class/Spec ↕</th><th onclick="srt('tBuilds',2)" class="num">iLvl ↕</th><th>Build Snapshot</th><th>Ready Check+</th><th>Links</th></tr></thead><tbody id="bBuilds"></tbody></table></div></div>
+<div class="rtab-panel" id="rtab-builds"><div class="sn">Readiness snapshot from Warcraft Logs combatant info. Use this for fast prep checks: item level, enchants, gems, weapon buffs, food/phial, and clean build links.</div><div class="table-tools"><div class="table-tools-note">Quick prep review for raid leads.</div><div class="table-sort"><span>Sort:</span><select id="buildSort"><option value="ready">Ready Check+</option><option value="missing">Missing Prep</option><option value="ilvl">iLvl</option><option value="gems">Gems</option><option value="enchants">Enchants</option><option value="player">Player</option></select></div></div><div class="tw"><table id="tBuilds"><thead><tr><th onclick="srt('tBuilds',0)">Player ↕</th><th onclick="srt('tBuilds',1)">Class/Spec ↕</th><th onclick="srt('tBuilds',2)" class="num">iLvl ↕</th><th onclick="srt('tBuilds',3)" class="num">Enchants ↕</th><th onclick="srt('tBuilds',4)" class="num">Gems ↕</th><th onclick="srt('tBuilds',5)">Weapon Buff ↕</th><th onclick="srt('tBuilds',6)">Food / Phial ↕</th><th onclick="srt('tBuilds',7)">Missing Prep ↕</th><th onclick="srt('tBuilds',8)">Ready Check+ ↕</th><th>Links</th></tr></thead><tbody id="bBuilds"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-deaths"><div class="sn">All player deaths ordered by time. Killing blow shown where available.</div><div id="cleanPullBanner" style="display:none"></div><div id="topKillersBox" style="display:none;margin-bottom:12px"></div><div class="tw"><table id="tDeath"><thead><tr><th onclick="srt('tDeath',0)">Player ↕</th><th onclick="srt('tDeath',1)">Class/Spec ↕</th><th onclick="srt('tDeath',2)">Time ↕</th><th>Killing Blow</th><th onclick="srt('tDeath',4)" class="num">Deaths ↕</th><th></th></tr></thead><tbody id="bDeath"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-interrupts"><div class="sn">Who interrupted what and how many times.</div><div class="tw"><table id="tInt"><thead><tr><th onclick="srt('tInt',0)">Player ↕</th><th onclick="srt('tInt',1)">Class/Spec ↕</th><th>Spells Interrupted</th><th onclick="srt('tInt',3)" class="num">Total ↕</th></tr></thead><tbody id="bInt"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dispels"><div class="sn">Who dispelled what.</div><div class="tw"><table id="tDisp"><thead><tr><th onclick="srt('tDisp',0)">Player ↕</th><th onclick="srt('tDisp',1)">Class/Spec ↕</th><th>Spells Dispelled</th><th onclick="srt('tDisp',3)" class="num">Total ↕</th></tr></thead><tbody id="bDisp"></tbody></table></div></div>
@@ -1589,7 +1593,9 @@ function extractCombatantInfo(entry){
   const gear=safeArr(ci?.gear);
   const auras=safeArr(ci?.auras);
   const talents=summarizeTalentTree(ci?.talentTree||ci?.talents||[]);
-  const ilvl=Math.round(avg(gear.map(g=>Number(g?.itemLevel||g?.itemLevelEquipped||0)).filter(Boolean)));
+  const directIlvl=Number(ci?.itemLevelEquipped||ci?.itemLevel||ci?.averageItemLevel||0);
+  const gearAvg=avg(gear.map(g=>Number(g?.itemLevelEquipped||g?.itemLevel||0)).filter(Boolean));
+  const ilvl=directIlvl||gearAvg||0;
   const enchants=gear.filter(g=>g?.permanentEnchant||g?.permanentEnchantName||g?.permanentEnchantId).length;
   const gems=gear.reduce((sum,g)=>sum+safeArr(g?.gems).filter(Boolean).length,0);
   const weaponBuffs=uniq(auras.map(a=>a?.name).filter(n=>WEAPON_BUFF_HINTS.some(h=>(n||"").toLowerCase().includes(h))));
@@ -2483,10 +2489,51 @@ function srt(id,col){
   cleanRows.sort((a,b)=>{const av=a.cells[col]?.dataset?.val??a.cells[col]?.textContent??"",bv=b.cells[col]?.dataset?.val??b.cells[col]?.textContent??"",an=parseFloat(av),bn=parseFloat(bv);if(!isNaN(an)&&!isNaN(bn))return asc?an-bn:bn-an;return asc?av.localeCompare(bv):bv.localeCompare(av);});
   cleanRows.forEach(r=>body.appendChild(r));
 }
+function sortTableBy(id,col,desc){
+  const tb=document.getElementById(id);
+  if(!tb)return;
+  const body=tb.querySelector("tbody");
+  if(!body)return;
+  body.querySelectorAll("tr[data-detail='1']").forEach(r=>r.remove());
+  const cleanRows=[...body.querySelectorAll("tr")].filter(r=>r.dataset.detail!=="1");
+  cleanRows.sort((a,b)=>{
+    const av=a.cells[col]?.dataset?.val??a.cells[col]?.textContent??"";
+    const bv=b.cells[col]?.dataset?.val??b.cells[col]?.textContent??"";
+    const an=parseFloat(av),bn=parseFloat(bv);
+    if(!isNaN(an)&&!isNaN(bn))return desc?bn-an:an-bn;
+    return desc?String(bv).localeCompare(String(av)):String(av).localeCompare(String(bv));
+  });
+  cleanRows.forEach(r=>body.appendChild(r));
+}
+function bindSortSelect(id,tableId,map,initial){
+  const sel=document.getElementById(id);
+  if(!sel)return;
+  sel.onchange=()=>{
+    const cfg=map[sel.value];
+    if(cfg)sortTableBy(tableId,cfg.col,!!cfg.desc);
+  };
+  if(initial && map[initial]){
+    sel.value=initial;
+    sortTableBy(tableId,map[initial].col,!!map[initial].desc);
+  }
+}
 
 // the big one. fires 7 WCL fetches in parallel then crunches everything.
 // long fights can take 10-15s. if it hangs, WCL is probably still processing the log
 function fmtNum(n){return n>=1e9?(n/1e9).toFixed(2)+"B":n>=1e6?(n/1e6).toFixed(2)+"M":n>=1e3?(n/1e3).toFixed(1)+"K":Math.round(n).toString();}
+function fmtIlvl(n){
+  const v=Number(n||0);
+  if(!v)return "—";
+  return Number.isInteger(v)?String(v):v.toFixed(1);
+}
+function buildPrepIssues(p){
+  const issues=[...(p.readyIssues||[])];
+  if(!(p.passiveBuffs||[]).length)issues.push("No food/phial seen");
+  return uniq(issues);
+}
+function passiveBuffSummary(p){
+  return p.passiveBuffs?.length?p.passiveBuffs.join(", "):"None seen";
+}
 
 function closeModal(e){if(e.target===document.getElementById("playerModal"))document.getElementById("playerModal").style.display="none";}
 function closeSpellModal(e){if(e.target===document.getElementById("spellModal"))document.getElementById("spellModal").style.display="none";}
@@ -2623,10 +2670,18 @@ function openPlayerModal(p,fSec){
   const tagList=(entries,variant,label)=>entries.length?entries.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),variant,label)).join(""):"<span style='color:#6e7681'>None</span>";
   const statRow=(label,val,color="#c9d1d9")=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #21262d;font-size:13px"><span style="color:#8b949e">${label}</span><span style="font-weight:600;color:${color}">${val}</span></div>`;
   let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-    <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("Potion",p.pots?`✓ ${p.potName||"Used"} (${p.pots})`:"✗ None detected",p.pots?"#3fb950":"#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#e3a008")}${p.ilvl?statRow("Snapshot iLvl",p.ilvl,"#c9d1d9"):""}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
+    <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("Potion",p.pots?`✓ ${p.potName||"Used"} (${p.pots})`:"✗ None detected",p.pots?"#3fb950":"#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#e3a008")}${p.ilvl?statRow("Snapshot iLvl",fmtIlvl(p.ilvl),"#c9d1d9"):""}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
     <div>${statRow("Damage Taken",fmtNum(p.dtaken))}${statRow("Interrupts",Object.values(p.ints).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Dispels",Object.values(p.disps).reduce((s,c)=>s+c,0),"#3fb950")}${statRow("CC Used",Object.values(p.cc).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Def CDs Used",Object.values(p.defs).reduce((s,c)=>s+c,0),"#ffd700")}${statRow("Off CDs Used",Object.values(p.offs).reduce((s,c)=>s+c,0),"#ffd700")}${p.weaponBuffs?.length?statRow("Weapon Buff",p.weaponBuffs.join(", "),"#ffdd75"):""}${p.pets?.length?statRow("Pets Counted",p.pets.length,"#8b949e"):""}</div></div>`;
-  if(p.talentNames?.length||p.buildCode||p.readyIssues?.length||p.passiveBuffs?.length){
-    html+=`<div class="modal-section"><h4>Build Snapshot</h4>${renderBuildSnapshotCard(p,"full")}${p.readyIssues?.length?`<div style="margin-top:8px;color:#ffdd75;font-size:12px">${p.readyIssues.join(" · ")}</div>`:`<div style="margin-top:8px;color:#3fb950;font-size:12px">Ready snapshot looked clean.</div>`}${p.passiveBuffs?.length?`<div style="margin-top:8px;color:#8b949e;font-size:11px">Buff snapshot: ${p.passiveBuffs.join(", ")}</div>`:""}</div>`;
+  if(p.buildCode||p.readyIssues?.length||p.passiveBuffs?.length||p.weaponBuffs?.length||p.enchantCount||p.gemCount){
+    const calcUrl=escAttr(wowheadTalentCalcUrl(p));
+    const buildLinks=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">${p.buildCode?`<button class="mini-link" onclick="copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:""}<a href="${calcUrl}" target="_blank" class="mini-link">Wowhead Calc ↗</a></div>`;
+    const prepRows=[
+      statRow("Enchants Seen",p.enchantCount||0,(p.enchantCount||0)===0?"#f85149":(p.enchantCount||0)<2?"#ffdd75":"#3fb950"),
+      statRow("Gems Seen",p.gemCount||0,(p.gemCount||0)===0?"#f85149":"#3fb950"),
+      statRow("Weapon Buff",p.weaponBuffs?.length?p.weaponBuffs.join(", "):"None seen",p.weaponBuffs?.length?"#ffdd75":"#f85149"),
+      statRow("Food / Phial",passiveBuffSummary(p),p.passiveBuffs?.length?"#8b949e":"#6e7681")
+    ].join("");
+    html+=`<div class="modal-section"><h4>Build + Ready</h4>${buildLinks}<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><div>${prepRows}</div><div>${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#ffdd75")}${p.readyIssues?.length?`<div style="margin-top:8px;color:#ffdd75;font-size:12px">${p.readyIssues.join(" · ")}</div>`:`<div style="margin-top:8px;color:#3fb950;font-size:12px">Ready snapshot looked clean.</div>`}</div></div></div>`;
   }
   if(p.deaths.length){html+=`<div class="modal-section"><h4>Deaths</h4><div class="spell-grid">${p.deaths.map(d=>spellChip(`${d.timeStr||"?"} — ${d.killer}`,null,d.killerId||findAbilityIdByName(d.killer),"danger","death cause")).join("")}</div></div>`;}
   if(Object.keys(p.dmgBySpell||{}).length){html+=`<div class="modal-section"><h4>Damage Done Breakdown</h4>${renderSpellBreakdown(p.dmgBySpell,p.ddealt,"cool","damage done")}</div>`;}
@@ -2684,12 +2739,22 @@ async function loadRosterProfiles(players){
       const rio=await fetchRIO(p.name,p.server,p.region||"us");
       const rioDiv=document.getElementById(`rio-${p.name.replace(/\s/g,"_")}`);
       const card=document.getElementById(`rcard-${p.name.replace(/\s/g,"_")}`);
-      if(rio&&rioDiv){
-        p.rio=rio;
-        const score=rio.mythic_plus_scores_by_season?.[0]?.scores?.all||0;
-        const scoreColor=rioColor(score);
-        const ilvl=rio.gear?.item_level_equipped||"?";
-        const prog=Object.values(rio.raid_progression||{}).slice(-1)[0];
+        if(rio&&rioDiv){
+          p.rio=rio;
+          const score=rio.mythic_plus_scores_by_season?.[0]?.scores?.all||0;
+          const scoreColor=rioColor(score);
+          const ilvl=rio.gear?.item_level_equipped||"?";
+          if(rio.gear?.item_level_equipped){
+            p.ilvl=Number(rio.gear.item_level_equipped);
+            const buildRow=document.getElementById(`buildrow-${p.name.replace(/[^a-z0-9]/gi,"_")}`);
+            const ilvlCell=buildRow?.querySelector(".build-ilvl-cell");
+            if(ilvlCell){
+              ilvlCell.dataset.val=String(p.ilvl);
+              ilvlCell.textContent=fmtIlvl(p.ilvl);
+              ilvlCell.style.color="#c9d1d9";
+            }
+          }
+          const prog=Object.values(rio.raid_progression||{}).slice(-1)[0];
         const progStr=prog?`${prog.summary}`:"No raid data";
         // swap placeholder letter with actual avatar if RIO has one
         if(rio.thumbnail_url&&card){
@@ -2884,18 +2949,28 @@ async function analyze(){
       bBuilds.innerHTML="";
       sorted.forEach(p=>{
         const tr=document.createElement("tr");
-        const buildPreview=renderBuildSnapshotCard(p,"compact");
+        tr.id=`buildrow-${p.name.replace(/[^a-z0-9]/gi,"_")}`;
         const readyClass=p.readyStatus||"warn";
-        const readyHtml=`<span class="ready-pill ${readyClass}">${readyClass==="good"?"Ready":readyClass==="warn"?"Watch":"Fix"}</span><div style="margin-top:6px;color:${readyClass==="bad"?"#f87171":readyClass==="warn"?"#ffdd75":"#8b949e"};font-size:11px;line-height:1.6">${escAttr(p.readyText||"No readiness snapshot")}</div>`;
+        const readySortVal=readyClass==="bad"?3:readyClass==="warn"?2:1;
+        const prepIssues=buildPrepIssues(p);
+        const readyHtml=`<span class="ready-pill ${readyClass}">${readyClass==="good"?"Ready":readyClass==="warn"?"Watch":"Fix"}</span><div style="margin-top:6px;color:${readyClass==="bad"?"#f87171":readyClass==="warn"?"#ffdd75":"#8b949e"};font-size:11px;line-height:1.6">${escAttr(p.readyText||"No readiness snapshot")}${prepIssues.length?`<div style="margin-top:4px;color:#8b949e">${escAttr(prepIssues.slice(0,2).join(" · "))}${prepIssues.length>2?" · ...":""}</div>`:""}</div>`;
         const calcUrl=wowheadTalentCalcUrl(p);
         const links=[
           p.buildCode?`<button class="mini-link" onclick="event.stopPropagation();copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:"",
           `<a href="${escAttr(calcUrl)}" target="_blank" class="mini-link" onclick="event.stopPropagation()">Calc ↗</a>`
         ].filter(Boolean).join("");
-        tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td class="num" data-val="${p.ilvl||0}" style="color:${p.ilvl? "#c9d1d9":"#6e7681"}">${p.ilvl||"—"}</td><td>${buildPreview}</td><td>${readyHtml}</td><td style="text-align:center">${links||'<span class="none-t">—</span>'}</td>`;
+        tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td class="num build-ilvl-cell" data-val="${p.ilvl||0}" style="color:${p.ilvl? "#c9d1d9":"#6e7681"}">${fmtIlvl(p.ilvl)}</td><td class="num" data-val="${p.enchantCount||0}" style="color:${(p.enchantCount||0)===0?"#f85149":(p.enchantCount||0)<2?"#ffdd75":"#3fb950"};font-weight:600">${p.enchantCount||0}</td><td class="num" data-val="${p.gemCount||0}" style="color:${(p.gemCount||0)===0?"#f85149":"#3fb950"};font-weight:600">${p.gemCount||0}</td><td data-val="${p.weaponBuffs?.length?1:0}" style="color:${p.weaponBuffs?.length?"#ffdd75":"#f87171"};font-size:12px">${p.weaponBuffs?.length?escAttr(p.weaponBuffs.join(", ")):"None seen"}</td><td data-val="${p.passiveBuffs?.length?1:0}" style="color:${p.passiveBuffs?.length?"#8b949e":"#f87171"};font-size:12px">${escAttr(passiveBuffSummary(p))}</td><td data-val="${prepIssues.length}" style="font-size:12px;color:${prepIssues.length?"#ffdd75":"#8b949e"}">${prepIssues.length?escAttr(prepIssues.slice(0,2).join(" · ")):"Ready"}</td><td data-val="${readySortVal}">${readyHtml}</td><td style="text-align:center">${links||'<span class="none-t">—</span>'}</td>`;
         bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
         bBuilds.appendChild(tr);
       });
+      bindSortSelect("buildSort","tBuilds",{
+        ready:{col:8,desc:true},
+        missing:{col:7,desc:true},
+        ilvl:{col:2,desc:true},
+        gems:{col:4,desc:true},
+        enchants:{col:3,desc:true},
+        player:{col:0,desc:false}
+      },"ready");
     }
     // DEATHS
     const bDeath=document.getElementById("bDeath");bDeath.innerHTML="";const drows=[];
@@ -3290,17 +3365,18 @@ async function analyze(){
 
     // Per-player summary table
     const perPlayerHtml=`<div style="font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.08em;margin:16px 0 8px">Per Player</div>
+    <div class="table-tools"><div class="table-tools-note">Quick sort for the scorecard.</div><div class="table-sort"><span>Sort:</span><select id="summarySort"><option value="deaths">Deaths</option><option value="grade">Grade</option><option value="dps">DPS</option><option value="hps">HPS</option><option value="def">Def CDs</option><option value="ints">Interrupts</option><option value="player">Player</option></select></div></div>
     <div class="tw"><table><thead><tr>
-      <th onclick="srt('tSum',0)">Player</th><th onclick="srt('tSum',1)">Role</th>
+      <th onclick="srt('tSum',0)">Player ↕</th><th onclick="srt('tSum',1)">Role ↕</th>
       <th style="width:110px"></th>
-      <th onclick="srt('tSum',2)" class="num">Deaths</th>
-      <th onclick="srt('tSum',3)" class="num">Ints</th>
-      <th onclick="srt('tSum',4)" class="num">Disps</th>
-      <th onclick="srt('tSum',5)" class="num">Def CDs</th>
-      <th onclick="srt('tSum',6)" class="num">DPS</th>
-      <th onclick="srt('tSum',7)" class="num">HPS</th>
-      <th onclick="srt('tSum',8)" class="num" title="Counts an in-fight potion, and also credits a prepot when Warcraft Logs exposes it">Pot ⓘ</th>
-      <th onclick="srt('tSum',9)">Grade</th>
+      <th onclick="srt('tSum',2)" class="num">Deaths ↕</th>
+      <th onclick="srt('tSum',3)" class="num">Ints ↕</th>
+      <th onclick="srt('tSum',4)" class="num">Disps ↕</th>
+      <th onclick="srt('tSum',5)" class="num">Def CDs ↕</th>
+      <th onclick="srt('tSum',6)" class="num">DPS ↕</th>
+      <th onclick="srt('tSum',7)" class="num">HPS ↕</th>
+      <th onclick="srt('tSum',8)" class="num" title="Counts an in-fight potion, and also credits a prepot when Warcraft Logs exposes it">Pot ⓘ ↕</th>
+      <th onclick="srt('tSum',9)">Grade ↕</th>
     </tr></thead><tbody id="tSumBody"></tbody></table></div>`;
     summaryDiv.innerHTML=scoreHTML+perPlayerHtml;
 
@@ -3313,13 +3389,21 @@ async function analyze(){
       const defTotal=Object.values(p.defs).reduce((s,c)=>s+c,0);
       const dpsNum=fSec>0&&p.ddealt>0?Math.round(p.ddealt/fSec):0;
       const hpsNum=fSec>0&&p.healed>0?Math.round(p.healed/fSec):0;
-      let score=100;
-      score-=deaths*15;
-      // removed pot penalty from score -- potion visibility can vary, so penalizing it is noisy
-      // letter grade -- S/A/B/C/F based on deaths, pots, missed CDs
-      const grade=score>=90?"S":score>=75?"A":score>=60?"B":score>=45?"C":"D";
-      const gc=grade==="S"?"#ffd700":grade==="A"?"#3fb950":grade==="B"?"#79c0ff":grade==="C"?"#e3a008":"#f85149";
       const _sev=getV5Sev(p,shortPull,{avgNonTankDT});
+      const exp=SPEC_OFFS[(p.cls||"")+"|"+(p.spec||"")]||SPEC_OFFS[(p.cls||"").replace(/ /g,"")+"|"+(p.spec||"")]||null;
+      const missedOff=exp?exp.filter(cd=>Array.isArray(cd)?!cd.some(o=>p.offs[o]):!p.offs[cd]).length:0;
+      let score=100;
+      score-=deaths*35;
+      score-=missedOff*8;
+      if(p.readyStatus==="bad")score-=18;
+      else if(p.readyStatus==="warn")score-=8;
+      if(_sev.issues.includes("avoidable"))score-=15;
+      let grade=score>=95?"S":score>=85?"A":score>=70?"B":score>=55?"C":"D";
+      if(deaths>=2)grade="D";
+      else if(deaths===1&&["S","A","B"].includes(grade))grade="C";
+      else if(_sev.issues.includes("avoidable")&&["S","A"].includes(grade))grade="B";
+      else if(missedOff>0&&grade==="S")grade="A";
+      const gc=grade==="S"?"#ffd700":grade==="A"?"#3fb950":grade==="B"?"#79c0ff":grade==="C"?"#e3a008":"#f85149";
       const _badge=getRepeatBadge(p.name);
       const issueLine=_sev.issues.length?`<div class="issue-reasons">${_sev.issueText}</div>`:"";
       const tr=document.createElement("tr");tr.className="clickable-row";
@@ -3335,6 +3419,15 @@ async function analyze(){
       const p=sorted.find(x=>x.name===row.dataset.player);
       if(p)openPlayerModal(p,fSec);
     };
+    bindSortSelect("summarySort","tSum",{
+      deaths:{col:2,desc:true},
+      grade:{col:9,desc:false},
+      dps:{col:6,desc:true},
+      hps:{col:7,desc:true},
+      def:{col:5,desc:true},
+      ints:{col:3,desc:true},
+      player:{col:0,desc:false}
+    },"deaths");
 
     // clicking a player row opens the modal with their full breakdown
     // lust tab -- shows timing + who was alive to receive it
