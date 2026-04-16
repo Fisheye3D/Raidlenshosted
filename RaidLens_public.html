@@ -197,9 +197,6 @@ tr:hover td{background:#161b22}
 .timeline-marker{position:absolute;top:2px;bottom:2px;width:10px;border-radius:4px;cursor:pointer}
 .timeline-marker:hover::after{content:attr(data-tip);position:absolute;bottom:34px;left:50%;transform:translateX(-50%);background:#161b22;border:1px solid #30363d;border-radius:4px;padding:4px 8px;font-size:11px;white-space:nowrap;z-index:10;color:#c9d1d9}
 .timeline-tick{position:absolute;bottom:-16px;font-size:10px;color:#8ea2b8;transform:translateX(-50%)}
-.timeline-phase-band{display:flex;height:22px;border-radius:8px;overflow:hidden;border:1px solid #30363d;background:#111824;margin-bottom:8px}
-.timeline-phase-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#dce6f2;border-right:1px solid #0d1117;padding:0 8px;white-space:nowrap}
-.timeline-phase-help{font-size:11px;color:#8b949e;margin:0 0 8px}
 .timeline-boss-row .timeline-track{background:#2a1c10;border:1px solid #5a3e18}
 .timeline-boss-row .timeline-label{display:flex;align-items:center;gap:8px;color:#ffdd75}
 .timeline-boss-pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 8px;font-size:10px;font-weight:700;background:#201a0b;border:1px solid #6b5513;color:#ffdd75}
@@ -215,25 +212,26 @@ tr:hover td{background:#161b22}
 .summary-note-title{font-size:10px;color:#8ea2b8;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
 .summary-note-body{font-size:12px;color:#c9d1d9;line-height:1.75}
 .summary-note-sub{font-size:11px;color:#8b949e;line-height:1.7;margin-top:6px}
-.phase-strip{display:flex;gap:8px;flex-wrap:wrap;margin:-2px 0 14px}
-.phase-chip{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:8px 10px;min-width:140px}
-.phase-chip-k{font-size:10px;color:#8ea2b8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
-.phase-chip-v{font-size:14px;font-weight:700;color:#f4f7fb}
-.phase-chip-sub{font-size:11px;color:#8b949e;margin-top:4px;line-height:1.5}
 .ready-pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
 .ready-pill.good{background:#102218;border:1px solid #225437;color:#5fdd8e}
 .ready-pill.warn{background:#201a0b;border:1px solid #6b5513;color:#ffdd75}
 .ready-pill.bad{background:#231416;border:1px solid #5a2323;color:#f87171}
-.build-card{background:#101722;border:1px solid #273243;border-radius:10px;padding:10px}
-.build-card.warn{border-color:#3a4659}
-.build-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:7px}
-.build-card-title{font-size:11px;font-weight:700;color:#f4f7fb;letter-spacing:.02em}
-.build-card-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:#0d1f33;border:1px solid #23415f;color:#8fd0ff;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
-.build-card-sub{font-size:11px;color:#8b949e;line-height:1.5}
-.build-chip-row{display:flex;gap:6px;flex-wrap:wrap}
-.build-code-line{margin-top:7px;font-size:10px;color:#8ea2b8;line-height:1.5;word-break:break-all}
-.build-card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.build-card-actions .mini-link{margin-left:0}
+.snapshot-buffs{display:flex;flex-wrap:wrap;gap:6px}
+.snapshot-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border:1px solid #30363d;background:#121923;color:#8ea2b8}
+.snapshot-chip.good{border-color:#225437;background:#102218;color:#5fdd8e}
+.snapshot-chip.warn{border-color:#6b5513;background:#201a0b;color:#ffdd75}
+.snapshot-chip.info{border-color:#23415f;background:#0d1f33;color:#8fd0ff}
+.snapshot-chip.bad{border-color:#5a2323;background:#231416;color:#f87171}
+.focus-graph-wrap{background:#101722;border:1px solid #273243;border-radius:10px;padding:12px;margin:0 0 12px}
+.focus-graph-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.focus-graph-title{font-size:12px;font-weight:700;color:#f4f7fb}
+.focus-graph-meta{font-size:11px;color:#8ea2b8}
+.focus-graph-legend{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.focus-graph-legend span{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:#8ea2b8}
+.focus-graph-legend i{display:inline-block;width:10px;height:10px;border-radius:999px}
+.focus-graph-svg{width:100%;height:auto;display:block;border-radius:8px;background:#0c131b;border:1px solid #1f2a38}
+.focus-graph-note{font-size:11px;color:#8ea2b8;line-height:1.6;margin-top:8px}
+.focus-graph-empty{color:#6e7681;font-size:12px;padding:10px 0}
 .issue-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:#231416;border:1px solid #5a2323;color:#f87171;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
 .issue-reasons{display:block;color:#8b949e;font-size:11px;font-weight:400;line-height:1.45;margin-top:4px}
 .clickable-row{cursor:pointer}
@@ -1029,6 +1027,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
     <!-- Overview -->
     <div class="rtab active" onclick="switchRTab('summary',this)">📈 Summary</div>
     <div class="rtab" onclick="switchRTab('builds',this)">🧬 Build + Ready</div>
+    <div class="rtab" onclick="switchRTab('consumables',this)">🧪 Consumables</div>
     <div class="tab-sep">·</div>
     <!-- Start Here -->
     <div class="rtab" onclick="switchRTab('deaths',this)">💀 Deaths</div>
@@ -1049,7 +1048,6 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
     <div class="rtab" onclick="switchRTab('dispels',this)">✨ Dispels</div>
     <div class="rtab" onclick="switchRTab('cc',this)">🛑 CC</div>
     <div class="rtab" onclick="switchRTab('downtime',this)">⏱️ Downtime</div>
-    <div class="rtab" onclick="switchRTab('consumables',this)">🧪 Consumables</div>
     <div class="tab-sep">·</div>
     <!-- Performance -->
     <div class="rtab" onclick="switchRTab('dps',this)">⚔️ DPS</div>
@@ -1060,11 +1058,11 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   </div>
   <div class="rtab-panel active" id="rtab-defensives"><div class="tw"><table id="tDef"><thead><tr><th onclick="srt('tDef',0)">Player ↕</th><th onclick="srt('tDef',1)">Class/Spec ↕</th><th title="Personal defensive cooldowns cast during the fight — tracked from combat log cast events.">Def CDs ⓘ</th><th onclick="srt('tDef',3)" class="num">Total ↕</th></tr></thead><tbody id="bDef"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-consumables"><div class="sn">Potion and Healthstone usage per player during the fight.</div><div class="tw"><table id="tCons"><thead><tr><th onclick="srt('tCons',0)">Player ↕</th><th onclick="srt('tCons',1)">Class/Spec ↕</th><th style="text-align:center">Potion</th><th style="text-align:center">Healthstone</th></tr></thead><tbody id="bCons"></tbody></table></div></div>
-<div class="rtab-panel" id="rtab-builds"><div class="sn">Readiness snapshot from Warcraft Logs combatant info. This tab focuses on reliable prep checks only: item level, enchant count, socketed gems, readiness notes, and quick build links.</div><div class="table-tools"><div class="table-tools-note">Counts are what Warcraft Logs reported in the snapshot, not guaranteed maximum possible slots.</div><div class="table-sort"><span>Sort:</span><select id="buildSort"><option value="ready">Ready Check+</option><option value="missing">Missing Prep</option><option value="ilvl">iLvl</option><option value="gems">Socketed Gems</option><option value="enchants">Enchant Count</option><option value="player">Player</option></select></div></div><div class="tw"><table id="tBuilds"><thead><tr><th onclick="srt('tBuilds',0)">Player ↕</th><th onclick="srt('tBuilds',1)">Class/Spec ↕</th><th onclick="srt('tBuilds',2)" class="num">iLvl ↕</th><th onclick="srt('tBuilds',3)" class="num">Enchant Count ↕</th><th onclick="srt('tBuilds',4)" class="num">Socketed Gems ↕</th><th onclick="srt('tBuilds',5)">Missing Prep ↕</th><th onclick="srt('tBuilds',6)">Ready Check+ ↕</th><th>Build Links</th></tr></thead><tbody id="bBuilds"></tbody></table></div></div>
-  <div class="rtab-panel" id="rtab-deaths"><div class="sn">All player deaths ordered by time. Killing blow shown where available.</div><div id="cleanPullBanner" style="display:none"></div><div id="topKillersBox" style="display:none;margin-bottom:12px"></div><div class="tw"><table id="tDeath"><thead><tr><th onclick="srt('tDeath',0)">Player ↕</th><th onclick="srt('tDeath',1)">Class/Spec ↕</th><th onclick="srt('tDeath',2)">Time ↕</th><th>Killing Blow</th><th onclick="srt('tDeath',4)" class="num">Deaths ↕</th><th></th></tr></thead><tbody id="bDeath"></tbody></table></div></div>
+<div class="rtab-panel" id="rtab-builds"><div class="sn">Readiness snapshot from Warcraft Logs combatant info. This stays on the reliable side: item level, enchant count, socketed gems, consumable auras that actually appeared in the snapshot, readiness notes, and quick build links.</div><div id="buildReadySummaryGrid" class="summary-grid-2"></div><div class="table-tools"><div class="table-tools-note">Counts are what Warcraft Logs reported in the snapshot, not guaranteed maximum possible slots. Consumables only show the auras Warcraft Logs exposed for that pull.</div><div class="table-sort"><span>Sort:</span><select id="buildSort"><option value="ready">Ready Check+</option><option value="missing">Missing Prep</option><option value="buffs">Consumables</option><option value="ilvl">iLvl</option><option value="gems">Socketed Gems</option><option value="enchants">Enchant Count</option><option value="player">Player</option></select></div></div><div class="tw"><table id="tBuilds"><thead><tr><th onclick="srt('tBuilds',0)">Player ↕</th><th onclick="srt('tBuilds',1)">Class/Spec ↕</th><th onclick="srt('tBuilds',2)" class="num">iLvl ↕</th><th onclick="srt('tBuilds',3)" class="num">Enchant Count ↕</th><th onclick="srt('tBuilds',4)" class="num">Socketed Gems ↕</th><th onclick="srt('tBuilds',5)">Consumables ↕</th><th onclick="srt('tBuilds',6)">Missing Prep ↕</th><th onclick="srt('tBuilds',7)">Ready Check+ ↕</th><th>Build Links</th></tr></thead><tbody id="bBuilds"></tbody></table></div></div>
+  <div class="rtab-panel" id="rtab-deaths"><div class="sn">All player deaths ordered by time. Killing blow shown where available.</div><div id="cleanPullBanner" style="display:none"></div><div id="topKillersBox" style="display:none;margin-bottom:12px"></div><div class="table-tools"><div class="table-tools-note">Start with the first death, then switch to repeats if the same player or same mechanic keeps ending pulls.</div><div class="table-sort"><span>Sort:</span><select id="deathSort"><option value="time">Time</option><option value="deaths">Deaths</option><option value="player">Player</option></select></div></div><div class="tw"><table id="tDeath"><thead><tr><th onclick="srt('tDeath',0)">Player ↕</th><th onclick="srt('tDeath',1)">Class/Spec ↕</th><th onclick="srt('tDeath',2)">Time ↕</th><th>Killing Blow</th><th onclick="srt('tDeath',4)" class="num">Deaths ↕</th><th></th></tr></thead><tbody id="bDeath"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-interrupts"><div class="sn">Who interrupted what and how many times.</div><div class="tw"><table id="tInt"><thead><tr><th onclick="srt('tInt',0)">Player ↕</th><th onclick="srt('tInt',1)">Class/Spec ↕</th><th>Spells Interrupted</th><th onclick="srt('tInt',3)" class="num">Total ↕</th></tr></thead><tbody id="bInt"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dispels"><div class="sn">Who dispelled what.</div><div class="tw"><table id="tDisp"><thead><tr><th onclick="srt('tDisp',0)">Player ↕</th><th onclick="srt('tDisp',1)">Class/Spec ↕</th><th>Spells Dispelled</th><th onclick="srt('tDisp',3)" class="num">Total ↕</th></tr></thead><tbody id="bDisp"></tbody></table></div></div>
-  <div class="rtab-panel" id="rtab-damage"><div class="sn">Total damage taken per player. 🟡 Tank · 🟢 Healer · 🔵 DPS. Avoidable tracks likely avoidable boss-pressure windows so raid leads can separate wipe-causing mistakes from unavoidable raid damage. Click a player for full breakdown.</div><div class="tw"><table id="tDmg"><thead><tr><th onclick="srt('tDmg',0)">Player ↕</th><th onclick="srt('tDmg',1)">Class/Spec ↕</th><th onclick="srt('tDmg',2)">Role ↕</th><th>Visual</th><th onclick="srt('tDmg',4)" class="num">Total Taken ↕</th><th onclick="srt('tDmg',5)" class="num">DTPS ↕</th><th onclick="srt('tDmg',6)" class="num">Avoidable ↕</th><th onclick="srt('tDmg',7)" class="num">% of Raid ↕</th><th>Watch</th></tr></thead><tbody id="bDmg"></tbody></table></div></div>
+  <div class="rtab-panel" id="rtab-damage"><div class="sn">Total damage taken per player. 🟡 Tank · 🟢 Healer · 🔵 DPS. Avoidable tracks likely avoidable boss-pressure windows so raid leads can separate wipe-causing mistakes from unavoidable raid damage. Click a player for full breakdown.</div><div class="table-tools"><div class="table-tools-note">Sort by Avoidable or Avoidable % first when you want the fastest coaching read.</div><div class="table-sort"><span>Sort:</span><select id="damageSort"><option value="avoidable">Avoidable</option><option value="avoidablePct">Avoidable %</option><option value="taken">Total Taken</option><option value="dtps">DTPS</option><option value="player">Player</option></select></div></div><div class="tw"><table id="tDmg"><thead><tr><th onclick="srt('tDmg',0)">Player ↕</th><th onclick="srt('tDmg',1)">Class/Spec ↕</th><th onclick="srt('tDmg',2)">Role ↕</th><th>Visual</th><th onclick="srt('tDmg',4)" class="num">Total Taken ↕</th><th onclick="srt('tDmg',5)" class="num">DTPS ↕</th><th onclick="srt('tDmg',6)" class="num">Avoidable ↕</th><th onclick="srt('tDmg',7)" class="num">Avoidable % ↕</th><th onclick="srt('tDmg',8)" class="num">% of Raid ↕</th><th>Watch</th></tr></thead><tbody id="bDmg"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dps"><div class="sn">DPS for the fight. Click any player to see their full breakdown.</div><div class="tw"><table id="tDps"><thead><tr><th onclick="srt('tDps',0)">Player ↕</th><th onclick="srt('tDps',1)">Class/Spec ↕</th><th>Visual</th><th onclick="srt('tDps',3)" class="num">Total Damage ↕</th><th onclick="srt('tDps',4)" class="num">DPS ↕</th></tr></thead><tbody id="bDps"></tbody></table></div></div>
   <div class="rtab-panel" id="rtab-dpsbreak">
     <div class="sn">Detailed damage breakdown per DPS player — total damage, DPS, damage taken, and key CDs at a glance.</div>
@@ -1100,7 +1098,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
   <div class="rtab-panel" id="rtab-mechanics">
     <div class="sn">Wipefest-style mechanic clarity: dangerous debuffs, repeat offenders, and raid damage pressure without burying you in raw log spam.</div>
     <div id="mechanicSummaryGrid" class="summary-grid-2"></div>
-  <div class="tw"><table id="tMechDebuffs"><thead><tr><th onclick="srt('tMechDebuffs',0)">Mechanic ↕</th><th onclick="srt('tMechDebuffs',1)" class="num">Players ↕</th><th onclick="srt('tMechDebuffs',2)" class="num">Applications ↕</th><th onclick="srt('tMechDebuffs',3)">Longest Hold ↕</th><th>Fix Next Pull / Why It Matters</th></tr></thead><tbody id="bMechDebuffs"></tbody></table></div>
+  <div class="table-tools"><div class="table-tools-note">Sort by players hit or longest hold when the same mechanic keeps derailing pulls.</div><div class="table-sort"><span>Sort:</span><select id="mechanicSort"><option value="players">Players Hit</option><option value="apps">Applications</option><option value="hold">Longest Hold</option><option value="mechanic">Mechanic</option></select></div></div><div class="tw"><table id="tMechDebuffs"><thead><tr><th onclick="srt('tMechDebuffs',0)">Mechanic ↕</th><th onclick="srt('tMechDebuffs',1)" class="num">Players ↕</th><th onclick="srt('tMechDebuffs',2)" class="num">Applications ↕</th><th onclick="srt('tMechDebuffs',3)">Longest Hold ↕</th><th>Fix Next Pull / Why It Matters</th></tr></thead><tbody id="bMechDebuffs"></tbody></table></div>
   </div>
   <!-- HEALING BREAKDOWN -->
   <div class="rtab-panel" id="rtab-healbreak">
@@ -1125,11 +1123,20 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
       <span class="v5-chip on" id="tlChip-raid" onclick="toggleTL('raid')">💚 Raid CDs</span>
       <span class="v5-chip on" id="tlChip-lust" onclick="toggleTL('lust')">⚡ Lust</span>
       <span class="v5-chip on" id="tlChip-boss" onclick="toggleTL('boss')">👹 Boss Abilities</span>
+      <span style="margin-left:8px;font-size:11px;color:#8b949e;font-weight:600">Zoom:</span>
+      <select id="tlZoomSel" onchange="changeTLZoom(this.value)" style="background:#161b22;border:1px solid #30363d;color:#c9d1d9;padding:3px 8px;border-radius:6px;font-size:11px">
+        <option value="1">100%</option>
+        <option value="1.25">125%</option>
+        <option value="1.5">150%</option>
+        <option value="1.75">175%</option>
+        <option value="2">200%</option>
+      </select>
       <span style="margin-left:8px;font-size:11px;color:#8b949e;font-weight:600">Player:</span>
       <select id="tlPlayerSel" onchange="applyTLFilters()" style="background:#161b22;border:1px solid #30363d;color:#c9d1d9;padding:3px 8px;border-radius:6px;font-size:11px">
         <option value="all">All Players</option>
       </select>
     </div>
+    <div id="timelineFocus" style="display:none"></div>
     <div id="timelineContent" style="padding:4px 0"></div>
   </div>
 </div>
@@ -1485,8 +1492,11 @@ const RAID_CD_HINTS=[
   "tranquility","divine hymn","revival","spirit link","healing tide","power word: barrier",
   "aura mastery","rewind","dream flight","darkness","rallying cry","anti-magic zone","spirit shell"
 ];
-const WEAPON_BUFF_HINTS=["oil","whetstone","rune","howling","stormcharged","shaded"];
-const PASSIVE_AURA_HINTS=["well fed","food","feast","phial","flask","rune"];
+const FOOD_AURA_HINTS=["well fed","feast","food"];
+const FLASK_AURA_HINTS=["flask","phial"];
+const RUNE_AURA_HINTS=["augment rune","augment","crystallized","draconic"];
+const WEAPON_BUFF_HINTS=["oil","whetstone","howling","stormcharged","shaded","oathsworn","armor kit","sharpening stone"];
+const PASSIVE_AURA_HINTS=[...FOOD_AURA_HINTS,...FLASK_AURA_HINTS];
 
 function safeArr(v){return Array.isArray(v)?v:[];}
 function uniq(arr){return [...new Set((arr||[]).filter(Boolean))];}
@@ -1520,18 +1530,45 @@ function wowheadTalentCalcUrl(p){
   if(!cls||!spec)return "https://www.wowhead.com/talent-calc";
   return `https://www.wowhead.com/talent-calc/${cls}/${spec}`;
 }
-function renderBuildSnapshotCard(p,mode){
-  const compact=mode==="compact";
-  const title=escAttr(p.spec||p.cls||"Build");
-  const calcUrl=escAttr(wowheadTalentCalcUrl(p));
-  const actions=!compact?`<div class="build-card-actions">${p.buildCode?`<button class="mini-link" onclick="event.stopPropagation();copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:""}<a href="${calcUrl}" target="_blank" class="mini-link" onclick="event.stopPropagation()">Wowhead Calc ↗</a></div>`:"";
-  if(p.talentNames?.length){
-    return `<div class="build-card"><div class="build-card-head"><div class="build-card-title">${title} talents</div>${p.buildCode?'<span class="build-card-pill">Import string</span>':''}</div><div class="build-chip-row">${p.talentNames.slice(0,compact?3:6).map(n=>spellChip(n,null,null,"cool","talent snapshot")).join("")}</div>${actions}</div>`;
+function firstAuraMatch(names,hints){
+  return safeArr(names).find(n=>hints.some(h=>(n||"").toLowerCase().includes(h)))||null;
+}
+function snapshotBuffEntries(p){
+  const entries=[];
+  if(p.foodBuff)entries.push({label:"Food",value:p.foodBuff,tone:"good"});
+  if(p.flaskBuff)entries.push({label:"Phial",value:p.flaskBuff,tone:"good"});
+  if(p.runeBuff)entries.push({label:"Rune",value:p.runeBuff,tone:"info"});
+  if(p.weaponBuff)entries.push({label:"Weapon",value:p.weaponBuff,tone:"good"});
+  return entries;
+}
+function snapshotBuffsHtml(p,compact){
+  const entries=snapshotBuffEntries(p);
+  if(entries.length){
+    return `<div class="snapshot-buffs">${entries.map(e=>`<span class="snapshot-chip ${e.tone}" title="${escAttr(e.value)}">${e.label}</span>`).join("")}</div>`;
   }
-  if(p.buildCode){
-    return `<div class="build-card warn"><div class="build-card-head"><div class="build-card-title">${title} build</div><span class="build-card-pill">Import string</span></div><div class="build-card-sub">${compact?"Build code available for copy.":"Build code is available for copy, and the calculator link opens the matching class/spec tree."}</div>${actions}</div>`;
-  }
-  return `<div class="build-card warn"><div class="build-card-head"><div class="build-card-title">${title} build</div></div><div class="build-card-sub">No build snapshot exposed for this pull.</div>${actions}</div>`;
+  if(p.auraSnapshotAvailable)return `<span class="none-t">No consumable auras in snapshot</span>`;
+  return `<span class="none-t">Consumable snapshot unavailable</span>`;
+}
+function snapshotBuffSummaryText(p){
+  const entries=snapshotBuffEntries(p);
+  if(entries.length)return entries.map(e=>`${e.label}: ${e.value}`).join(" · ");
+  return p.auraSnapshotAvailable?"No consumable auras in snapshot":"Consumable snapshot unavailable";
+}
+function roleGraphCoach(p){
+  if(p?.role==="healers")return "Healer view: check whether ramps and raid CDs were already rolling before the amber boss windows landed.";
+  if(p?.role==="tanks")return "Tank view: check whether personals and externals landed before the dangerous boss windows, not after the hit.";
+  return "DPS view: line personals, burst windows, and self-sustain up with the amber boss windows.";
+}
+function buildConsumableStatusCards(p){
+  const cards=[
+    {label:"Food",value:p.foodBuff||"No food snapshot",tone:p.foodBuff?"good":"warn"},
+    {label:"Phial",value:p.flaskBuff||"No phial snapshot",tone:p.flaskBuff?"good":"warn"},
+    {label:"Augment Rune",value:p.runeBuff||"No rune snapshot",tone:p.runeBuff?"info":"warn"},
+    {label:"Weapon Buff",value:p.weaponBuff||"No weapon snapshot",tone:p.weaponBuff?"good":"warn"},
+    {label:"Potion",value:p.pots?`${p.potName||"Used"} ×${p.pots}`:"No in-fight pot",tone:p.pots?"good":"warn"},
+    {label:"Healthstone",value:p.hs?"Used":"Not used",tone:p.hs?"good":"warn"}
+  ];
+  return `<div class="spell-grid" style="gap:12px">${cards.map(card=>`<div style="min-width:180px;flex:1 1 180px;background:#111923;border:1px solid ${card.tone==="good"?"#245b36":card.tone==="warn"?"#5a4820":"#22364f"};border-radius:10px;padding:12px"><div style="font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">${card.label}</div><div style="font-size:13px;font-weight:700;color:${card.tone==="good"?"#3fb950":card.tone==="warn"?"#ffdd75":"#8fd0ff"};line-height:1.45">${card.value}</div></div>`).join("")}</div>`;
 }
 function setTLZoom(v){
   const n=Math.max(1,Number(v)||1);
@@ -1543,6 +1580,10 @@ function setTLZoom(v){
     canvas.style.width=`${Math.round(n*100)}%`;
     canvas.style.minWidth=`${Math.max(980,Math.round(980*n))}px`;
   }
+}
+function changeTLZoom(v){
+  setTLZoom(v);
+  renderTimelineFocus();
 }
 function detectRaidCD(name,sid){
   const lower=(name||"").toLowerCase();
@@ -1587,19 +1628,25 @@ function extractCombatantInfo(entry){
   if(!ci){
     return{
       ilvl:0,enchants:0,gems:0,weaponBuffs:[],passiveBuffs:[],talentNames:[],
-      readyIssues:["Snapshot unavailable"],readyStatus:"warn",readyText:"Snapshot unavailable",stats:null
+      readyIssues:["Snapshot unavailable"],readyStatus:"warn",readyText:"Snapshot unavailable",stats:null,
+      auraSnapshotAvailable:false,foodBuff:null,flaskBuff:null,runeBuff:null,weaponBuff:null
     };
   }
   const gear=safeArr(ci?.gear);
   const auras=safeArr(ci?.auras);
+  const auraNames=uniq(auras.map(a=>a?.name).filter(Boolean));
   const talents=summarizeTalentTree(ci?.talentTree||ci?.talents||[]);
   const directIlvl=Number(ci?.itemLevelEquipped||ci?.itemLevel||ci?.averageItemLevel||0);
   const gearAvg=avg(gear.map(g=>Number(g?.itemLevelEquipped||g?.itemLevel||0)).filter(Boolean));
   const ilvl=directIlvl||gearAvg||0;
   const enchants=gear.filter(g=>g?.permanentEnchant||g?.permanentEnchantName||g?.permanentEnchantId).length;
   const gems=gear.reduce((sum,g)=>sum+safeArr(g?.gems).filter(Boolean).length,0);
-  const weaponBuffs=uniq(auras.map(a=>a?.name).filter(n=>WEAPON_BUFF_HINTS.some(h=>(n||"").toLowerCase().includes(h))));
-  const passiveBuffs=uniq(auras.map(a=>a?.name).filter(n=>PASSIVE_AURA_HINTS.some(h=>(n||"").toLowerCase().includes(h))));
+  const foodBuff=firstAuraMatch(auraNames,FOOD_AURA_HINTS);
+  const flaskBuff=firstAuraMatch(auraNames,FLASK_AURA_HINTS);
+  const runeBuff=firstAuraMatch(auraNames,RUNE_AURA_HINTS);
+  const weaponBuff=firstAuraMatch(auraNames,WEAPON_BUFF_HINTS);
+  const weaponBuffs=uniq([weaponBuff].filter(Boolean));
+  const passiveBuffs=uniq([foodBuff,flaskBuff,runeBuff].filter(Boolean));
   const issues=[];
   if(gear.length&&enchants===0)issues.push("No enchants seen");
   else if(gear.length&&enchants<Math.max(2,Math.floor(gear.length*0.35)))issues.push("Few enchants seen");
@@ -1609,7 +1656,9 @@ function extractCombatantInfo(entry){
     ilvl:ilvl||0,enchants,gems,weaponBuffs,passiveBuffs,talentNames:talents,
     readyIssues:issues,readyStatus,
     readyText:issues.length?issues.slice(0,2).join(" · "):"Ready to Raid!",
-    stats:ci?.stats||null
+    stats:ci?.stats||null,
+    auraSnapshotAvailable:auraNames.length>0,
+    foodBuff,flaskBuff,runeBuff,weaponBuff
   };
 }
 function buildBossAbilityRows(dmgT,debuffs,P,petOwnerMap,fightStart,fightEnd,aName){
@@ -2584,8 +2633,106 @@ function countLabel(n,singular,plural){
 function buildPrepIssues(p){
   return uniq([...(p.readyIssues||[])]);
 }
-function passiveBuffSummary(p){
-  return p.passiveBuffs?.length?p.passiveBuffs.join(", "):"None seen";
+function buildPlayerSuggestions(p,shortPull){
+  const notes=[];
+  if(p.readyStatus==="bad"||p.readyStatus==="warn")notes.push(`Prep: ${p.readyText}.`);
+  if(!p.pots&&(p.role==="dps"||p.role==="healers"))notes.push("No in-fight potion detected.");
+  if(p.deaths.length){
+    const first=p.deaths[0];
+    if(String(first?.ctx||"").includes("No recent defensive"))notes.push(`First death had no recent defensive before ${first.killer}.`);
+    else notes.push(`Review the first death at ${first.timeStr||"?"} on ${first.killer}.`);
+  }
+  const expected=SPEC_OFFS[(p.cls||"")+"|"+(p.spec||"")]||SPEC_OFFS[(p.cls||"").replace(/ /g,"")+"|"+(p.spec||"")]||null;
+  if(expected&&!shortPull){
+    const missed=expected.filter(cd=>Array.isArray(cd)?!cd.some(opt=>p.offs[opt]):!p.offs[cd]).length;
+    if(missed)notes.push(`Missed ${missed} tracked offensive cooldown${missed===1?"":"s"}.`);
+  }
+  if((p.avoidableTaken||0)>1500000||(p.avoidableHits||0)>=3)notes.push(`Avoidable pressure: ${fmt(p.avoidableTaken)} across ${p.avoidableHits||0} hits.`);
+  if(!notes.length)notes.push("No major issues flagged on this pull.");
+  return notes.slice(0,3);
+}
+function playerCoverageNote(p,bossRows){
+  const windows=safeArr(bossRows).flatMap(row=>safeArr(row.clusters).map(cl=>({t:cl.t,name:row.name})));
+  const markers=safeArr(p.timelineMarkers).filter(m=>m.kind==="def"||m.kind==="raid"||m.kind==="lust");
+  if(!windows.length||!markers.length)return "";
+  let covered=0;
+  windows.forEach(w=>{
+    if(markers.some(m=>Math.abs(m.t-w.t)<=6000))covered++;
+  });
+  if(!covered)return `No personals or raid CDs landed near the tracked boss danger windows.`;
+  if(covered===windows.length)return `Cooldowns lined up with every tracked boss danger window.`;
+  return `Cooldowns lined up with ${covered}/${windows.length} tracked boss danger windows.`;
+}
+function svgAreaPath(values,width,height,left,right,top,bottom,maxVal){
+  const arr=safeArr(values);
+  const innerW=width-left-right;
+  const innerH=height-top-bottom;
+  const baseY=height-bottom;
+  if(!arr.length||maxVal<=0)return `M ${left} ${baseY} L ${width-right} ${baseY} Z`;
+  const step=arr.length===1?innerW:innerW/(arr.length-1);
+  let d=`M ${left} ${baseY}`;
+  arr.forEach((v,i)=>{
+    const x=left+(i*step);
+    const y=baseY-((Math.max(0,v)/maxVal)*innerH);
+    d+=` L ${x.toFixed(2)} ${y.toFixed(2)}`;
+  });
+  d+=` L ${width-right} ${baseY} Z`;
+  return d;
+}
+function renderPlayerFocusGraph(p,fightMs,bossRows,compact){
+  const dmg=safeArr(p.damageBuckets);
+  const heal=safeArr(p.healBuckets);
+  if(!dmg.length&&!heal.length)return `<div class="focus-graph-empty">No per-player graph data was recorded for this pull.</div>`;
+  const width=compact?720:820;
+  const height=compact?170:190;
+  const left=36,right=14,top=12,bottom=26;
+  const maxVal=Math.max(1,...dmg,...heal);
+  const dangerLines=safeArr(bossRows).flatMap(row=>safeArr(row.clusters).map(cl=>{
+    const x=left+((cl.t/Math.max(fightMs,1))*(width-left-right));
+    return `<line x1="${x.toFixed(2)}" y1="${top}" x2="${x.toFixed(2)}" y2="${height-bottom}" stroke="#ffb86c" stroke-width="2" stroke-opacity=".45"></line>`;
+  })).join("");
+  const markerLines=safeArr(p.timelineMarkers).map(ev=>{
+    const x=left+((ev.t/Math.max(fightMs,1))*(width-left-right));
+    const color=ev.kind==="raid"?"#3fb950":ev.kind==="lust"?"#ff7b72":ev.kind==="def"?"#79c0ff":"#ffd700";
+    return `<line x1="${x.toFixed(2)}" y1="${height-bottom+2}" x2="${x.toFixed(2)}" y2="${height-4}" stroke="${color}" stroke-width="3" stroke-linecap="round"></line>`;
+  }).join("");
+  const ticks=[0,0.25,0.5,0.75,1].map(r=>{
+    const x=left+((width-left-right)*r);
+    const sec=Math.round((fightMs*r)/1000);
+    return `<line x1="${x.toFixed(2)}" y1="${height-bottom}" x2="${x.toFixed(2)}" y2="${height-bottom+4}" stroke="#344456"></line><text x="${x.toFixed(2)}" y="${height-6}" fill="#8ea2b8" font-size="10" text-anchor="middle">${sec}s</text>`;
+  }).join("");
+  const guide=[0.25,0.5,0.75,1].map(r=>{
+    const y=top+((height-top-bottom)*(1-r));
+    return `<line x1="${left}" y1="${y.toFixed(2)}" x2="${width-right}" y2="${y.toFixed(2)}" stroke="#1e2833" stroke-dasharray="3 4"></line>`;
+  }).join("");
+  const damagePath=svgAreaPath(dmg,width,height,left,right,top,bottom,maxVal);
+  const healPath=svgAreaPath(heal,width,height,left,right,top,bottom,maxVal);
+  const damagePeak=Math.max(0,...dmg);
+  const healPeak=Math.max(0,...heal);
+  const coverageNote=playerCoverageNote(p,bossRows);
+  const coachNote=roleGraphCoach(p);
+  return `<div class="focus-graph-wrap">
+    <div class="focus-graph-head">
+      <div class="focus-graph-title">${p.name} · Fight Graph</div>
+      <div class="focus-graph-meta">5s buckets · boss danger windows in amber · cooldowns along the floor</div>
+    </div>
+    <div class="focus-graph-legend">
+      <span><i style="background:#79c0ff"></i>Damage peak ${fmtNum(damagePeak)}</span>
+      <span><i style="background:#3fb950"></i>Healing peak ${fmtNum(healPeak)}</span>
+      <span><i style="background:#ffb86c"></i>Boss danger window</span>
+      <span><i style="background:#ffd700"></i>Player cooldown marker</span>
+    </div>
+    <svg class="focus-graph-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
+      ${guide}
+      <path d="${damagePath}" fill="rgba(121,192,255,.22)" stroke="#79c0ff" stroke-width="2"></path>
+      <path d="${healPath}" fill="rgba(63,185,80,.18)" stroke="#3fb950" stroke-width="2"></path>
+      ${dangerLines}
+      <line x1="${left}" y1="${height-bottom}" x2="${width-right}" y2="${height-bottom}" stroke="#344456"></line>
+      ${ticks}
+      ${markerLines}
+    </svg>
+    <div class="focus-graph-note">${coverageNote?`${coverageNote} · ${coachNote}`:coachNote}</div>
+  </div>`;
 }
 
 function closeModal(e){if(e.target===document.getElementById("playerModal"))document.getElementById("playerModal").style.display="none";}
@@ -2725,17 +2872,32 @@ function openPlayerModal(p,fSec){
   let html=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
     <div>${statRow("Role",'<span style="color:'+ROLE_COLOR[p.role]+'">'+(ROLE_LABEL[p.role]||p.role)+'</span>')}${statRow("Deaths",p.deaths.length,p.deaths.length>0?"#f85149":"#3fb950")}${statRow("Potion",p.pots?`✓ ${p.potName||"Used"} (${p.pots})`:"✗ None detected",p.pots?"#3fb950":"#6e7681")}${statRow("Healthstone",p.hs?"✓":"✗",p.hs?"#3fb950":"#f85149")}${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#e3a008")}${p.ilvl?statRow("Snapshot iLvl",fmtIlvl(p.ilvl),"#c9d1d9"):""}${p.ddealt>0?statRow("Total Damage",fmtNum(p.ddealt),"#79c0ff"):""} ${p.ddealt>0?statRow("DPS",dps,"#79c0ff"):""}${p.healed>0?statRow("Total Healing",fmtNum(p.healed),"#3fb950"):""}${p.healed>0?statRow("HPS",hps,"#3fb950"):""}${p.healed>0?statRow("Overheal",ohPct+"%",ohPct>40?"#f85149":ohPct>25?"#e3a008":"#3fb950"):""}</div>
     <div>${statRow("Damage Taken",fmtNum(p.dtaken))}${statRow("Interrupts",Object.values(p.ints).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Dispels",Object.values(p.disps).reduce((s,c)=>s+c,0),"#3fb950")}${statRow("CC Used",Object.values(p.cc).reduce((s,c)=>s+c,0),"#79c0ff")}${statRow("Def CDs Used",Object.values(p.defs).reduce((s,c)=>s+c,0),"#ffd700")}${statRow("Off CDs Used",Object.values(p.offs).reduce((s,c)=>s+c,0),"#ffd700")}${(p.avoidableTaken||0)?statRow("Avoidable Pressure",fmtNum(p.avoidableTaken),(p.avoidableTaken||0)>1500000?"#f85149":"#ffdd75"):""}${p.pets?.length?statRow("Pets Counted",p.pets.length,"#8b949e"):""}</div></div>`;
+  const quickSuggestions=buildPlayerSuggestions(p,window._raidLensShortPull||false);
+  if(quickSuggestions.length){
+    html+=`<div class="modal-section"><h4>Quick Coaching</h4><div class="spell-grid">${quickSuggestions.map(note=>`<div style="min-width:220px;flex:1 1 220px;background:#111923;border:1px solid #263340;border-radius:10px;padding:12px"><div style="font-size:12px;color:#c9d1d9;line-height:1.65">${note}</div></div>`).join("")}</div></div>`;
+  }
   if(p.buildCode||p.readyIssues?.length||p.enchantCount||p.gemCount){
     const calcUrl=escAttr(wowheadTalentCalcUrl(p));
     const buildLinks=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">${p.buildCode?`<button class="mini-link" onclick="copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:""}<a href="${calcUrl}" target="_blank" class="mini-link">Calc ↗</a></div>`;
     const prepRows=[
       statRow("Enchant Count",countLabel(p.enchantCount,"enchant","enchants"),(p.enchantCount||0)===0?"#f85149":(p.enchantCount||0)<2?"#ffdd75":"#3fb950"),
       statRow("Socketed Gems",countLabel(p.gemCount,"gem","gems"),(p.gemCount||0)===0?"#f85149":"#3fb950"),
+      statRow("Consumables",snapshotBuffSummaryText(p),snapshotBuffEntries(p).length?"#8fd0ff":"#8b949e"),
       statRow("Missing Prep",buildPrepIssues(p).length?buildPrepIssues(p).join(" · "):"Ready to Raid!",buildPrepIssues(p).length?"#ffdd75":"#3fb950")
     ].join("");
-    html+=`<div class="modal-section"><h4>Build + Ready</h4>${buildLinks}<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><div>${prepRows}</div><div>${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#ffdd75")}</div></div></div>`;
+    html+=`<div class="modal-section"><h4>Build + Ready</h4>${buildLinks}<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><div>${prepRows}</div><div>${statRow("Ready Check+",p.readyText||"No snapshot",p.readyStatus==="good"?"#3fb950":p.readyStatus==="bad"?"#f85149":"#ffdd75")}</div></div><div style="margin-top:10px">${snapshotBuffsHtml(p,false)}</div></div>`;
+  }
+  if(p.auraSnapshotAvailable||p.pots||p.hs){
+    html+=`<div class="modal-section"><h4>Consumables Snapshot</h4>${buildConsumableStatusCards(p)}</div>`;
+  }
+  if((p.damageBuckets&&p.damageBuckets.some(v=>v>0))||(p.healBuckets&&p.healBuckets.some(v=>v>0))){
+    html+=`<div class="modal-section"><h4>Fight Graph</h4>${renderPlayerFocusGraph(p,window._raidLensFightMs||0,window._raidLensBossRows||[],true)}</div>`;
   }
   if(p.deaths.length){html+=`<div class="modal-section"><h4>Deaths</h4><div class="spell-grid">${p.deaths.map(d=>spellChip(`${d.timeStr||"?"} — ${d.killer}`,null,d.killerId||findAbilityIdByName(d.killer),"danger","death cause")).join("")}</div></div>`;}
+  if(p.avoidableSpells?.length){
+    const avoidableMap=Object.fromEntries(p.avoidableSpells.map(s=>[s.name,{id:s.id||findAbilityIdByName(s.name),amount:s.amount||0,hits:s.hits||0}]));
+    html+=`<div class="modal-section"><h4>Avoidable Pressure</h4><div style="font-size:12px;color:#8b949e;margin-bottom:10px">Likely avoidable boss-window damage only. Use this with deaths and timeline context, not as a blame chart by itself.</div>${renderSpellBreakdown(avoidableMap,p.avoidableTaken||0,"danger","likely avoidable boss pressure")}</div>`;
+  }
   if(Object.keys(p.dmgBySpell||{}).length){html+=`<div class="modal-section"><h4>Damage Done Breakdown</h4>${renderSpellBreakdown(p.dmgBySpell,p.ddealt,"cool","damage done")}</div>`;}
   if(Object.keys(p.healBySpell||{}).length){html+=`<div class="modal-section"><h4>Healing Breakdown</h4>${renderHealingBreakdown(p.healBySpell,p.healed)}</div>`;}
   if(Object.keys(p.takenBySpell||{}).length){html+=`<div class="modal-section"><h4>Damage Taken Breakdown</h4>${renderSpellBreakdown(p.takenBySpell,p.dtaken,"danger","damage taken")}</div>`;}
@@ -2839,6 +3001,7 @@ async function analyze(){
   const btn=document.getElementById("analyzeBtn");btn.disabled=true;btn.innerHTML='<span class="spin"></span>Analyzing...';
   try{
     const fight=allFights.find(f=>f.id===fightId),fSec=(fight.endTime-fight.startTime)/1000,fightMs=fight.endTime-fight.startTime;
+    const bucketMs=5000,bucketCount=Math.max(1,Math.ceil(fightMs/bucketMs));
     log(`⚔️  Analyzing: ${fight.name} (${fdur(fight.endTime-fight.startTime)})`);
     const aName={},potIDs=new Set();
     abilities.forEach(a=>{aName[a.gameID]=a.name;const n=(a.name||"").toLowerCase();if(n.includes("potion"))potIDs.add(a.gameID);});
@@ -2871,7 +3034,9 @@ async function analyze(){
         ilvl:ci.ilvl||0,talentNames:ci.talentNames||[],buildCode:null,readyIssues:ci.readyIssues||[],
         readyStatus:ci.readyStatus||"warn",readyText:ci.readyText||"No readiness data",
         enchantCount:ci.enchants||0,gemCount:ci.gems||0,weaponBuffs:ci.weaponBuffs||[],
-        passiveBuffs:ci.passiveBuffs||[],stats:ci.stats||null,pets:[]};
+        passiveBuffs:ci.passiveBuffs||[],stats:ci.stats||null,pets:[],
+        auraSnapshotAvailable:!!ci.auraSnapshotAvailable,foodBuff:ci.foodBuff||null,flaskBuff:ci.flaskBuff||null,runeBuff:ci.runeBuff||null,weaponBuff:ci.weaponBuff||null,
+        damageBuckets:new Array(bucketCount).fill(0),healBuckets:new Array(bucketCount).fill(0),timelineMarkers:[]};
     });});
     log(`👥 ${Object.keys(P).length} players`);
     let phaseInfo=[],petOwnerMap={},friendlyPetNames={},bossTimelineRows=[],coverageSummary=[];
@@ -2920,12 +3085,15 @@ async function analyze(){
     casts.forEach(ev=>{
       const p=P[ev.sourceID];if(!p)return;
       const sid=ev.abilityGameID;
+      const relT=ev.timestamp-fight.startTime;
       if(DEFS[sid]){p.defs[DEFS[sid]]=(p.defs[DEFS[sid]]||0)+1;}
       if(potIDs.has(sid)){p.pots++;if(!p.potName)p.potName=aName[sid];}
       if(HS_IDS.has(sid)){p.hs=true;}
       if(OFFS[sid]){p.offs[OFFS[sid]]=(p.offs[OFFS[sid]]||0)+1;}
       if(CC_IDS[sid]){p.cc[CC_IDS[sid]]=(p.cc[CC_IDS[sid]]||0)+1;}
       if(BL_IDS[sid]){bloodlusts.push({caster:p.name,spell:BL_IDS[sid],t:ev.timestamp-fight.startTime});}
+      const kind=detectRaidCD(aName[sid]||DEFS[sid]||OFFS[sid]||`Spell#${sid}`,sid);
+      if(kind)p.timelineMarkers.push({t:relT,name:aName[sid]||`Spell#${sid}`,sid,kind});
     });
     // credit prepotters -- they used a pot even though it was before fight.startTime
     prepotPlayerIDs.forEach(id=>{if(P[id]&&!P[id].pots)P[id].pots=1;});
@@ -2937,9 +3105,9 @@ async function analyze(){
     log("📡 Damage taken...");const dmgT=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"DamageTaken");log(`✅ ${dmgT.length}`);
     dmgT.forEach(ev=>{const p=P[ev.targetID];if(!p)return;const amt=(ev.amount||0)+(ev.absorbed||0),sid=ev.abilityGameID,n=aName[sid]||`Spell#${sid}`;p.dtaken+=amt;p.takenBySpell[n]=p.takenBySpell[n]||{id:sid,amount:0,hits:0};p.takenBySpell[n].amount+=amt;p.takenBySpell[n].hits++;});
     log("📡 Damage done...");const dmgD=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"DamageDone");log(`✅ ${dmgD.length}`);
-    dmgD.forEach(ev=>{const p=ownerForSource(ev.sourceID);if(!p)return;const amt=(ev.amount||0),sid=ev.abilityGameID,n=aName[sid]||`Spell#${sid}`;p.ddealt+=amt;p.dmgBySpell[n]=p.dmgBySpell[n]||{id:sid,amount:0,hits:0};p.dmgBySpell[n].amount+=amt;p.dmgBySpell[n].hits++;});
+    dmgD.forEach(ev=>{const p=ownerForSource(ev.sourceID);if(!p)return;const amt=(ev.amount||0),sid=ev.abilityGameID,n=aName[sid]||`Spell#${sid}`;p.ddealt+=amt;p.dmgBySpell[n]=p.dmgBySpell[n]||{id:sid,amount:0,hits:0};p.dmgBySpell[n].amount+=amt;p.dmgBySpell[n].hits++;const idx=Math.max(0,Math.min(bucketCount-1,Math.floor((ev.timestamp-fight.startTime)/bucketMs)));p.damageBuckets[idx]+=amt;});
     log("📡 Healing...");const heals=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Healing");log(`✅ ${heals.length}`);
-    heals.forEach(ev=>{const p=ownerForSource(ev.sourceID);if(!p)return;const sid=ev.abilityGameID,n=aName[sid]||`Spell#${sid}`,amt=(ev.amount||0);p.healed+=amt;p.overheal+=(ev.overheal||0);p.absorbs+=(ev.absorbed||0);p.healBySpell[n]=p.healBySpell[n]||{id:sid,amount:0,hits:0};p.healBySpell[n].amount+=amt;p.healBySpell[n].hits++;});
+    heals.forEach(ev=>{const p=ownerForSource(ev.sourceID);if(!p)return;const sid=ev.abilityGameID,n=aName[sid]||`Spell#${sid}`,amt=(ev.amount||0);p.healed+=amt;p.overheal+=(ev.overheal||0);p.absorbs+=(ev.absorbed||0);p.healBySpell[n]=p.healBySpell[n]||{id:sid,amount:0,hits:0};p.healBySpell[n].amount+=amt;p.healBySpell[n].hits++;const idx=Math.max(0,Math.min(bucketCount-1,Math.floor((ev.timestamp-fight.startTime)/bucketMs)));p.healBuckets[idx]+=amt;});
     log("📡 Deaths...");const deaths=await fetchEvts(token,reportCode,fight.id,fight.startTime,fight.endTime,"Deaths");log(`✅ ${deaths.length}`);
     const mechanicRows=buildMechanicRows(debuffs,P,fight.startTime,fight.endTime,aName);
     bossTimelineRows=buildBossAbilityRows(dmgT,debuffs,P,petOwnerMap,fight.startTime,fight.endTime,aName);
@@ -2961,6 +3129,8 @@ async function analyze(){
     });
     window._raidLensPlayers=sorted;
     window._raidLensFightSec=fSec;
+    window._raidLensFightMs=fightMs;
+    window._raidLensBossRows=bossTimelineRows;
     log("🎉 Done!");
     document.getElementById("resultTitle").textContent=fight.name;
     var rlcnt=parseInt(localStorage.getItem('rl_count')||'0')+1;
@@ -3000,25 +3170,45 @@ async function analyze(){
     // BUILD + READY
     const bBuilds=document.getElementById("bBuilds");if(bBuilds){
       bBuilds.innerHTML="";
+      const buildReadySummaryGrid=document.getElementById("buildReadySummaryGrid");
+      if(buildReadySummaryGrid){
+        const readyGood=sorted.filter(p=>p.readyStatus==="good").length;
+        const readyWarn=sorted.filter(p=>p.readyStatus==="warn").length;
+        const readyBad=sorted.filter(p=>p.readyStatus==="bad").length;
+        const snapshotPlayers=sorted.filter(p=>p.auraSnapshotAvailable);
+        const avgIlvl=sorted.filter(p=>p.ilvl).length?avg(sorted.filter(p=>p.ilvl).map(p=>Number(p.ilvl)||0)):0;
+        const prepWatch=sorted.filter(p=>buildPrepIssues(p).length).slice(0,4);
+        const missingFood=snapshotPlayers.filter(p=>!p.foodBuff).map(p=>p.name).slice(0,3);
+        const missingPhial=snapshotPlayers.filter(p=>!p.flaskBuff).map(p=>p.name).slice(0,3);
+        const missingRune=snapshotPlayers.filter(p=>!p.runeBuff).map(p=>p.name).slice(0,3);
+        const missingWeapon=snapshotPlayers.filter(p=>!p.weaponBuff).map(p=>p.name).slice(0,3);
+        buildReadySummaryGrid.innerHTML=[
+          `<div class="summary-note-card"><div class="summary-note-title">Ready Check+</div><div class="summary-note-body">Ready ${readyGood}/${sorted.length} · Watch ${readyWarn}/${sorted.length} · Fix ${readyBad}/${sorted.length}</div><div class="summary-note-sub">${prepWatch.length?`Prep watch: ${prepWatch.map(p=>`${p.name} (${p.readyText})`).join(" · ")}`:"Nobody is flagged for reliable prep gaps on this pull."}</div></div>`,
+          `<div class="summary-note-card"><div class="summary-note-title">Consumable Snapshot</div><div class="summary-note-body">${snapshotPlayers.length?`Food ${snapshotPlayers.filter(p=>p.foodBuff).length}/${snapshotPlayers.length} · Phial ${snapshotPlayers.filter(p=>p.flaskBuff).length}/${snapshotPlayers.length} · Rune ${snapshotPlayers.filter(p=>p.runeBuff).length}/${snapshotPlayers.length} · Weapon ${snapshotPlayers.filter(p=>p.weaponBuff).length}/${snapshotPlayers.length}`:"This log did not expose usable prep-aura snapshots."}<br>Potions ${sorted.filter(p=>p.pots>0).length}/${sorted.length} · Healthstones ${sorted.filter(p=>p.hs).length}/${sorted.length}</div><div class="summary-note-sub">${snapshotPlayers.length?`${missingFood.length?`Missing food: ${missingFood.join(", ")}`:"Food snapshot looked good."}${missingPhial.length?` · Missing phial: ${missingPhial.join(", ")}`:""}${missingRune.length?` · Missing rune: ${missingRune.join(", ")}`:""}${missingWeapon.length?` · Missing weapon buff: ${missingWeapon.join(", ")}`:""}`:"Snapshot buff checks stay informational if Warcraft Logs didn’t expose them."}</div></div>`,
+          `<div class="summary-note-card"><div class="summary-note-title">Gear Snapshot</div><div class="summary-note-body">${avgIlvl?`Avg iLvl ${fmtIlvl(avgIlvl)} · Highest ${fmtIlvl(Math.max(...sorted.map(p=>Number(p.ilvl)||0)))} · Lowest ${fmtIlvl(Math.min(...sorted.filter(p=>p.ilvl).map(p=>Number(p.ilvl)||0)))}`:"Item level snapshot unavailable."}</div><div class="summary-note-sub">${sorted.filter(p=>p.gemCount>0).length} players had socketed gems in the snapshot · ${sorted.filter(p=>p.enchantCount>0).length} had at least one enchant reported.</div></div>`,
+          `<div class="summary-note-card"><div class="summary-note-title">Build Links</div><div class="summary-note-body">${sorted.filter(p=>p.buildCode).length?`${sorted.filter(p=>p.buildCode).length}/${sorted.length} players have a build string ready to copy.`:"Warcraft Logs did not expose any build strings for this pull."}</div><div class="summary-note-sub">Use Copy Build for fast sharing and Calc ↗ when you want the full talent tree outside RaidLens.</div></div>`
+        ].join("");
+      }
       sorted.forEach(p=>{
         const tr=document.createElement("tr");
         tr.id=`buildrow-${p.name.replace(/[^a-z0-9]/gi,"_")}`;
         const readyClass=p.readyStatus||"warn";
         const readySortVal=readyClass==="bad"?3:readyClass==="warn"?2:1;
         const prepIssues=buildPrepIssues(p);
-        const readyHtml=`<span class="ready-pill ${readyClass}">${readyClass==="good"?"Ready to Raid":readyClass==="warn"?"Watch":"Fix"}</span><div style="margin-top:6px;color:${readyClass==="bad"?"#f87171":readyClass==="warn"?"#ffdd75":"#3fb950"};font-size:11px;line-height:1.6">${escAttr(p.readyText||"No readiness snapshot")}</div>`;
+        const readyHtml=`<span class="ready-pill ${readyClass}" title="${escAttr(p.readyText||"No readiness snapshot")}">${readyClass==="good"?"Ready to Raid":readyClass==="warn"?"Watch":"Fix"}</span>`;
         const calcUrl=wowheadTalentCalcUrl(p);
         const links=[
           p.buildCode?`<button class="mini-link" onclick="event.stopPropagation();copyTiny(this,'${escJs(p.buildCode)}','✓ Copied')">Copy Build</button>`:"",
           `<a href="${escAttr(calcUrl)}" target="_blank" class="mini-link" onclick="event.stopPropagation()">Calc ↗</a>`
         ].filter(Boolean).join("");
-        tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td class="num build-ilvl-cell" data-val="${p.ilvl||0}" style="color:${p.ilvl? "#c9d1d9":"#6e7681"}">${fmtIlvl(p.ilvl)}</td><td class="num" data-val="${p.enchantCount||0}" style="color:${(p.enchantCount||0)===0?"#f85149":(p.enchantCount||0)<2?"#ffdd75":"#3fb950"};font-weight:600">${countLabel(p.enchantCount,"enchant","enchants")}</td><td class="num" data-val="${p.gemCount||0}" style="color:${(p.gemCount||0)===0?"#f85149":"#3fb950"};font-weight:600">${countLabel(p.gemCount,"gem","gems")}</td><td data-val="${prepIssues.length}" style="font-size:12px;color:${prepIssues.length?"#ffdd75":"#3fb950"}">${prepIssues.length?escAttr(prepIssues.slice(0,2).join(" · ")):"Ready to Raid!"}</td><td data-val="${readySortVal}">${readyHtml}</td><td style="text-align:center">${links||'<span class="none-t">—</span>'}</td>`;
+        tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td class="num build-ilvl-cell" data-val="${p.ilvl||0}" style="color:${p.ilvl? "#c9d1d9":"#6e7681"}">${fmtIlvl(p.ilvl)}</td><td class="num" data-val="${p.enchantCount||0}" style="color:${(p.enchantCount||0)===0?"#f85149":(p.enchantCount||0)<2?"#ffdd75":"#3fb950"};font-weight:600">${countLabel(p.enchantCount,"enchant","enchants")}</td><td class="num" data-val="${p.gemCount||0}" style="color:${(p.gemCount||0)===0?"#f85149":"#3fb950"};font-weight:600">${countLabel(p.gemCount,"gem","gems")}</td><td data-val="${snapshotBuffEntries(p).length}" style="font-size:12px">${snapshotBuffsHtml(p,true)}</td><td data-val="${prepIssues.length}" style="font-size:12px;color:${prepIssues.length?"#ffdd75":"#3fb950"}">${prepIssues.length?escAttr(prepIssues.slice(0,2).join(" · ")):"Ready to Raid!"}</td><td data-val="${readySortVal}" style="text-align:center">${readyHtml}</td><td style="text-align:center">${links||'<span class="none-t">—</span>'}</td>`;
         bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");
         bBuilds.appendChild(tr);
       });
       bindSortSelect("buildSort","tBuilds",{
-        ready:{col:6,desc:true},
-        missing:{col:5,desc:true},
+        ready:{col:7,desc:true},
+        missing:{col:6,desc:true},
+        buffs:{col:5,desc:true},
         ilvl:{col:2,desc:true},
         gems:{col:4,desc:true},
         enchants:{col:3,desc:true},
@@ -3055,7 +3245,7 @@ async function analyze(){
         cleanBanner.innerHTML="";
       }
     }
-    drows.forEach(d=>{
+drows.forEach(d=>{
   const tr=document.createElement("tr");
   // copy line for pinging in discord -- "Sumanis [Druid] died @ 1m 23s — Void Bolt"
   const cpyTxt=d.dcount>0?`${d.name} [${d.cls}] died @ ${d.timeStr} — ${d.killer}`:"";
@@ -3063,6 +3253,11 @@ async function analyze(){
   tr.innerHTML=`<td ${cs(d)}>${d.name}</td><td ${cs2(d)}>${spec(d)}</td><td data-val="${d.time===Infinity?99999:d.time}" style="color:${d.time===Infinity?"#3fb950":"#f85149"}">${d.timeStr}</td><td style="font-size:12px;color:#f85149">${d.killer==="—"?"":spellChip(d.killer,null,d.killerId||findAbilityIdByName(d.killer),"danger","death cause")}${cpyBtn}${d.ctx&&d.dcount>0?`<div class="death-ctx">${d.ctx}</div>`:""}</td><td class="num" data-val="${d.dcount}" style="color:${d.dcount>0?"#f85149":"#3fb950"};font-weight:600">${d.dcount||"✓"}</td>`;
   bDeath.appendChild(tr);
 });
+    bindSortSelect("deathSort","tDeath",{
+      time:{col:2,desc:false},
+      deaths:{col:4,desc:true},
+      player:{col:0,desc:false}
+    },"time");
     // INTERRUPTS
     const bInt=document.getElementById("bInt");bInt.innerHTML="";
     [...sorted].sort((a,b)=>Object.values(b.ints).reduce((s,c)=>s+c,0)-Object.values(a.ints).reduce((s,c)=>s+c,0)).forEach(p=>{const ie=Object.entries(p.ints),tot=ie.reduce((s,[,c])=>s+c,0);const tr=document.createElement("tr");tr.innerHTML=`<td ${cs(p)}>${p.name}</td><td ${cs2(p)}>${spec(p)}</td><td>${ie.length?ie.map(([n,c])=>spellChip(n,c,findAbilityIdByName(n),"cool","interrupt")).join(""):'<span class="none-t">None</span>'}</td><td class="num" data-val="${tot}" style="color:${tot>0?"#79c0ff":"#6e7681"};font-weight:600">${tot||"—"}</td>`;bindRowAction(tr,()=>openPlayerModal(p,fSec),"Open player details");bInt.appendChild(tr);});
@@ -3078,6 +3273,7 @@ async function analyze(){
       const barPct=Math.round(p.dtaken/maxDT*100);
       const raidPct=(p.dtaken/totalRaidDmg*100).toFixed(1);
       const avoidable=p.avoidableTaken||0;
+      const avoidablePct=p.dtaken>0?((avoidable/p.dtaken)*100).toFixed(1):"0.0";
       const avoidableWatch=avoidable>0?(p.avoidableSpells?.[0]?`${p.avoidableSpells[0].name} · ${p.avoidableHits||0} hits`:`${p.avoidableHits||0} avoidable hits`):"Clean";
       const bc=p.role==="tanks"?"#e3a008":p.role==="healers"?"#3fb950":"#79c0ff";
       const tr=document.createElement("tr");
@@ -3087,11 +3283,19 @@ async function analyze(){
         <td class="num" data-val="${p.dtaken}">${fmt(p.dtaken)}</td>
         <td class="num" data-val="${dtps}" style="color:#8b949e">${fmt(dtps)}</td>
         <td class="num" data-val="${avoidable}" style="color:${avoidable>1500000?"#f85149":avoidable>0?"#ffdd75":"#8b949e"}">${avoidable?fmt(avoidable):"—"}</td>
+        <td class="num" data-val="${avoidablePct}" style="color:${parseFloat(avoidablePct)>=35?"#f85149":parseFloat(avoidablePct)>=15?"#e3a008":"#8b949e"}">${avoidable?`${avoidablePct}%`:"—"}</td>
         <td class="num" data-val="${raidPct}" style="color:${parseFloat(raidPct)>20?"#f85149":parseFloat(raidPct)>12?"#e3a008":"#8b949e"}">${raidPct}%</td>
         <td data-val="${avoidable}" style="font-size:11px;color:${avoidable>1500000?"#f87171":avoidable>0?"#ffdd75":"#6e7681"}">${avoidableWatch}</td>`;
-      bindRowAction(tr,()=>toggleBreakdownRow(tr,p,"taken",9),"Expand spell breakdown");
+      bindRowAction(tr,()=>toggleBreakdownRow(tr,p,"taken",10),"Expand spell breakdown");
       bDmg.appendChild(tr);
     });
+    bindSortSelect("damageSort","tDmg",{
+      avoidable:{col:6,desc:true},
+      avoidablePct:{col:7,desc:true},
+      taken:{col:4,desc:true},
+      dtps:{col:5,desc:true},
+      player:{col:0,desc:false}
+    },"avoidable");
     // DPS
     const bDps=document.getElementById("bDps");bDps.innerHTML="";const dpsP=Object.values(P).filter(p=>p.ddealt>0).sort((a,b)=>b.ddealt-a.ddealt),maxDD=Math.max(...dpsP.map(p=>p.ddealt),1);
     if(!dpsP.length){bDps.innerHTML="<tr><td colspan='5' style='color:#6e7681;text-align:center;padding:20px'>No damage data found</td></tr>";}
@@ -3198,6 +3402,12 @@ async function analyze(){
         bMechDebuffs.appendChild(tr);
       });
       if(!mechanicRows.length)bMechDebuffs.innerHTML="<tr><td colspan='5' style='color:#6e7681;text-align:center;padding:20px'>No meaningful debuff mechanics were found for this pull.</td></tr>";
+      bindSortSelect("mechanicSort","tMechDebuffs",{
+        players:{col:1,desc:true},
+        apps:{col:2,desc:true},
+        hold:{col:3,desc:true},
+        mechanic:{col:0,desc:false}
+      },"players");
     }
 
     // mechanic deaths -- group by killing ability
@@ -3276,6 +3486,7 @@ async function analyze(){
     if(!Object.keys(tlByPlayer).length&&!bossTimelineRows.length){tlContent.innerHTML='<div style="color:#6e7681;text-align:center;padding:20px">No cooldown or boss-ability timeline data detected</div>';}
     const tlSel=document.getElementById("tlPlayerSel");
     if(tlSel){tlSel.innerHTML='<option value="all">All Players</option>';Object.keys(tlByPlayer).sort().forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;tlSel.appendChild(o);});}
+    window._raidLensTimelineData={fightMs,bossRows:bossTimelineRows,playersByName:Object.fromEntries(sorted.map(p=>[p.name,p]))};
     setTLZoom(_v5UI.timelineZoom||1.6);
     applyTLFilters();
     refreshWowheadTooltips();
@@ -3349,7 +3560,29 @@ async function analyze(){
     ];
     const phaseSummaryHTML="";
     const readinessWatch=sorted.filter(p=>p.readyStatus!=="good").slice(0,4);
+    const readyGoodCount=sorted.filter(p=>p.readyStatus==="good").length;
+    const readyWarnCount=sorted.filter(p=>p.readyStatus==="warn").length;
+    const readyBadCount=sorted.filter(p=>p.readyStatus==="bad").length;
     const avoidableWatch=sorted.filter(p=>p.role!=="tanks"&&(p.avoidableTaken||0)>0).sort((a,b)=>(b.avoidableTaken||0)-(a.avoidableTaken||0)).slice(0,3);
+    const snapshotPlayers=sorted.filter(p=>p.auraSnapshotAvailable);
+    const snapshotFood=sorted.filter(p=>p.foodBuff).length;
+    const snapshotFlask=sorted.filter(p=>p.flaskBuff).length;
+    const snapshotRune=sorted.filter(p=>p.runeBuff).length;
+    const snapshotWeapon=sorted.filter(p=>p.weaponBuff).length;
+    const missingFoodNames=snapshotPlayers.filter(p=>!p.foodBuff).map(p=>p.name).slice(0,3);
+    const missingPhialNames=snapshotPlayers.filter(p=>!p.flaskBuff).map(p=>p.name).slice(0,3);
+    const missingRuneNames=snapshotPlayers.filter(p=>!p.runeBuff).map(p=>p.name).slice(0,3);
+    const missingWeaponNames=snapshotPlayers.filter(p=>!p.weaponBuff).map(p=>p.name).slice(0,3);
+    const sumCounts=obj=>Object.values(obj||{}).reduce((s,c)=>s+(Number(c)||0),0);
+    const topInterrupts=sorted.map(p=>({name:p.name,total:sumCounts(p.ints)})).filter(p=>p.total>0).sort((a,b)=>b.total-a.total).slice(0,2);
+    const topDispels=sorted.map(p=>({name:p.name,total:sumCounts(p.disps)})).filter(p=>p.total>0).sort((a,b)=>b.total-a.total).slice(0,2);
+    const topCrowdControl=sorted.map(p=>({name:p.name,total:sumCounts(p.cc)})).filter(p=>p.total>0).sort((a,b)=>b.total-a.total).slice(0,2);
+    const topRaidCDs=sorted.map(p=>({name:p.name,total:safeArr(p.timelineMarkers).filter(m=>m.kind==="raid").length})).filter(p=>p.total>0).sort((a,b)=>b.total-a.total).slice(0,2);
+    const bossWindowHighlights=bossTimelineRows.slice(0,3).map(row=>`${row.name} · ${row.kind==="damage"?`${fmtNum(row.damage)} raid dmg`:`${row.applications} apps`} · ${safeArr(row.clusters).length} window${safeArr(row.clusters).length===1?"":"s"}`);
+    const tankLens=sorted.filter(p=>p.role==="tanks").sort((a,b)=>b.dtaken-a.dtaken)[0]||null;
+    const healerLens=sorted.filter(p=>p.role==="healers").sort((a,b)=>b.healed-a.healed)[0]||null;
+    const dpsLens=sorted.filter(p=>p.role==="dps").sort((a,b)=>b.ddealt-a.ddealt)[0]||null;
+    const firstDeathNote=drows.filter(d=>d.dcount>0).sort((a,b)=>a.time-b.time)[0]||null;
     const officerNotes=buildOfficerNotes({
       fight,sorted,coverageSummary,mechanicRows,
       missedOffTotal,
@@ -3359,12 +3592,20 @@ async function analyze(){
       avoidableWatch
     });
     const pullTrend=summarizePullTrends(_summaryPullHist);
+    const defensiveGapDeaths=drows.filter(d=>d.dcount>0&&String(d.ctx||"").includes("No recent defensive")).slice(0,3);
+    const coverageGapRows=coverageSummary.filter(r=>r.uncovered>0).slice(0,2);
     const summaryInsightsHTML=`<div class="summary-grid-2">
-      <div class="summary-note-card"><div class="summary-note-title">Officer Notes</div><div class="summary-note-body">${officerNotes.length?officerNotes.map((n,i)=>`${i+1}. ${n}`).join(" · "):"No obvious raid-lead action items surfaced on this pull."}</div><div class="summary-note-sub">This is the short list to talk through before diving into raw tables.</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Ready Check+</div><div class="summary-note-body">${readinessWatch.length?readinessWatch.map(p=>`${p.name}: ${p.readyText}`).join(" · "):"Everybody with combatant data looked ready enough for this pull."}</div><div class="summary-note-sub">This uses Warcraft Logs combatant info snapshots, so it’s much safer than trying to guess readiness from in-fight buff events alone.</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Officer Notes</div><div class="summary-note-body">${officerNotes.length?officerNotes.map((n,i)=>`${i+1}. ${n}`).join(" · "):"No obvious raid-lead action items on this pull."}</div><div class="summary-note-sub">This is the short list to talk through before diving into raw tables.</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Death Context+</div><div class="summary-note-body">${firstDeathNote?`${firstDeathNote.name} @ ${firstDeathNote.timeStr} — ${firstDeathNote.killer}`:"No player deaths on this pull."}</div><div class="summary-note-sub">${firstDeathNote?.ctx||"Clean pull. Nobody died, so there is no first-death context to review."}</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Ready Check+</div><div class="summary-note-body">Ready ${readyGoodCount}/${sorted.length} · Watch ${readyWarnCount}/${sorted.length} · Fix ${readyBadCount}/${sorted.length}</div><div class="summary-note-sub">${readinessWatch.length?`Prep watch: ${readinessWatch.map(p=>`${p.name} (${p.readyText})`).join(" · ")}`:"Everybody with combatant data looked ready enough for this pull."}</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Consumable Snapshot</div><div class="summary-note-body">${snapshotPlayers.length?`Food ${snapshotFood}/${snapshotPlayers.length} · Phial ${snapshotFlask}/${snapshotPlayers.length} · Rune ${snapshotRune}/${snapshotPlayers.length} · Weapon ${snapshotWeapon}/${snapshotPlayers.length}`:"This log did not expose usable prep-aura snapshots."}<br>Potions ${potUsers}/${sorted.length} · Healthstones ${hsUsers}/${sorted.length}</div><div class="summary-note-sub">${snapshotPlayers.length?`${missingFoodNames.length?`Missing food: ${missingFoodNames.join(", ")}`:"Food snapshot looked good."}${missingPhialNames.length?` · Missing phial: ${missingPhialNames.join(", ")}`:""}${missingRuneNames.length?` · Missing rune: ${missingRuneNames.join(", ")}`:""}${missingWeaponNames.length?` · Missing weapon buff: ${missingWeaponNames.join(", ")}`:""}`:"If Warcraft Logs does not expose those auras for the pull, RaidLens keeps this informational instead of guessing."}</div></div>
       <div class="summary-note-card"><div class="summary-note-title">Throughput Leaders</div><div class="summary-note-body">${sorted.filter(p=>p.ddealt>0).sort((a,b)=>b.ddealt-a.ddealt).slice(0,3).map(p=>`${p.name} ${fmtNum(Math.round(p.ddealt/fSec||0))} DPS`).join(" · ")||"No DPS data for this pull."}</div><div class="summary-note-sub">${sorted.filter(p=>p.healed>0).sort((a,b)=>b.healed-a.healed).slice(0,2).map(p=>`${p.name} ${fmtNum(Math.round(p.healed/fSec||0))} HPS`).join(" · ")||"No HPS data for this pull."}</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Role Lenses</div><div class="summary-note-body">${tankLens?`Tank: ${tankLens.name} ${fmtNum(Math.round((tankLens.dtaken||0)/Math.max(fSec,1)))} DTPS · ${sumCounts(tankLens.defs)} defs`:"Tank lens unavailable."}<br>${healerLens?`Healer: ${healerLens.name} ${fmtNum(Math.round((healerLens.healed||0)/Math.max(fSec,1)))} HPS · ${sumCounts(healerLens.disps)} dispels`:"Healer lens unavailable."}<br>${dpsLens?`DPS: ${dpsLens.name} ${fmtNum(Math.round((dpsLens.ddealt||0)/Math.max(fSec,1)))} DPS · ${dpsLens.deaths.length||0} deaths`:"DPS lens unavailable."}</div><div class="summary-note-sub">Quick per-role read before filtering the scorecard or drilling into the deep tabs.</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Utility Watch</div><div class="summary-note-body">${topInterrupts.length?`Interrupts: ${topInterrupts.map(p=>`${p.name} ${p.total}`).join(" · ")}`:"No interrupts recorded."}<br>${topDispels.length?`Dispels: ${topDispels.map(p=>`${p.name} ${p.total}`).join(" · ")}`:"No dispels recorded."}${topCrowdControl.length?`<br>CC: ${topCrowdControl.map(p=>`${p.name} ${p.total}`).join(" · ")}`:""}${topRaidCDs.length?`<br>Raid CDs: ${topRaidCDs.map(p=>`${p.name} ${p.total}`).join(" · ")}`:""}</div><div class="summary-note-sub">Use this as the quick accountability pass for stops, dispels, control, and visible raid cooldown ownership.</div></div>
       <div class="summary-note-card"><div class="summary-note-title">Mechanic Watchlist</div><div class="summary-note-body">${mechanicRows.filter(r=>r.watch).slice(0,3).map(r=>`${r.name} · ${r.playersCount} players`).join(" · ")||"No repeated debuff mechanic stood out on this pull."}</div><div class="summary-note-sub">${mechanicRows.filter(r=>r.watch).length?mechanicFixText(mechanicRows.filter(r=>r.watch)[0]):(bossTimelineRows.length?`Boss timeline is tracking ${bossTimelineRows.length} major ability lane${bossTimelineRows.length===1?"":"s"} for cooldown alignment.`:"Boss timeline did not find major repeated boss abilities this pull.")}</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Danger Windows</div><div class="summary-note-body">${bossWindowHighlights.length?bossWindowHighlights.join(" · "):"No major boss windows were highlighted for this pull."}</div><div class="summary-note-sub">${bossWindowHighlights.length?"These are the moments to line personals, externals, and raid CDs up with on the timeline.":"If the boss lane is empty, this pull did not surface repeated boss windows clearly enough for a summary callout."}</div></div>
       <div class="summary-note-card"><div class="summary-note-title">Cooldown Coverage</div><div class="summary-note-body">${coverageSummary.length?coverageSummary.map(r=>`${r.name}: ${r.covered}/${r.total}`).join(" · "):"No clear boss-event coverage windows were detected for this pull."}</div><div class="summary-note-sub">${coverageSummary.find(r=>r.uncovered>0)?.note||"Use the timeline tab to line raid CDs and personals up against the boss-ability lane."}</div></div>
+      <div class="summary-note-card"><div class="summary-note-title">Defensive Watch</div><div class="summary-note-body">${defensiveGapDeaths.length?defensiveGapDeaths.map(d=>`${d.name} @ ${d.timeStr}`).join(" · "):"No recent-defensive gaps stood out in the recorded deaths."}</div><div class="summary-note-sub">${coverageGapRows.length?`Coverage watch: ${coverageGapRows.map(r=>`${r.name} ${r.uncovered}/${r.total} uncovered`).join(" · ")}`:"Most tracked boss windows had some defensive or raid-CD coverage nearby."}</div></div>
       <div class="summary-note-card"><div class="summary-note-title">Avoidable Pressure</div><div class="summary-note-body">${avoidableWatch.length?avoidableWatch.map(p=>`${p.name} ${fmt(p.avoidableTaken)} · ${p.avoidableHits} hit${p.avoidableHits===1?"":"s"}`).join(" · "):"No repeated avoidable pressure stood out on this pull."}</div><div class="summary-note-sub">This only tracks likely avoidable boss windows, so start with deaths first and use this as coaching context.</div></div>
       <div class="summary-note-card"><div class="summary-note-title">Pull Trend Summary</div><div class="summary-note-body">${pullTrend?`Deaths ${pullTrend.deaths.flat?"±0":(pullTrend.deaths.diff>0?"+":"")+pullTrend.deaths.diff} · Raid DPS ${pullTrend.raidDps.flat?"±0":(pullTrend.raidDps.diff>0?"+":"")+fmtNum(Math.abs(pullTrend.raidDps.diff))} · Missed CDs ${pullTrend.missed.flat?"±0":(pullTrend.missed.diff>0?"+":"")+pullTrend.missed.diff}`:"Analyze at least two pulls of this boss to unlock trend context."}</div><div class="summary-note-sub">${pullTrend?(pullTrend.deaths.good||pullTrend.missed.good||pullTrend.pots.good?"You’re trending in the right direction. Keep the improvements that stuck.":"No obvious trend improvement yet — look at deaths and mechanic failures first."):"Trends stay scoped to this boss within the current report/session."}</div></div>
     </div>`;
@@ -3862,6 +4103,28 @@ function applyTLFilters(){
     const show=(k==='off'&&_tlKind.off)||(k==='def'&&_tlKind.def)||(k==='raid'&&_tlKind.raid)||(k==='lust'&&_tlKind.lust)||(k==='boss'&&_tlKind.boss)||!k;
     m.style.opacity=show?'1':'0.05';m.style.pointerEvents=show?'':'none';
   });
+  renderTimelineFocus();
+}
+function renderTimelineFocus(){
+  const wrap=document.getElementById('timelineFocus');
+  if(!wrap)return;
+  const sel=document.getElementById('tlPlayerSel');
+  const player=sel?sel.value:'all';
+  const data=window._raidLensTimelineData||null;
+  if(!data||player==='all'){
+    wrap.style.display='none';
+    wrap.innerHTML='';
+    return;
+  }
+  const p=data.playersByName?.[player];
+  if(!p){
+    wrap.style.display='none';
+    wrap.innerHTML='';
+    return;
+  }
+  wrap.style.display='block';
+  wrap.innerHTML=renderPlayerFocusGraph(p,data.fightMs||0,data.bossRows||[],false);
+  refreshWowheadTooltips();
 }
 
 function getMem(){try{return JSON.parse(localStorage.getItem(K_MEM_V5)||'{}');}catch{return{};}}
