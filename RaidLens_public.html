@@ -212,6 +212,8 @@ tr:hover td{background:#161b22}
 .summary-note-title{font-size:10px;color:#8ea2b8;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
 .summary-note-body{font-size:12px;color:#c9d1d9;line-height:1.75}
 .summary-note-sub{font-size:11px;color:#8b949e;line-height:1.7;margin-top:6px}
+.summary-deck-tools{margin:0 0 12px}
+.summary-deck-grid{margin-bottom:16px}
 .ready-pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
 .ready-pill.good{background:#102218;border:1px solid #225437;color:#5fdd8e}
 .ready-pill.warn{background:#201a0b;border:1px solid #6b5513;color:#ffdd75}
@@ -495,9 +497,9 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
     <span class="hero-badge">🌿 Made by Sumanis — Resto Druid</span>
   </div>
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:4px">
-    <a href="https://github.com/Fisheye3D/Raidlens/blob/main/README.md" target="_blank" style="background:#0d2a1a;border:1px solid #3fb950;color:#3fb950;font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:6px">📖 Full Guide &amp; FAQ — all info here ↗</a>
+<a href="https://github.com/Fisheye3D/Raidlenshosted/blob/main/README.md" target="_blank" style="background:#0d2a1a;border:1px solid #3fb950;color:#3fb950;font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:6px">📖 Full Guide &amp; FAQ — all info here ↗</a>
     <a href="mailto:Raidlens.org@gmail.com?subject=RaidLens%20Feedback&body=Feedback%2C%20suggestions%20or%20issues%3A%0A%0AWhat%20I%20was%20doing%3A%0AWhat%20happened%3A%0AWhat%20I%20expected%3A%0A" style="background:#1a1200;border:1px solid #e3a008;color:#ffd700;font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:6px">✉ Feedback, Suggestions or Issues</a>
-    <a href="https://github.com/Fisheye3D/Raidlens" target="_blank" style="color:#8b949e;font-size:11px;text-decoration:none">GitHub ↗</a>
+<a href="https://github.com/Fisheye3D/Raidlenshosted" target="_blank" style="color:#8b949e;font-size:11px;text-decoration:none">GitHub ↗</a>
     <a href="https://buymeacoffee.com/Raidlens" target="_blank" style="background:#201706;border:1px solid #5f4a13;color:#d4b45c;font-size:12px;font-weight:600;padding:6px 12px;border-radius:999px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;line-height:1">☕ Support RaidLens</a>
   </div>
   <div class="hero-preview">
@@ -847,7 +849,7 @@ tr:nth-child(even) td{background:rgba(255,255,255,.012)}
       </div>
       <div style="background:#0a1a0a;border:1px solid #3fb95040;border-radius:6px;padding:12px">
         <div style="font-size:12px;font-weight:600;color:#3fb950;margin-bottom:4px">🔍 Open source</div>
-        <div style="font-size:12px;color:#8b949e;line-height:1.6">Every line of code is public at <a href="https://github.com/Fisheye3D/Raidlens" target="_blank" style="color:#3fb950">github.com/Fisheye3D/Raidlens</a>. You can verify exactly what it does — nothing hidden.</div>
+<div style="font-size:12px;color:#8b949e;line-height:1.6">Every line of code is public at <a href="https://github.com/Fisheye3D/Raidlenshosted" target="_blank" style="color:#3fb950">github.com/Fisheye3D/Raidlenshosted</a>. You can verify exactly what it does — nothing hidden.</div>
       </div>
       <div style="background:#0a1a0a;border:1px solid #3fb95040;border-radius:6px;padding:12px">
         <div style="font-size:12px;font-weight:600;color:#3fb950;margin-bottom:4px">🚫 Not your WCL login</div>
@@ -3594,21 +3596,31 @@ drows.forEach(d=>{
     const pullTrend=summarizePullTrends(_summaryPullHist);
     const defensiveGapDeaths=drows.filter(d=>d.dcount>0&&String(d.ctx||"").includes("No recent defensive")).slice(0,3);
     const coverageGapRows=coverageSummary.filter(r=>r.uncovered>0).slice(0,2);
-    const summaryInsightsHTML=`<div class="summary-grid-2">
-      <div class="summary-note-card"><div class="summary-note-title">Officer Notes</div><div class="summary-note-body">${officerNotes.length?officerNotes.map((n,i)=>`${i+1}. ${n}`).join(" · "):"No obvious raid-lead action items on this pull."}</div><div class="summary-note-sub">This is the short list to talk through before diving into raw tables.</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Death Context+</div><div class="summary-note-body">${firstDeathNote?`${firstDeathNote.name} @ ${firstDeathNote.timeStr} — ${firstDeathNote.killer}`:"No player deaths on this pull."}</div><div class="summary-note-sub">${firstDeathNote?.ctx||"Clean pull. Nobody died, so there is no first-death context to review."}</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Ready Check+</div><div class="summary-note-body">Ready ${readyGoodCount}/${sorted.length} · Watch ${readyWarnCount}/${sorted.length} · Fix ${readyBadCount}/${sorted.length}</div><div class="summary-note-sub">${readinessWatch.length?`Prep watch: ${readinessWatch.map(p=>`${p.name} (${p.readyText})`).join(" · ")}`:"Everybody with combatant data looked ready enough for this pull."}</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Consumable Snapshot</div><div class="summary-note-body">${snapshotPlayers.length?`Food ${snapshotFood}/${snapshotPlayers.length} · Phial ${snapshotFlask}/${snapshotPlayers.length} · Rune ${snapshotRune}/${snapshotPlayers.length} · Weapon ${snapshotWeapon}/${snapshotPlayers.length}`:"This log did not expose usable prep-aura snapshots."}<br>Potions ${potUsers}/${sorted.length} · Healthstones ${hsUsers}/${sorted.length}</div><div class="summary-note-sub">${snapshotPlayers.length?`${missingFoodNames.length?`Missing food: ${missingFoodNames.join(", ")}`:"Food snapshot looked good."}${missingPhialNames.length?` · Missing phial: ${missingPhialNames.join(", ")}`:""}${missingRuneNames.length?` · Missing rune: ${missingRuneNames.join(", ")}`:""}${missingWeaponNames.length?` · Missing weapon buff: ${missingWeaponNames.join(", ")}`:""}`:"If Warcraft Logs does not expose those auras for the pull, RaidLens keeps this informational instead of guessing."}</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Throughput Leaders</div><div class="summary-note-body">${sorted.filter(p=>p.ddealt>0).sort((a,b)=>b.ddealt-a.ddealt).slice(0,3).map(p=>`${p.name} ${fmtNum(Math.round(p.ddealt/fSec||0))} DPS`).join(" · ")||"No DPS data for this pull."}</div><div class="summary-note-sub">${sorted.filter(p=>p.healed>0).sort((a,b)=>b.healed-a.healed).slice(0,2).map(p=>`${p.name} ${fmtNum(Math.round(p.healed/fSec||0))} HPS`).join(" · ")||"No HPS data for this pull."}</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Role Lenses</div><div class="summary-note-body">${tankLens?`Tank: ${tankLens.name} ${fmtNum(Math.round((tankLens.dtaken||0)/Math.max(fSec,1)))} DTPS · ${sumCounts(tankLens.defs)} defs`:"Tank lens unavailable."}<br>${healerLens?`Healer: ${healerLens.name} ${fmtNum(Math.round((healerLens.healed||0)/Math.max(fSec,1)))} HPS · ${sumCounts(healerLens.disps)} dispels`:"Healer lens unavailable."}<br>${dpsLens?`DPS: ${dpsLens.name} ${fmtNum(Math.round((dpsLens.ddealt||0)/Math.max(fSec,1)))} DPS · ${dpsLens.deaths.length||0} deaths`:"DPS lens unavailable."}</div><div class="summary-note-sub">Quick per-role read before filtering the scorecard or drilling into the deep tabs.</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Utility Watch</div><div class="summary-note-body">${topInterrupts.length?`Interrupts: ${topInterrupts.map(p=>`${p.name} ${p.total}`).join(" · ")}`:"No interrupts recorded."}<br>${topDispels.length?`Dispels: ${topDispels.map(p=>`${p.name} ${p.total}`).join(" · ")}`:"No dispels recorded."}${topCrowdControl.length?`<br>CC: ${topCrowdControl.map(p=>`${p.name} ${p.total}`).join(" · ")}`:""}${topRaidCDs.length?`<br>Raid CDs: ${topRaidCDs.map(p=>`${p.name} ${p.total}`).join(" · ")}`:""}</div><div class="summary-note-sub">Use this as the quick accountability pass for stops, dispels, control, and visible raid cooldown ownership.</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Mechanic Watchlist</div><div class="summary-note-body">${mechanicRows.filter(r=>r.watch).slice(0,3).map(r=>`${r.name} · ${r.playersCount} players`).join(" · ")||"No repeated debuff mechanic stood out on this pull."}</div><div class="summary-note-sub">${mechanicRows.filter(r=>r.watch).length?mechanicFixText(mechanicRows.filter(r=>r.watch)[0]):(bossTimelineRows.length?`Boss timeline is tracking ${bossTimelineRows.length} major ability lane${bossTimelineRows.length===1?"":"s"} for cooldown alignment.`:"Boss timeline did not find major repeated boss abilities this pull.")}</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Danger Windows</div><div class="summary-note-body">${bossWindowHighlights.length?bossWindowHighlights.join(" · "):"No major boss windows were highlighted for this pull."}</div><div class="summary-note-sub">${bossWindowHighlights.length?"These are the moments to line personals, externals, and raid CDs up with on the timeline.":"If the boss lane is empty, this pull did not surface repeated boss windows clearly enough for a summary callout."}</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Cooldown Coverage</div><div class="summary-note-body">${coverageSummary.length?coverageSummary.map(r=>`${r.name}: ${r.covered}/${r.total}`).join(" · "):"No clear boss-event coverage windows were detected for this pull."}</div><div class="summary-note-sub">${coverageSummary.find(r=>r.uncovered>0)?.note||"Use the timeline tab to line raid CDs and personals up against the boss-ability lane."}</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Defensive Watch</div><div class="summary-note-body">${defensiveGapDeaths.length?defensiveGapDeaths.map(d=>`${d.name} @ ${d.timeStr}`).join(" · "):"No recent-defensive gaps stood out in the recorded deaths."}</div><div class="summary-note-sub">${coverageGapRows.length?`Coverage watch: ${coverageGapRows.map(r=>`${r.name} ${r.uncovered}/${r.total} uncovered`).join(" · ")}`:"Most tracked boss windows had some defensive or raid-CD coverage nearby."}</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Avoidable Pressure</div><div class="summary-note-body">${avoidableWatch.length?avoidableWatch.map(p=>`${p.name} ${fmt(p.avoidableTaken)} · ${p.avoidableHits} hit${p.avoidableHits===1?"":"s"}`).join(" · "):"No repeated avoidable pressure stood out on this pull."}</div><div class="summary-note-sub">This only tracks likely avoidable boss windows, so start with deaths first and use this as coaching context.</div></div>
-      <div class="summary-note-card"><div class="summary-note-title">Pull Trend Summary</div><div class="summary-note-body">${pullTrend?`Deaths ${pullTrend.deaths.flat?"±0":(pullTrend.deaths.diff>0?"+":"")+pullTrend.deaths.diff} · Raid DPS ${pullTrend.raidDps.flat?"±0":(pullTrend.raidDps.diff>0?"+":"")+fmtNum(Math.abs(pullTrend.raidDps.diff))} · Missed CDs ${pullTrend.missed.flat?"±0":(pullTrend.missed.diff>0?"+":"")+pullTrend.missed.diff}`:"Analyze at least two pulls of this boss to unlock trend context."}</div><div class="summary-note-sub">${pullTrend?(pullTrend.deaths.good||pullTrend.missed.good||pullTrend.pots.good?"You’re trending in the right direction. Keep the improvements that stuck.":"No obvious trend improvement yet — look at deaths and mechanic failures first."):"Trends stay scoped to this boss within the current report/session."}</div></div>
-    </div>`;
+    const summaryDecks={
+      overview:[
+        `<div class="summary-note-card"><div class="summary-note-title">Officer Notes</div><div class="summary-note-body">${officerNotes.length?officerNotes.map((n,i)=>`${i+1}. ${n}`).join(" · "):"No obvious raid-lead action items on this pull."}</div><div class="summary-note-sub">This is the short list to talk through before diving into raw tables.</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Death Context+</div><div class="summary-note-body">${firstDeathNote?`${firstDeathNote.name} @ ${firstDeathNote.timeStr} — ${firstDeathNote.killer}`:"No player deaths on this pull."}</div><div class="summary-note-sub">${firstDeathNote?.ctx||"Clean pull. Nobody died, so there is no first-death context to review."}</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Ready Check+</div><div class="summary-note-body">Ready ${readyGoodCount}/${sorted.length} · Watch ${readyWarnCount}/${sorted.length} · Fix ${readyBadCount}/${sorted.length}</div><div class="summary-note-sub">${readinessWatch.length?`Prep watch: ${readinessWatch.map(p=>`${p.name} (${p.readyText})`).join(" · ")}`:"Everybody with combatant data looked ready enough for this pull."}</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Consumable Snapshot</div><div class="summary-note-body">${snapshotPlayers.length?`Food ${snapshotFood}/${snapshotPlayers.length} · Phial ${snapshotFlask}/${snapshotPlayers.length} · Rune ${snapshotRune}/${snapshotPlayers.length} · Weapon ${snapshotWeapon}/${snapshotPlayers.length}`:"This log did not expose usable prep-aura snapshots."}<br>Potions ${potUsers}/${sorted.length} · Healthstones ${hsUsers}/${sorted.length}</div><div class="summary-note-sub">${snapshotPlayers.length?`${missingFoodNames.length?`Missing food: ${missingFoodNames.join(", ")}`:"Food snapshot looked good."}${missingPhialNames.length?` · Missing phial: ${missingPhialNames.join(", ")}`:""}${missingRuneNames.length?` · Missing rune: ${missingRuneNames.join(", ")}`:""}${missingWeaponNames.length?` · Missing weapon buff: ${missingWeaponNames.join(", ")}`:""}`:"If Warcraft Logs does not expose those auras for the pull, RaidLens keeps this informational instead of guessing."}</div></div>`
+      ],
+      execution:[
+        `<div class="summary-note-card"><div class="summary-note-title">Utility Watch</div><div class="summary-note-body">${topInterrupts.length?`Interrupts: ${topInterrupts.map(p=>`${p.name} ${p.total}`).join(" · ")}`:"No interrupts recorded."}<br>${topDispels.length?`Dispels: ${topDispels.map(p=>`${p.name} ${p.total}`).join(" · ")}`:"No dispels recorded."}${topCrowdControl.length?`<br>CC: ${topCrowdControl.map(p=>`${p.name} ${p.total}`).join(" · ")}`:""}${topRaidCDs.length?`<br>Raid CDs: ${topRaidCDs.map(p=>`${p.name} ${p.total}`).join(" · ")}`:""}</div><div class="summary-note-sub">Use this as the quick accountability pass for stops, dispels, control, and visible raid cooldown ownership.</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Mechanic Watchlist</div><div class="summary-note-body">${mechanicRows.filter(r=>r.watch).slice(0,3).map(r=>`${r.name} · ${r.playersCount} players`).join(" · ")||"No repeated debuff mechanic stood out on this pull."}</div><div class="summary-note-sub">${mechanicRows.filter(r=>r.watch).length?mechanicFixText(mechanicRows.filter(r=>r.watch)[0]):(bossTimelineRows.length?`Boss timeline is tracking ${bossTimelineRows.length} major ability lane${bossTimelineRows.length===1?"":"s"} for cooldown alignment.`:"Boss timeline did not find major repeated boss abilities this pull.")}</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Danger Windows</div><div class="summary-note-body">${bossWindowHighlights.length?bossWindowHighlights.join(" · "):"No major boss windows were highlighted for this pull."}</div><div class="summary-note-sub">${bossWindowHighlights.length?"These are the moments to line personals, externals, and raid CDs up with on the timeline.":"If the boss lane is empty, this pull did not surface repeated boss windows clearly enough for a summary callout."}</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Cooldown Coverage</div><div class="summary-note-body">${coverageSummary.length?coverageSummary.map(r=>`${r.name}: ${r.covered}/${r.total}`).join(" · "):"No clear boss-event coverage windows were detected for this pull."}</div><div class="summary-note-sub">${coverageSummary.find(r=>r.uncovered>0)?.note||"Use the timeline tab to line raid CDs and personals up against the boss-ability lane."}</div></div>`
+      ],
+      performance:[
+        `<div class="summary-note-card"><div class="summary-note-title">Throughput Leaders</div><div class="summary-note-body">${sorted.filter(p=>p.ddealt>0).sort((a,b)=>b.ddealt-a.ddealt).slice(0,3).map(p=>`${p.name} ${fmtNum(Math.round(p.ddealt/fSec||0))} DPS`).join(" · ")||"No DPS data for this pull."}</div><div class="summary-note-sub">${sorted.filter(p=>p.healed>0).sort((a,b)=>b.healed-a.healed).slice(0,2).map(p=>`${p.name} ${fmtNum(Math.round(p.healed/fSec||0))} HPS`).join(" · ")||"No HPS data for this pull."}</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Role Lenses</div><div class="summary-note-body">${tankLens?`Tank: ${tankLens.name} ${fmtNum(Math.round((tankLens.dtaken||0)/Math.max(fSec,1)))} DTPS · ${sumCounts(tankLens.defs)} defs`:"Tank lens unavailable."}<br>${healerLens?`Healer: ${healerLens.name} ${fmtNum(Math.round((healerLens.healed||0)/Math.max(fSec,1)))} HPS · ${sumCounts(healerLens.disps)} dispels`:"Healer lens unavailable."}<br>${dpsLens?`DPS: ${dpsLens.name} ${fmtNum(Math.round((dpsLens.ddealt||0)/Math.max(fSec,1)))} DPS · ${dpsLens.deaths.length||0} deaths`:"DPS lens unavailable."}</div><div class="summary-note-sub">Quick per-role read before filtering the scorecard or drilling into the deep tabs.</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Defensive Watch</div><div class="summary-note-body">${defensiveGapDeaths.length?defensiveGapDeaths.map(d=>`${d.name} @ ${d.timeStr}`).join(" · "):"No recent-defensive gaps stood out in the recorded deaths."}</div><div class="summary-note-sub">${coverageGapRows.length?`Coverage watch: ${coverageGapRows.map(r=>`${r.name} ${r.uncovered}/${r.total} uncovered`).join(" · ")}`:"Most tracked boss windows had some defensive or raid-CD coverage nearby."}</div></div>`,
+        `<div class="summary-note-card"><div class="summary-note-title">Avoidable Pressure</div><div class="summary-note-body">${avoidableWatch.length?avoidableWatch.map(p=>`${p.name} ${fmt(p.avoidableTaken)} · ${p.avoidableHits} hit${p.avoidableHits===1?"":"s"}`).join(" · "):"No repeated avoidable pressure stood out on this pull."}</div><div class="summary-note-sub">This only tracks likely avoidable boss windows, so start with deaths first and use this as coaching context.</div></div>`
+      ],
+      trends:[
+        `<div class="summary-note-card"><div class="summary-note-title">Pull Trend Summary</div><div class="summary-note-body">${pullTrend?`Deaths ${pullTrend.deaths.flat?"±0":(pullTrend.deaths.diff>0?"+":"")+pullTrend.deaths.diff} · Raid DPS ${pullTrend.raidDps.flat?"±0":(pullTrend.raidDps.diff>0?"+":"")+fmtNum(Math.abs(pullTrend.raidDps.diff))} · Missed CDs ${pullTrend.missed.flat?"±0":(pullTrend.missed.diff>0?"+":"")+pullTrend.missed.diff}`:"Analyze at least two pulls of this boss to unlock trend context."}</div><div class="summary-note-sub">${pullTrend?(pullTrend.deaths.good||pullTrend.missed.good||pullTrend.pots.good?"You’re trending in the right direction. Keep the improvements that stuck.":"No obvious trend improvement yet — look at deaths and mechanic failures first."):"Trends stay scoped to this boss within the current report/session."}</div></div>`
+      ]
+    };
+    window._raidLensSummaryDecks=summaryDecks;
+    const summaryInsightsHTML=`<div class="table-tools summary-deck-tools"><div class="table-tools-note">Quick summary deck. Show one focused row at a time instead of reading every card at once.</div><div class="table-sort"><span>Show:</span><select id="summaryDeckSel" onchange="changeSummaryDeck(this.value)"><option value="overview">Overview</option><option value="execution">Execution</option><option value="performance">Performance</option><option value="trends">Trends</option></select></div></div><div id="summaryDeckHost"></div>`;
     // big duration at top of summary -- raid leaders think in terms of fight length
     // green = kill, red = wipe. obvious but useful at a glance
     const fightDurStr=fdur(runMs);
@@ -3708,6 +3720,7 @@ drows.forEach(d=>{
       <th onclick="srt('tSum',9)">Grade ↕</th>
     </tr></thead><tbody id="tSumBody"></tbody></table></div>`;
     summaryDiv.innerHTML=scoreHTML+perPlayerHtml;
+    renderSummaryDeck();
 
     const tSumBody=document.getElementById("tSumBody");
     const avgAvoidableNonTank=sorted.filter(p=>p.role!=="tanks").length?sorted.filter(p=>p.role!=="tanks").reduce((s,p)=>s+(p.avoidableTaken||0),0)/sorted.filter(p=>p.role!=="tanks").length:0;
@@ -4071,7 +4084,7 @@ function showPKCEConnect(){
 // ═══════════════════════════════════════════════════════
 const K_UI_V5='rl_ui_v5';const K_MEM_V5='rl_mem_v5';
 let _v5ctx=null,_watchInterval=null;
-let _v5UI={focusMode:false,copyMode:'short',timelineZoom:1.35};
+let _v5UI={focusMode:false,copyMode:'short',timelineZoom:1.35,summaryDeck:'overview'};
 let _tlKind={off:true,def:true,raid:true,lust:true,boss:true};
 
 function loadV5UI(){try{const s=localStorage.getItem(K_UI_V5);if(s)_v5UI={..._v5UI,...JSON.parse(s)};}catch{}}
@@ -4088,6 +4101,24 @@ function setCopyMode(m){
   _v5UI.copyMode=m;saveV5UI();
   ['short','detailed','officer','pings'].forEach(x=>{const b=document.getElementById('cmBtn-'+x);if(b)b.classList.toggle('active',x===m);});
   if(_v5ctx)renderWipeSummaryV5();
+}
+
+function renderSummaryDeck(){
+  const host=document.getElementById('summaryDeckHost');
+  if(!host)return;
+  const decks=window._raidLensSummaryDecks||{};
+  const key=decks[_v5UI.summaryDeck]?_v5UI.summaryDeck:Object.keys(decks)[0];
+  if(!key){host.innerHTML='';return;}
+  _v5UI.summaryDeck=key;
+  const sel=document.getElementById('summaryDeckSel');
+  if(sel&&sel.value!==key)sel.value=key;
+  host.innerHTML=`<div class="summary-grid-2 summary-deck-grid">${decks[key].join('')}</div>`;
+}
+
+function changeSummaryDeck(v){
+  _v5UI.summaryDeck=v||'overview';
+  saveV5UI();
+  renderSummaryDeck();
 }
 
 function toggleTL(k){
